@@ -1,0 +1,33 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.silverfin.com/reference/createwebhook
+spec_type: Webhooks
+docs: https://developer.silverfin.com/reference/sync-api-webhook-events
+summary: >-
+  Silverfin exposes webhooks (subscription requires the `webhooks` OAuth scope)
+  for both the core company API and the SyncAPI. Consumers register a webhook
+  endpoint, list active webhooks, and destroy them via the API. The SyncAPI
+  publishes a dedicated webhook-events catalog for bookkeeping synchronisation.
+  No AsyncAPI document is published; this is a webhook (HTTP callback) surface.
+operations:
+  - operationId: createwebhook
+    summary: Register a company webhook.
+    scope: webhooks
+  - operationId: getwebhookslist
+    summary: List all company webhooks.
+    scope: webhooks
+  - operationId: deletewebhook
+    summary: Destroy a company webhook.
+    scope: webhooks
+  - operationId: createsyncwebhook-1
+    summary: Register a SyncAPI webhook.
+    scope: webhooks
+  - operationId: getsyncwebhookslist-1
+    summary: List all SyncAPI webhooks.
+    scope: webhooks
+  - operationId: deletesyncwebhook-1
+    summary: Destroy a SyncAPI webhook.
+    scope: webhooks
+events:
+  docs: https://developer.silverfin.com/reference/sync-api-webhook-events
+  detail: SyncAPI webhook events are documented at the reference page above.

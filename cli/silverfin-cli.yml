@@ -1,0 +1,44 @@
+generated: '2026-07-21'
+method: searched
+source: https://github.com/silverfin/silverfin-cli
+docs: https://developer.silverfin.com/docs/installation-guide
+name: silverfin-cli
+description: >-
+  First-party command-line tool for Silverfin template development. Lets
+  developers create, read and update reconciliation texts, export files, account
+  templates and shared parts from the command line while storing them in git
+  repositories, run Liquid tests locally, and drive CI/CD (e.g. GitHub Actions).
+  Wraps the Silverfin Public API.
+repository: https://github.com/silverfin/silverfin-cli
+language: javascript
+install:
+  - method: npm-git
+    command: npm install -g https://github.com/silverfin/silverfin-cli.git
+commands:
+  - name: authorize
+    summary: Authenticate API access (OAuth).
+  - name: config
+    summary: Manage settings such as firm ID and API host.
+  - name: import-reconciliation
+    summary: Retrieve reconciliation templates from Silverfin.
+  - name: update-reconciliation
+    summary: Push local reconciliation template changes to Silverfin.
+  - name: import-shared-part
+    summary: Retrieve a shared part.
+  - name: update-shared-part
+    summary: Push shared part changes.
+  - name: add-shared-part
+    summary: Link a shared part to a template.
+  - name: remove-shared-part
+    summary: Unlink a shared part from a template.
+  - name: run-test
+    summary: Execute Liquid tests locally.
+  - name: development-mode
+    summary: Watch files and auto-sync changes to Silverfin.
+  - name: update
+    summary: Upgrade the CLI to the latest version.
+related:
+  - repo: https://github.com/silverfin/silverfin-vscode
+    detail: VS Code extension for the Silverfin templating language and Liquid testing.
+  - repo: https://github.com/silverfin/silverfin-ls
+    detail: Language Server for Silverfin's Liquid.

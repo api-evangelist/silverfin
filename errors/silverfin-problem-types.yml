@@ -1,0 +1,30 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.silverfin.com/reference
+format: json
+notes: >-
+  Silverfin returns standard HTTP status codes with a JSON error body (not
+  RFC 9457 application/problem+json). The list below is derived from the
+  documented behaviour of the v4 REST API and SyncAPI.
+problems:
+  - status: 401
+    title: Unauthorized
+    detail: Missing, expired, or invalid OAuth access token. Access tokens expire after 2 hours; refresh to obtain a new one.
+  - status: 403
+    title: Forbidden
+    detail: The access token lacks the OAuth scope(s) required by the endpoint, or the user has no access to the requested firm/company.
+  - status: 404
+    title: Not Found
+    detail: The requested firm, company, period, or resource id does not exist or is not visible to the token.
+  - status: 422
+    title: Unprocessable Entity
+    detail: >-
+      Validation failed. Example: creating or moving a permanent folder with a
+      duplicate name yields 422 (rather than auto-suffixing). SyncAPI requests
+      exceeding 500 actions or violating the incremental one-request-per-company
+      rule are rejected.
+  - status: 429
+    title: Too Many Requests
+    detail: >-
+      A request was rejected because the per-company concurrency limit (1 call
+      in progress) was exceeded. Serialize calls per company_id and retry.

@@ -1,0 +1,38 @@
+generated: '2026-07-21'
+method: searched
+source: https://github.com/silverfin
+notes: >-
+  Silverfin distributes first-party developer tooling from its GitHub org rather
+  than public package registries. The silverfin-cli tool is installed directly
+  from git; there is no idiomatic client SDK library published to npm/PyPI at the
+  time of enrichment. The VS Code extension is published to the marketplace.
+packages:
+  - language: javascript
+    registry: github
+    name: silverfin-cli
+    url: https://github.com/silverfin/silverfin-cli
+    install: npm install -g https://github.com/silverfin/silverfin-cli.git
+    official: true
+    kind: cli
+    description: Command-line tool for Silverfin template development (wraps the Public API).
+  - language: typescript
+    registry: vscode-marketplace
+    name: silverfin-vscode
+    url: https://github.com/silverfin/silverfin-vscode
+    official: true
+    kind: editor-extension
+    description: VS Code extension for the Silverfin templating language and Liquid testing.
+  - language: typescript
+    registry: github
+    name: silverfin-ls
+    url: https://github.com/silverfin/silverfin-ls
+    official: true
+    kind: language-server
+    description: Language Server for Silverfin's Liquid.
+  - language: javascript
+    registry: github
+    name: tree-sitter-liquid
+    url: https://github.com/silverfin/tree-sitter-liquid
+    official: true
+    kind: grammar
+    description: Silverfin's Liquid grammar for Tree-sitter.

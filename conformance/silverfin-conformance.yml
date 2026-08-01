@@ -1,0 +1,22 @@
+generated: '2026-07-21'
+method: derived
+source: https://developer.silverfin.com/reference/authentication
+standards:
+  - id: oauth2
+    conforms: true
+    evidence: OAuth 2.0 Authorization Code + Refresh Token grants documented; Doorkeeper-based authorization server.
+  - id: oidc
+    conforms: false
+    evidence: API authenticates with OAuth2 access tokens; no OpenID Connect discovery document published for the API.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors returned as JSON with HTTP status codes, not application/problem+json.
+  - id: pagination
+    conforms: true
+    evidence: Collection endpoints (e.g. syncable companies) documented as paginated.
+  - id: idempotency
+    conforms: false
+    evidence: No Idempotency-Key header; SyncAPI uses an incremental one-request-per-company model instead.
+  - id: webhooks
+    conforms: true
+    evidence: Webhook registration/list/destroy endpoints for core API and SyncAPI (webhooks scope).

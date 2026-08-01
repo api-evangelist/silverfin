@@ -1,0 +1,101 @@
+generated: '2026-07-21'
+method: derived
+source: https://developer.silverfin.com/llms.txt
+notes: >-
+  Entity graph derived from the v4 REST API URL nesting and operation surface in
+  the developer reference (/api/v4/f/{firm_id}/companies/{company_id}/periods/
+  {period_id}/...). Relationships reflect path containment and id references.
+entities:
+  - name: Firm
+    detail: Top-level tenant; all resources are namespaced under /f/{firm_id}.
+  - name: Company
+    detail: An accounting client; belongs to a firm; may be archived, grouped, or consolidated.
+  - name: Period
+    detail: A bookkeeping period for a company.
+  - name: Account
+    detail: A ledger account within a company; has content, custom properties and per-period values.
+  - name: ReconciliationText
+    detail: A reconciliation template instance on a period.
+  - name: Report
+    detail: A report on a period, containing results.
+  - name: Adjustment
+    detail: A financial adjustment on a period.
+  - name: Budget
+    detail: A budget with entries keyed by account and end date.
+  - name: Workflow
+    detail: A firm workflow attached to companies/periods; has status.
+  - name: User
+    detail: A firm contributor or external user with company access.
+  - name: Group
+    detail: A grouping of companies and users.
+  - name: PermanentDocument
+    detail: A document in permanent storage; lives in permanent folders.
+  - name: Person
+    detail: People associated with a company.
+  - name: Remark
+    detail: A communication item on a period; has comments.
+  - name: Webhook
+    detail: A registered HTTP callback (core API or SyncAPI).
+  - name: ExportFileInstance
+    detail: Asynchronously generated export file.
+  - name: ExportPdfInstance
+    detail: Asynchronously generated export PDF.
+  - name: AccountTemplate
+    detail: Firm-level account template.
+  - name: SharedPart
+    detail: Reusable template fragment linked to templates.
+  - name: SyncCompany
+    detail: A company configured for SyncAPI bookkeeping synchronisation.
+relationships:
+  - from: Company
+    to: Firm
+    type: belongs_to
+    via: firm_id
+  - from: Firm
+    to: Company
+    type: has_many
+    via: firm_id
+  - from: Period
+    to: Company
+    type: belongs_to
+    via: company_id
+  - from: Company
+    to: Period
+    type: has_many
+    via: company_id
+  - from: Account
+    to: Company
+    type: belongs_to
+    via: company_id
+  - from: ReconciliationText
+    to: Period
+    type: belongs_to
+    via: period_id
+  - from: Report
+    to: Period
+    type: belongs_to
+    via: period_id
+  - from: Adjustment
+    to: Period
+    type: belongs_to
+    via: period_id
+  - from: Workflow
+    to: Company
+    type: belongs_to
+    via: company_id
+  - from: PermanentDocument
+    to: PermanentFolder
+    type: belongs_to
+    via: folder_id
+  - from: Remark
+    to: Period
+    type: belongs_to
+    via: period_id
+  - from: SharedPart
+    to: AccountTemplate
+    type: has_many
+    via: shared_part_id
+  - from: SyncCompany
+    to: Company
+    type: belongs_to
+    via: company_id

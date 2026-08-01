@@ -1,9 +1,29 @@
 aid: silverfin
 name: Silverfin
-description: 'Silverfin is a company surfaced as a portfolio company of index-ventures and added to the
-  API Evangelist network as a stub for enrichment. Sector: business-applications. This profile is a lead
-  awaiting the enrichment pipeline.'
+description: >-
+  Silverfin is a cloud connected-accounting platform for accountancy firms and
+  finance teams that standardises and automates the financial close. It pulls
+  ledger data from bookkeeping systems, runs working papers, reconciliations and
+  analytical review through a Liquid-based templating language, and produces
+  reports, PDF exports and compliance filings. Founded in Ghent, Belgium and now
+  part of Visma, Silverfin exposes a v4 REST API plus a dedicated SyncAPI that
+  let third-party bookkeeping software and integrators submit transactions,
+  manage companies, periods and accounts, drive workflows, generate exports, and
+  subscribe to webhooks — all over OAuth 2.0.
 url: https://raw.githubusercontent.com/api-evangelist/silverfin/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://github.com/silverfin.png
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -12,11 +32,46 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
 - Business Applications
-apis: []
+- Accounting
+- Financial Close
+- Bookkeeping
+- Reporting
+- Compliance
+- Fintech
+- SaaS
+- Belgium
+apis:
+- name: Silverfin API v4
+  description: >-
+    Silverfin's public v4 REST API and SyncAPI for accountancy automation:
+    companies, periods, accounts, reconciliations, reports, adjustments,
+    budgets, workflows, users, permanent documents, exports, and bookkeeping
+    transaction synchronisation. OAuth 2.0 with scoped access.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  properties:
+  - type: Authentication
+    url: authentication/silverfin-authentication.yml
+  - type: OAuthScopes
+    url: scopes/silverfin-scopes.yml
+  - type: Conventions
+    url: conventions/silverfin-conventions.yml
+  - type: ErrorCatalog
+    url: errors/silverfin-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/silverfin-lifecycle.yml
+  - type: Webhooks
+    url: asyncapi/silverfin-webhooks.yml
+  - type: MCPServer
+    url: mcp/silverfin-mcp.yml
+  - type: DataModel
+    url: data-model/silverfin-data-model.yml
+  - type: Conformance
+    url: conformance/silverfin-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -24,4 +79,57 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: http://silverfin.com
+  url: https://silverfin.com
+- type: DeveloperPortal
+  url: https://developer.silverfin.com
+- type: Documentation
+  url: https://developer.silverfin.com/docs/where-to-start
+- type: APIReference
+  url: https://developer.silverfin.com/reference
+- type: GettingStarted
+  url: https://developer.silverfin.com/reference/get-started-1
+- type: Authentication
+  url: authentication/silverfin-authentication.yml
+- type: OAuthScopes
+  url: scopes/silverfin-scopes.yml
+- type: Conventions
+  url: conventions/silverfin-conventions.yml
+- type: ErrorCatalog
+  url: errors/silverfin-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/silverfin-lifecycle.yml
+- type: StatusPage
+  url: https://status.silverfin.com
+- type: Deprecation
+  url: https://developer.silverfin.com/docs/changelog
+- type: ChangeLog
+  url: changelog/silverfin-changelog.yml
+- type: Webhooks
+  url: asyncapi/silverfin-webhooks.yml
+- type: MCPServer
+  url: mcp/silverfin-mcp.yml
+- type: CLI
+  url: cli/silverfin-cli.yml
+- type: Packages
+  url: packages/silverfin-packages.yml
+- type: DataModel
+  url: data-model/silverfin-data-model.yml
+- type: Conformance
+  url: conformance/silverfin-conformance.yml
+- type: LLMsTxt
+  url: llms/silverfin-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: GitHubOrganization
+  url: https://github.com/silverfin
+- type: Postman
+  url: https://developer.silverfin.com/reference/postman-library-setup
+- type: Support
+  url: https://community.silverfin.com
+- type: DomainSecurity
+  url: security/silverfin-domain-security.yml
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v1

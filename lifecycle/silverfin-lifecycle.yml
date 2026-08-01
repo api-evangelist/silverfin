@@ -1,0 +1,21 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.silverfin.com/reference/get-started-1
+versioning:
+  scheme: uri-path
+  current: v4
+  base_path: /api/v4/f/{firm_id}
+  docs: https://developer.silverfin.com/reference/get-started-1
+deprecation:
+  policy_url: https://developer.silverfin.com/docs/changelog
+  detail: >-
+    Deprecations are announced via the developer changelog. Individual
+    operations are marked deprecated in the reference with a documented
+    replacement (e.g. the single-file client-meeting external-note upload is
+    deprecated in favour of the multi-file client_meetings/attachments endpoint).
+    OAuth refresh-token lifetime policy was changed to 60 days on 2022-08-09.
+  sunset_header: unknown
+status_page: https://status.silverfin.com
+changelog: https://developer.silverfin.com/docs/changelog
+deprecated_operations:
+  - createclientmeetingexternalnote

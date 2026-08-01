@@ -1,0 +1,28 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.silverfin.com/reference/authentication
+docs: https://developer.silverfin.com/reference/authentication
+summary:
+  types: [oauth2]
+  oauth2_flows: [authorizationCode, refreshToken]
+  token_endpoint: https://live.getsilverfin.com/f/{firm_id}/oauth/token
+  authorization_endpoint: https://live.getsilverfin.com/f/{firm_id}/oauth/authorize
+  access_token_ttl: 2h
+  refresh_token_ttl: 60d
+  notes: >-
+    Silverfin uses OAuth 2.0 (Doorkeeper). Authorization Code grant issues an
+    access token (valid 2 hours) plus a single-use refresh token (valid 60 days
+    as of 2022-08-09). Each refresh token can be used only once; the previous
+    refresh token is revoked as soon as the new access token is first used.
+    Firm-scoped endpoints are namespaced under /f/{firm_id}. A separate SyncAPI
+    authentication path exists for third-party bookkeeping integrations using
+    the financials:transactions:sync scope family.
+schemes:
+  - name: OAuth2
+    type: oauth2
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://live.getsilverfin.com/f/{firm_id}/oauth/authorize
+        tokenUrl: https://live.getsilverfin.com/f/{firm_id}/oauth/token
+        grant_types: [authorization_code, refresh_token]
+    sources: [https://developer.silverfin.com/reference/authentication]

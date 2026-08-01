@@ -1,0 +1,56 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.silverfin.com/reference/get-started-1
+docs: https://developer.silverfin.com/reference/api-limits
+authentication:
+  style: oauth2
+  detail: OAuth 2.0 Authorization Code + Refresh Token; Bearer access token (2h TTL).
+  ref: authentication/silverfin-authentication.yml
+versioning:
+  scheme: uri-path
+  current: v4
+  base_path: /api/v4/f/{firm_id}
+  ref: lifecycle/silverfin-lifecycle.yml
+pagination:
+  style: page
+  detail: >-
+    List endpoints are paginated (e.g. the Syncable Companies list and other
+    collection endpoints are explicitly documented as paginated). Standard page
+    parameters are used; consult the per-endpoint reference for page/per_page.
+idempotency:
+  supported: false
+  detail: >-
+    Silverfin does not document an Idempotency-Key header. For the SyncAPI it
+    instead enforces an incremental, one-request-at-a-time-per-company model:
+    submit/reset transaction requests must be serialized per company_id, and a
+    maximum of one call may be in progress at any time per company.
+concurrency:
+  limit: 1
+  scope: per company_id
+  detail: A maximum of 1 call in progress is allowed at any given time per company.
+async_processing:
+  detail: >-
+    Export file and export PDF instances are created asynchronously. Creating an
+    instance returns an id and a state of "pending"; poll the instance detail
+    endpoint until state becomes "created" (or "error"), then fetch content or a
+    time-limited download_url.
+  ref: errors/silverfin-problem-types.yml
+batching:
+  detail: >-
+    Batch account updates via updatebatchaccountcontent. SyncAPI submit accepts
+    up to 500 actions per request.
+error_envelope:
+  format: json
+  detail: >-
+    Errors are returned as JSON with an HTTP status code (e.g. 401 unauthorized,
+    403 forbidden/insufficient scope, 404 not found, 422 unprocessable entity
+    for validation errors such as duplicate permanent-folder names).
+  ref: errors/silverfin-problem-types.yml
+rate_limiting:
+  detail: >-
+    No fixed requests-per-minute cap is published. Limits are expressed as the
+    per-company concurrency limit (1 in-progress call) and the 500-actions-per-
+    request SyncAPI cap; exceeding them results in rejected requests.
+  ref: https://developer.silverfin.com/reference/api-limits
+scopes:
+  ref: scopes/silverfin-scopes.yml

@@ -1,0 +1,24 @@
+generated: '2026-07-21'
+method: probed
+notes: >-
+  Probed the standard /.well-known/ discovery surface on the API host, the
+  developer portal host, and the corporate host. No discovery documents are
+  published (all 404, or 403 behind the corporate WAF). Recorded for audit;
+  absence is valid data.
+hosts:
+  - host: https://live.getsilverfin.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+  - host: https://developer.silverfin.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+  - host: https://www.silverfin.com
+    documents:
+      - {path: /.well-known/security.txt, status: 403}
+      - {path: /.well-known/openid-configuration, status: 403}

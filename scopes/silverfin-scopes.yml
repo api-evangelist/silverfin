@@ -1,0 +1,68 @@
+generated: '2026-07-21'
+method: searched
+source: https://developer.silverfin.com/reference/authentication
+docs: https://developer.silverfin.com/reference/oauth-application-scopes-syncapi
+schemes:
+  - name: OAuth2
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://live.getsilverfin.com/f/{firm_id}/oauth/authorize
+        tokenUrl: https://live.getsilverfin.com/f/{firm_id}/oauth/token
+scopes:
+  - scope: administration:read
+    description: View administrative data (companies, accounts, users, groups, templates).
+    flows: [authorizationCode]
+  - scope: administration:write
+    description: Modify administrative data (companies, accounts, users, groups, templates).
+    flows: [authorizationCode]
+  - scope: communication:read
+    description: View communications (remarks, comments, periods).
+    flows: [authorizationCode]
+  - scope: communication:write
+    description: Create communications (remarks, comments).
+    flows: [authorizationCode]
+  - scope: financials:read
+    description: View financial records (balances, budgets, adjustments, reconciliations, reports, exports).
+    flows: [authorizationCode]
+  - scope: financials:write
+    description: Modify financial records (adjustments, custom properties, export instances, periods).
+    flows: [authorizationCode]
+  - scope: financials:transactions:read
+    description: View open transactions (payables and receivables).
+    flows: [authorizationCode]
+  - scope: financials:transactions:write
+    description: Record bookkeeping transactions.
+    flows: [authorizationCode]
+  - scope: financials:transactions:sync
+    description: SyncAPI scope to submit/modify/delete bookkeeping transactions and manage sync settings.
+    flows: [authorizationCode]
+  - scope: links
+    description: Register, list and destroy app links (AppLinks) in Silverfin menus.
+    flows: [authorizationCode]
+  - scope: permanent_documents:read
+    description: View permanent documents and folders.
+    flows: [authorizationCode]
+  - scope: permanent_documents:write
+    description: Manage permanent documents, folders and mail.
+    flows: [authorizationCode]
+  - scope: client_meetings:external_notes:write
+    description: Upload external notes and attachments to client meetings.
+    flows: [authorizationCode]
+  - scope: user:email
+    description: Access the current user's email address.
+    flows: [authorizationCode]
+  - scope: user:firm
+    description: Access firm information for the current user.
+    flows: [authorizationCode]
+  - scope: user:profile
+    description: Access the current user's profile.
+    flows: [authorizationCode]
+  - scope: webhooks
+    description: Register, list and destroy webhooks (including SyncAPI webhooks).
+    flows: [authorizationCode]
+  - scope: workflows:read
+    description: View workflows and workflow status.
+    flows: [authorizationCode]
+  - scope: workflows:write
+    description: Add, archive and reactivate workflows.
+    flows: [authorizationCode]

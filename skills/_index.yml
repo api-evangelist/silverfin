@@ -1,0 +1,16 @@
+generated: '2026-07-21'
+method: generated
+source: https://developer.silverfin.com/llms.txt
+skills:
+  - file: silverfin-sync-bookkeeping-transactions.md
+    name: Sync bookkeeping transactions into Silverfin
+    api: Silverfin API v4 (SyncAPI)
+    operations: [getsyncsettings, getsynccompanies, setsyncreferences, setsynccompanysettings, submitsynctransactions, resetsyncbookkeepingdata]
+  - file: silverfin-generate-export-pdf.md
+    name: Generate an export PDF from a period
+    api: Silverfin API v4
+    operations: [getexportpdfslist, createexportpdfinstance, getexportpdfinstancecontent, moveexportpdfinstancetodocuments]
+  - file: silverfin-manage-company-accounts.md
+    name: Manage company accounts
+    api: Silverfin API v4
+    operations: [getcompanies, getcompanyaccounts, createnewaccount, updateaccountcontent, updatebatchaccountcontent]
