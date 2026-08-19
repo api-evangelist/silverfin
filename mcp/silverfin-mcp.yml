@@ -2,51 +2,56 @@ generated: '2026-07-21'
 method: derived
 status: candidate
 source: https://developer.silverfin.com/llms.txt
-notes: >-
-  No official hosted/remote Silverfin MCP server was found at enrichment time.
-  The tools below are a candidate set derived from documented v4 operations so a
-  server could be generated; each maps to a real operationId in the reference.
+notes: No official hosted/remote Silverfin MCP server was found at enrichment time. The tools below are
+  a candidate set derived from documented v4 operations so a server could be generated; each maps to a
+  real operationId in the reference.
 server:
   name: silverfin
   transport: http
 tools:
-  - name: list_companies
-    description: List all companies in the firm.
-    source_operation: getcompanies
-    scope: administration:read
-  - name: get_company
-    description: Get details on a specific company.
-    source_operation: getcompanydetails
-    scope: administration:read
-  - name: list_company_accounts
-    description: List all accounts for a company.
-    source_operation: getcompanyaccounts
-    scope: administration:read
-  - name: list_periods
-    description: List all periods of a company.
-    source_operation: getperiods
-    scope: financials:read
-  - name: list_reconciliations
-    description: List all reconciliations on a period.
-    source_operation: getreconciliationtexts
-    scope: financials:read
-  - name: list_reports
-    description: List all reports for a period.
-    source_operation: getreportslist
-    scope: financials:read
-  - name: create_export_pdf_instance
-    description: Create an export PDF instance (async).
-    source_operation: createexportpdfinstance
-    scope: financials:write
-  - name: get_sync_settings
-    description: Get SyncAPI overview and transaction limits.
-    source_operation: getsyncsettings
-    scope: financials:transactions:sync
-  - name: submit_sync_transactions
-    description: Submit, modify or delete bookkeeping transactions (max 500 actions).
-    source_operation: submitsynctransactions
-    scope: financials:transactions:sync
-  - name: register_webhook
-    description: Register a company webhook.
-    source_operation: createwebhook
-    scope: webhooks
+- name: list_companies
+  description: List all companies in the firm.
+  source_operation: getcompanies
+  scope: administration:read
+- name: get_company
+  description: Get details on a specific company.
+  source_operation: getcompanydetails
+  scope: administration:read
+- name: list_company_accounts
+  description: List all accounts for a company.
+  source_operation: getcompanyaccounts
+  scope: administration:read
+- name: list_periods
+  description: List all periods of a company.
+  source_operation: getperiods
+  scope: financials:read
+- name: list_reconciliations
+  description: List all reconciliations on a period.
+  source_operation: getreconciliationtexts
+  scope: financials:read
+- name: list_reports
+  description: List all reports for a period.
+  source_operation: getreportslist
+  scope: financials:read
+- name: create_export_pdf_instance
+  description: Create an export PDF instance (async).
+  source_operation: createexportpdfinstance
+  scope: financials:write
+- name: get_sync_settings
+  description: Get SyncAPI overview and transaction limits.
+  source_operation: getsyncsettings
+  scope: financials:transactions:sync
+- name: submit_sync_transactions
+  description: Submit, modify or delete bookkeeping transactions (max 500 actions).
+  source_operation: submitsynctransactions
+  scope: financials:transactions:sync
+- name: register_webhook
+  description: Register a company webhook.
+  source_operation: createwebhook
+  scope: webhooks
+deployment:
+  mode: none
+  verified: derived
+  tools: 10
+  checked: '2026-08-12'
+  source: catalog MCP census
