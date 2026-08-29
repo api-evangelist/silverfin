@@ -11,6 +11,17 @@ description: >-
   manage companies, periods and accounts, drive workflows, generate exports, and
   subscribe to webhooks — all over OAuth 2.0.
 url: https://raw.githubusercontent.com/api-evangelist/silverfin/refs/heads/main/apis.yml
+deliveryModel:
+  model: library
+  open_source: false
+  commercial: false
+  callable_host: false
+  label: Library · distributed through package registries, no callable service
+  confidence: low
+  source:
+  - none
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
