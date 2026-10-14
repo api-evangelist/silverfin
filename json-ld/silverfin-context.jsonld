@@ -1,0 +1,448 @@
+{
+  "@context": {
+    "@vocab": "https://silverfin.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "silverfin": "https://silverfin.com/schema#",
+    "InsightsError": "silverfin:InsightsError",
+    "error": {
+      "@id": "silverfin:error",
+      "@type": "xsd:string"
+    },
+    "InsightsSegmentRunBase": "silverfin:InsightsSegmentRunBase",
+    "status": {
+      "@id": "silverfin:status",
+      "@type": "xsd:string"
+    },
+    "request_ref": {
+      "@id": "silverfin:request_ref",
+      "@type": "xsd:string"
+    },
+    "started_at": {
+      "@id": "silverfin:started_at",
+      "@type": "xsd:dateTime"
+    },
+    "finished_at": {
+      "@id": "silverfin:finished_at",
+      "@type": "xsd:dateTime"
+    },
+    "InsightsPeriodSelection": "silverfin:InsightsPeriodSelection",
+    "type": {
+      "@id": "silverfin:type",
+      "@type": "xsd:string"
+    },
+    "date": {
+      "@id": "silverfin:date",
+      "@type": "xsd:date"
+    },
+    "locking_type": {
+      "@id": "silverfin:locking_type",
+      "@type": "xsd:string"
+    },
+    "InsightsSegmentColumn": "silverfin:InsightsSegmentColumn",
+    "uuid": {
+      "@id": "silverfin:uuid",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "silverfin:name",
+      "@type": "xsd:string"
+    },
+    "settings": {
+      "@id": "silverfin:settings"
+    },
+    "InsightsSegmentMatch": "silverfin:InsightsSegmentMatch",
+    "company_id": {
+      "@id": "silverfin:company_id",
+      "@type": "xsd:integer"
+    },
+    "company_name": {
+      "@id": "silverfin:company_name",
+      "@type": "xsd:string"
+    },
+    "period_id": {
+      "@id": "silverfin:period_id",
+      "@type": "xsd:integer"
+    },
+    "period_end_date": {
+      "@id": "silverfin:period_end_date",
+      "@type": "xsd:date"
+    },
+    "values": {
+      "@id": "silverfin:values"
+    },
+    "InsightsFilterValue": "silverfin:InsightsFilterValue",
+    "formatted_value": {
+      "@id": "silverfin:formatted_value"
+    },
+    "sort_value": {
+      "@id": "silverfin:sort_value"
+    },
+    "filter_error": {
+      "@id": "silverfin:filter_error",
+      "@type": "xsd:string"
+    },
+    "InsightsPagination": "silverfin:InsightsPagination",
+    "page": {
+      "@id": "silverfin:page",
+      "@type": "xsd:integer"
+    },
+    "per_page": {
+      "@id": "silverfin:per_page",
+      "@type": "xsd:integer"
+    },
+    "total_matches": {
+      "@id": "silverfin:total_matches",
+      "@type": "xsd:integer"
+    },
+    "total_pages": {
+      "@id": "silverfin:total_pages",
+      "@type": "xsd:integer"
+    },
+    "TextPart": "silverfin:TextPart",
+    "content": {
+      "@id": "silverfin:content",
+      "@type": "xsd:string"
+    },
+    "ExportFileTemplateNew": "silverfin:ExportFileTemplateNew",
+    "name_nl": {
+      "@id": "silverfin:name_nl",
+      "@type": "xsd:string"
+    },
+    "name_en": {
+      "@id": "silverfin:name_en",
+      "@type": "xsd:string"
+    },
+    "name_fr": {
+      "@id": "silverfin:name_fr",
+      "@type": "xsd:string"
+    },
+    "name_de": {
+      "@id": "silverfin:name_de",
+      "@type": "xsd:string"
+    },
+    "name_da": {
+      "@id": "silverfin:name_da",
+      "@type": "xsd:string"
+    },
+    "name_se": {
+      "@id": "silverfin:name_se",
+      "@type": "xsd:string"
+    },
+    "file_name": {
+      "@id": "silverfin:file_name",
+      "@type": "xsd:string"
+    },
+    "enconding": {
+      "@id": "silverfin:enconding",
+      "@type": "xsd:string"
+    },
+    "externally_managed": {
+      "@id": "silverfin:externally_managed",
+      "@type": "xsd:boolean"
+    },
+    "text": {
+      "@id": "silverfin:text",
+      "@type": "xsd:string"
+    },
+    "text_parts": {
+      "@id": "silverfin:text_parts",
+      "@container": "@list"
+    },
+    "ExportFileTemplate": "silverfin:ExportFileTemplate",
+    "id": {
+      "@id": "silverfin:id",
+      "@type": "xsd:integer"
+    },
+    "marketplace_template_id": {
+      "@id": "silverfin:marketplace_template_id",
+      "@type": "xsd:integer"
+    },
+    "MappingListRange": "silverfin:MappingListRange",
+    "account_mapping_list_id": {
+      "@id": "silverfin:account_mapping_list_id",
+      "@type": "xsd:integer"
+    },
+    "account_range": {
+      "@id": "silverfin:account_range",
+      "@type": "xsd:string"
+    },
+    "AccountTemplateBase": "silverfin:AccountTemplateBase",
+    "text_configuration": {
+      "@id": "silverfin:text_configuration",
+      "@type": "xsd:string"
+    },
+    "mapping_list_ranges": {
+      "@id": "silverfin:mapping_list_ranges",
+      "@container": "@list"
+    },
+    "AccountTemplateUpdateRequest": "silverfin:AccountTemplateUpdateRequest",
+    "version_comment": {
+      "@id": "silverfin:version_comment",
+      "@type": "xsd:string"
+    },
+    "AccountTemplateUpdateResponse": "silverfin:AccountTemplateUpdateResponse",
+    "AccountTemplateCreateResponse": "silverfin:AccountTemplateCreateResponse",
+    "ExportFileTemplateInfo": "silverfin:ExportFileTemplateInfo",
+    "ExportFileTemplateNewWithLocale": "silverfin:ExportFileTemplateNewWithLocale",
+    "ReconciliationTextTemplateBase": "silverfin:ReconciliationTextTemplateBase",
+    "handle": {
+      "@id": "silverfin:handle",
+      "@type": "xsd:string"
+    },
+    "auto_hide_formula": {
+      "@id": "silverfin:auto_hide_formula",
+      "@type": "xsd:string"
+    },
+    "virtual_account_number": {
+      "@id": "silverfin:virtual_account_number",
+      "@type": "xsd:string"
+    },
+    "reconciliation_type": {
+      "@id": "silverfin:reconciliation_type",
+      "@type": "xsd:string"
+    },
+    "public": {
+      "@id": "silverfin:public",
+      "@type": "xsd:boolean"
+    },
+    "allow_duplicate_reconciliations": {
+      "@id": "silverfin:allow_duplicate_reconciliations",
+      "@type": "xsd:boolean"
+    },
+    "is_active": {
+      "@id": "silverfin:is_active",
+      "@type": "xsd:boolean"
+    },
+    "use_full_width": {
+      "@id": "silverfin:use_full_width",
+      "@type": "xsd:boolean"
+    },
+    "downloadable_as_docx": {
+      "@id": "silverfin:downloadable_as_docx",
+      "@type": "xsd:boolean"
+    },
+    "tests": {
+      "@id": "silverfin:tests",
+      "@type": "xsd:string"
+    },
+    "ReconciliationTextUpdateResponse": "silverfin:ReconciliationTextUpdateResponse",
+    "ReconciliationTextUpdateRequest": "silverfin:ReconciliationTextUpdateRequest",
+    "ReconciliationTextCreateResponse": "silverfin:ReconciliationTextCreateResponse",
+    "AccountType": "silverfin:AccountType",
+    "AccountWithoutTypePayload": "silverfin:AccountWithoutTypePayload",
+    "number": {
+      "@id": "silverfin:number",
+      "@type": "xsd:string"
+    },
+    "name_es": {
+      "@id": "silverfin:name_es",
+      "@type": "xsd:string"
+    },
+    "name_fi": {
+      "@id": "silverfin:name_fi",
+      "@type": "xsd:string"
+    },
+    "name_it": {
+      "@id": "silverfin:name_it",
+      "@type": "xsd:string"
+    },
+    "name_nb": {
+      "@id": "silverfin:name_nb",
+      "@type": "xsd:string"
+    },
+    "name_pl": {
+      "@id": "silverfin:name_pl",
+      "@type": "xsd:string"
+    },
+    "name_cs": {
+      "@id": "silverfin:name_cs",
+      "@type": "xsd:string"
+    },
+    "name_ar": {
+      "@id": "silverfin:name_ar",
+      "@type": "xsd:string"
+    },
+    "name_az": {
+      "@id": "silverfin:name_az",
+      "@type": "xsd:string"
+    },
+    "name_bs": {
+      "@id": "silverfin:name_bs",
+      "@type": "xsd:string"
+    },
+    "name_bg": {
+      "@id": "silverfin:name_bg",
+      "@type": "xsd:string"
+    },
+    "name_el": {
+      "@id": "silverfin:name_el",
+      "@type": "xsd:string"
+    },
+    "name_et": {
+      "@id": "silverfin:name_et",
+      "@type": "xsd:string"
+    },
+    "name_hr": {
+      "@id": "silverfin:name_hr",
+      "@type": "xsd:string"
+    },
+    "name_hu": {
+      "@id": "silverfin:name_hu",
+      "@type": "xsd:string"
+    },
+    "name_id": {
+      "@id": "silverfin:name_id",
+      "@type": "xsd:string"
+    },
+    "name_is": {
+      "@id": "silverfin:name_is",
+      "@type": "xsd:string"
+    },
+    "name_ja": {
+      "@id": "silverfin:name_ja",
+      "@type": "xsd:string"
+    },
+    "name_ka": {
+      "@id": "silverfin:name_ka",
+      "@type": "xsd:string"
+    },
+    "name_kk": {
+      "@id": "silverfin:name_kk",
+      "@type": "xsd:string"
+    },
+    "name_km": {
+      "@id": "silverfin:name_km",
+      "@type": "xsd:string"
+    },
+    "name_ko": {
+      "@id": "silverfin:name_ko",
+      "@type": "xsd:string"
+    },
+    "name_lt": {
+      "@id": "silverfin:name_lt",
+      "@type": "xsd:string"
+    },
+    "name_lv": {
+      "@id": "silverfin:name_lv",
+      "@type": "xsd:string"
+    },
+    "name_pt": {
+      "@id": "silverfin:name_pt",
+      "@type": "xsd:string"
+    },
+    "name_ro": {
+      "@id": "silverfin:name_ro",
+      "@type": "xsd:string"
+    },
+    "name_ru": {
+      "@id": "silverfin:name_ru",
+      "@type": "xsd:string"
+    },
+    "name_sk": {
+      "@id": "silverfin:name_sk",
+      "@type": "xsd:string"
+    },
+    "name_sl": {
+      "@id": "silverfin:name_sl",
+      "@type": "xsd:string"
+    },
+    "name_sr": {
+      "@id": "silverfin:name_sr",
+      "@type": "xsd:string"
+    },
+    "name_th": {
+      "@id": "silverfin:name_th",
+      "@type": "xsd:string"
+    },
+    "name_tr": {
+      "@id": "silverfin:name_tr",
+      "@type": "xsd:string"
+    },
+    "name_uk": {
+      "@id": "silverfin:name_uk",
+      "@type": "xsd:string"
+    },
+    "name_vi": {
+      "@id": "silverfin:name_vi",
+      "@type": "xsd:string"
+    },
+    "name_zh": {
+      "@id": "silverfin:name_zh",
+      "@type": "xsd:string"
+    },
+    "name_ca": {
+      "@id": "silverfin:name_ca",
+      "@type": "xsd:string"
+    },
+    "mapped_number": {
+      "@id": "silverfin:mapped_number",
+      "@type": "xsd:string"
+    },
+    "DeleteActionPayload": "silverfin:DeleteActionPayload",
+    "OpenTransactionPayload": "silverfin:OpenTransactionPayload",
+    "value": {
+      "@id": "silverfin:value",
+      "@type": "xsd:decimal"
+    },
+    "category": {
+      "@id": "silverfin:category",
+      "@type": "xsd:string"
+    },
+    "UpsertActionPayload": "silverfin:UpsertActionPayload",
+    "account_number": {
+      "@id": "silverfin:account_number",
+      "@type": "xsd:string"
+    },
+    "transaction_id": {
+      "@id": "silverfin:transaction_id",
+      "@type": "xsd:string"
+    },
+    "journal_id": {
+      "@id": "silverfin:journal_id",
+      "@type": "xsd:string"
+    },
+    "journal_type": {
+      "@id": "silverfin:journal_type",
+      "@type": "xsd:string"
+    },
+    "booking_date": {
+      "@id": "silverfin:booking_date",
+      "@type": "xsd:date"
+    },
+    "description": {
+      "@id": "silverfin:description",
+      "@type": "xsd:string"
+    },
+    "relation": {
+      "@id": "silverfin:relation",
+      "@type": "xsd:string"
+    },
+    "document_id": {
+      "@id": "silverfin:document_id",
+      "@type": "xsd:string"
+    },
+    "analytical_dimensions": {
+      "@id": "silverfin:analytical_dimensions",
+      "@container": "@list"
+    },
+    "extra_fields": {
+      "@id": "silverfin:extra_fields",
+      "@container": "@list"
+    },
+    "open_transaction": {
+      "@id": "silverfin:open_transaction",
+      "@type": "@id"
+    },
+    "WebhookEvent": "silverfin:WebhookEvent"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Silverfin API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Silverfin's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-14) from openapi/silverfin-api-openapi.yml, openapi/silverfin-syncapi-openapi.yml.",
+  "dcterms:created": "2026-10-14",
+  "dcterms:source": [
+    "openapi/silverfin-api-openapi.yml",
+    "openapi/silverfin-syncapi-openapi.yml"
+  ]
+}

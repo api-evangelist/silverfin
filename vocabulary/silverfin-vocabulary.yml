@@ -1,0 +1,340 @@
+generated: '2026-10-14'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/silverfin-api-openapi.yml
+- openapi/silverfin-syncapi-openapi.yml
+vocabulary:
+  name: Silverfin Domain Vocabulary
+  description: 'Terms declared by Silverfin''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-14'
+  terms:
+  - term: InsightsError
+    definition: 'Object declared by the contract with fields: error.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/InsightsError
+  - term: InsightsSegmentRunBase
+    definition: 'Object declared by the contract with fields: status, request_ref, started_at, finished_at.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/InsightsSegmentRunBase
+  - term: InsightsPeriodSelection
+    definition: 'Object declared by the contract with fields: type, date, locking_type.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/InsightsPeriodSelection
+  - term: InsightsSegmentColumn
+    definition: 'Object declared by the contract with fields: uuid, type, name, settings.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/InsightsSegmentColumn
+  - term: InsightsSegmentMatch
+    definition: 'Object declared by the contract with fields: company_id, company_name, period_id, period_end_date, values.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/InsightsSegmentMatch
+  - term: InsightsFilterValue
+    definition: 'Object declared by the contract with fields: formatted_value, sort_value, filter_error.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/InsightsFilterValue
+  - term: InsightsPagination
+    definition: 'Object declared by the contract with fields: page, per_page, total_matches, total_pages.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/InsightsPagination
+  - term: TextPart
+    definition: 'Object declared by the contract with fields: name, content.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/TextPart
+  - term: ExportFileTemplateNew
+    definition: 'Object declared by the contract with fields: name, name_nl, name_en, name_fr, name_de, name_da, name_se, file_name, enconding,
+      externally_managed, text, text_parts.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/ExportFileTemplateNew
+  - term: ExportFileTemplate
+    definition: 'Object declared by the contract with fields: id, marketplace_template_id.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/ExportFileTemplate
+  - term: MappingListRange
+    definition: 'Object declared by the contract with fields: account_mapping_list_id, account_range.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/MappingListRange
+  - term: AccountTemplateBase
+    definition: 'Object declared by the contract with fields: name_nl, name_en, name_fr, account_range, text_configuration, text, text_parts,
+      externally_managed, mapping_list_ranges.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/AccountTemplateBase
+  - term: AccountTemplateUpdateRequest
+    definition: 'Object declared by the contract with fields: id, version_comment.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/AccountTemplateUpdateRequest
+  - term: AccountTemplateUpdateResponse
+    definition: 'Object declared by the contract with fields: id.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/AccountTemplateUpdateResponse
+  - term: AccountTemplateCreateResponse
+    definition: 'Object declared by the contract with fields: id.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/AccountTemplateCreateResponse
+  - term: ExportFileTemplateInfo
+    definition: 'Object declared by the contract with fields: id, marketplace_template_id, name, name_nl, name_en, name_fr, name_de, name_da,
+      name_se.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/ExportFileTemplateInfo
+  - term: ExportFileTemplateNewWithLocale
+    definition: 'Object declared by the contract with fields: name, name_nl, name_en, name_fr, name_de, name_da, name_se, file_name, enconding,
+      externally_managed, text, text_parts.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/ExportFileTemplateNewWithLocale
+  - term: ReconciliationTextTemplateBase
+    definition: 'Object declared by the contract with fields: name, name_en, name_fr, name_nl, handle, text, text_parts, auto_hide_formula, text_configuration,
+      virtual_account_number, reconciliation_type, public. (6 more)'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/ReconciliationTextTemplateBase
+  - term: ReconciliationTextUpdateResponse
+    definition: 'Object declared by the contract with fields: id, marketplace_template_id.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/ReconciliationTextUpdateResponse
+  - term: ReconciliationTextUpdateRequest
+    definition: 'Object declared by the contract with fields: version_comment.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/ReconciliationTextUpdateRequest
+  - term: ReconciliationTextCreateResponse
+    definition: 'Object declared by the contract with fields: id, marketplace_template_id.'
+    tags:
+    - Object
+    source: openapi/silverfin-api-openapi.yml#/components/schemas/ReconciliationTextCreateResponse
+  - term: SyncStartAt
+    definition: The date at which the company is configured to start on Silverfin.
+    tags:
+    - Object
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/SyncStartAt
+  - term: SyncPoint
+    definition: A unique string representing a sync point used to track sync states.
+    tags:
+    - Object
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/SyncPoint
+  - term: SyncReference
+    definition: The sync reference used by the company. This is the uniq identifier in the third party sync supplied throught the `POST /sync_references`
+      endpoint.
+    tags:
+    - Object
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/SyncReference
+  - term: AccountType
+    definition: The classification of an account type.
+    tags:
+    - Enumeration
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/AccountType
+  - term: AccountWithoutTypePayload
+    definition: 'Object declared by the contract with fields: number, name, name_nl, name_fr, name_en, name_de, name_da, name_es, name_fi, name_it,
+      name_nb, name_pl. (32 more)'
+    tags:
+    - Object
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/AccountWithoutTypePayload
+  - term: ActionPayload
+    definition: Represents an action that can either be an "upsert" or "delete."
+    tags:
+    - Object
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/ActionPayload
+  - term: DeleteActionPayload
+    definition: Payload for deleting an existing transaction by ID.
+    tags:
+    - Object
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/DeleteActionPayload
+  - term: ExtraFieldLabelsPayload
+    definition: Array of labels for extra fields, with a maximum of 10 items.
+    tags:
+    - Object
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/ExtraFieldLabelsPayload
+  - term: OpenTransactionPayload
+    definition: 'Object declared by the contract with fields: value, category.'
+    tags:
+    - Object
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/OpenTransactionPayload
+  - term: TransactionId
+    definition: The unique ID referencing a single transaction (or booking).
+    tags:
+    - Object
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/TransactionId
+  - term: UpsertActionPayload
+    definition: Payload for an "upsert" action, meaning update the record if it exists, or insert it if it does not.
+    tags:
+    - Object
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/UpsertActionPayload
+  - term: WebhookEvent
+    definition: The webhook event name.
+    tags:
+    - Enumeration
+    source: openapi/silverfin-syncapi-openapi.yml#/components/schemas/WebhookEvent
+  - term: Account Mapping Lists
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/account_mapping_lists: List all account mapping lists.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Templates
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/account_templates: List all account templates in this firm.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Accountancy Synchronisation Entities
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/accountancy_synchronisation_entities: List all accountancy
+      synchronisation entities.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: App
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/app/links: List all links for the current app & user.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Companies
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/companies: List all companies.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Accounts
+    definition: 'Resource group in the contract; its operation POST /api/v4/f/{firm_id}/companies/{company_id}/accounts: It is possible that not
+      all of the custom_name_locale/original_name_locale fields that this endpoint will accept will end up being used.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Workflows
+    definition: 'Resource group in the contract; its operation POST /api/v4/f/{firm_id}/companies/{company_id}/add_workflow: Add a FirmWorkflow
+      into the company.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Financials
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/companies/{company_id}/analytical_dimensions: List all
+      analytical dimensions.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Budgets
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/companies/{company_id}/budgets: List all budgets.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Client Meetings
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/companies/{company_id}/client_meetings: List the completed
+      client meetings for the specified company, ordered by most recently completed first.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Talking Points
+    definition: 'Resource group in the contract; its operation POST /api/v4/f/{firm_id}/companies/{company_id}/client_meetings/attachments: Upload
+      an attachment to the current client meeting for the specified company.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Periods
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/companies/{company_id}/periods: List all periods of a company.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Exports
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_file_instances:
+      List all export file instances.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Live Export Documents
+    definition: 'Resource group in the contract; its operation POST /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_pdf_instances/{export_pdf_instance_id}/content_blocks/{block_id}:
+      Upload document for live document in export pdf instance.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Remarks
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/remarks: List
+      all remarks in a specific period.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Permanent
+    definition: 'Resource group in the contract; its operation POST /api/v4/f/{firm_id}/companies/{company_id}/permanent_documents: Required scope(s):
+      `permanent_documents:write`'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Personal Income Tax
+    definition: 'Resource group in the contract; its operation POST /api/v4/f/{firm_id}/companies/{company_id}/personal_income_tax/{year}/document:
+      Attach a PDF document to the PIT workflow for the specified year.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Webhooks
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/companies/{company_id}/webhooks: List all company webhooks.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Company Templates
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/company_templates: List all client templates.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Groups
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/groups: List all groups.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Insights
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/segments/{id}/results: Returns the results of the authenticated
+      user''s latest run of the segment for the companies that user can access in Silverfin.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: User
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/user: Returns current user information.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Users
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/users: List all active users.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Authentication
+    definition: 'Resource group in the contract; its operation POST /f/{firm_id}/oauth/token: Perform a POST request to /oauth/token with parameters
+      client_id, client_secret, code, redirect_uri and grant_type=authorization_code.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-api-openapi.yml
+  - term: Sync Firm-Related
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/syncs/companies: This provide the list of silverfin companies
+      currently configured to rely on this API sync.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-syncapi-openapi.yml
+  - term: Sync Company-Specific
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/syncs/companies/{company_id}/info: Retrieves the current
+      synchronization state for a specific company.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-syncapi-openapi.yml
+  - term: Sync Webhooks
+    definition: 'Resource group in the contract; its operation GET /api/v4/f/{firm_id}/syncs/webhooks: List all sync webhooks.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-syncapi-openapi.yml
+  - term: Sync Authentication
+    definition: 'Resource group in the contract; its operation POST /f/{firm_id}/oauth/token: Perform a POST request to /oauth/token with parameters
+      client_id, client_secret, code, redirect_uri and grant_type=authorization_code.'
+    tags:
+    - Resource Group
+    source: openapi/silverfin-syncapi-openapi.yml

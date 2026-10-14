@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silverfin/main/json-schema/silverfin-retained-earnings-account-payload-schema.json",
+  "title": "RetainedEarningsAccountPayload",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/silverfin-syncapi-openapi.yml#/components/schemas/RetainedEarningsAccountPayload",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/AccountWithTypePayload"
+    },
+    {
+      "type": "object",
+      "description": "The retained earnings account is only required if retained earnings are being computed\nfor at least one of the specified years; otherwise, it is optional.\n"
+    }
+  ],
+  "$defs": {
+    "AccountType": {
+      "type": "string",
+      "enum": [
+        "asset",
+        "liability",
+        "income",
+        "expense",
+        "equity"
+      ],
+      "description": "The classification of an account type."
+    },
+    "AccountWithTypePayload": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/AccountWithoutTypePayload"
+        },
+        {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/AccountType"
+            }
+          },
+          "description": "Extends 'AccountWithoutTypePayload' to include account type information."
+        }
+      ]
+    },
+    "AccountWithoutTypePayload": {
+      "type": "object",
+      "required": [
+        "number",
+        "name"
+      ],
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "The account number."
+        },
+        "name": {
+          "type": "string",
+          "description": "The account name."
+        },
+        "name_nl": {
+          "type": "string",
+          "description": "Account name (for NL localisation)"
+        },
+        "name_fr": {
+          "type": "string",
+          "description": "Account name (for FR localisation)"
+        },
+        "name_en": {
+          "type": "string",
+          "description": "Account name (for EN localisation)"
+        },
+        "name_de": {
+          "type": "string",
+          "description": "Account name (for DE localisation)"
+        },
+        "name_da": {
+          "type": "string",
+          "description": "Account name (for DA localisation)"
+        },
+        "name_es": {
+          "type": "string",
+          "description": "Account name (for ES localisation)"
+        },
+        "name_fi": {
+          "type": "string",
+          "description": "Account name (for FI localisation)"
+        },
+        "name_it": {
+          "type": "string",
+          "description": "Account name (for IT localisation)"
+        },
+        "name_nb": {
+          "type": "string",
+          "description": "Account name (for NB localisation)"
+        },
+        "name_pl": {
+          "type": "string",
+          "description": "Account name (for PL localisation)"
+        },
+        "name_se": {
+          "type": "string",
+          "description": "Account name (for SE localisation)"
+        },
+        "name_cs": {
+          "type": "string",
+          "description": "Account name (for CS localisation)"
+        },
+        "name_ar": {
+          "type": "string",
+          "description": "Account name (for AR localisation)"
+        },
+        "name_az": {
+          "type": "string",
+          "description": "Account name (for AZ localisation)"
+        },
+        "name_bs": {
+          "type": "string",
+          "description": "Account name (for BS localisation)"
+        },
+        "name_bg": {
+          "type": "string",
+          "description": "Account name (for BG localisation)"
+        },
+        "name_el": {
+          "type": "string",
+          "description": "Account name (for EL localisation)"
+        },
+        "name_et": {
+          "type": "string",
+          "description": "Account name (for ET localisation)"
+        },
+        "name_hr": {
+          "type": "string",
+          "description": "Account name (for HR localisation)"
+        },
+        "name_hu": {
+          "type": "string",
+          "description": "Account name (for HU localisation)"
+        },
+        "name_id": {
+          "type": "string",
+          "description": "Account name (for ID localisation)"
+        },
+        "name_is": {
+          "type": "string",
+          "description": "Account name (for IS localisation)"
+        },
+        "name_ja": {
+          "type": "string",
+          "description": "Account name (for JA localisation)"
+        },
+        "name_ka": {
+          "type": "string",
+          "description": "Account name (for KA localisation)"
+        },
+        "name_kk": {
+          "type": "string",
+          "description": "Account name (for KK localisation)"
+        },
+        "name_km": {
+          "type": "string",
+          "description": "Account name (for KM localisation)"
+        },
+        "name_ko": {
+          "type": "string",
+          "description": "Account name (for KO localisation)"
+        },
+        "name_lt": {
+          "type": "string",
+          "description": "Account name (for LT localisation)"
+        },
+        "name_lv": {
+          "type": "string",
+          "description": "Account name (for LV localisation)"
+        },
+        "name_pt": {
+          "type": "string",
+          "description": "Account name (for PT localisation)"
+        },
+        "name_ro": {
+          "type": "string",
+          "description": "Account name (for RO localisation)"
+        },
+        "name_ru": {
+          "type": "string",
+          "description": "Account name (for RU localisation)"
+        },
+        "name_sk": {
+          "type": "string",
+          "description": "Account name (for SK localisation)"
+        },
+        "name_sl": {
+          "type": "string",
+          "description": "Account name (for SL localisation)"
+        },
+        "name_sr": {
+          "type": "string",
+          "description": "Account name (for SR localisation)"
+        },
+        "name_th": {
+          "type": "string",
+          "description": "Account name (for TH localisation)"
+        },
+        "name_tr": {
+          "type": "string",
+          "description": "Account name (for TR localisation)"
+        },
+        "name_uk": {
+          "type": "string",
+          "description": "Account name (for UK localisation)"
+        },
+        "name_vi": {
+          "type": "string",
+          "description": "Account name (for VI localisation)"
+        },
+        "name_zh": {
+          "type": "string",
+          "description": "Account name (for ZH localisation)"
+        },
+        "name_ca": {
+          "type": "string",
+          "description": "Account name (for CA localisation)"
+        },
+        "mapped_number": {
+          "type": "string",
+          "description": "The mapped account number for reference."
+        }
+      }
+    }
+  }
+}

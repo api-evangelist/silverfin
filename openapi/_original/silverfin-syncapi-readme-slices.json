@@ -1,0 +1,2297 @@
+[
+ {
+  "page": "https://developer.silverfin.com/reference/post_f-firm-id-oauth-token-1.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Authentication"
+    }
+   ],
+   "paths": {
+    "/f/{firm_id}/oauth/token": {
+     "post": {
+      "tags": [
+       "Sync Authentication"
+      ],
+      "summary": "Access Token & Refresh Token",
+      "description": "Perform a POST request to /oauth/token with parameters client_id, client_secret, code, redirect_uri and grant_type=authorization_code. After following these steps, you will have an access token and a refresh token. The access token is valid for 2 hours, while the refresh token currently remains valid for 60 days.<br> <br> With the refresh token, you can request a new access token / refresh token pair: Perform a POST request to /oauth/token with parameters: client_id, client_secret, refresh_token, redirect_uri and grant_type=refresh_token. Each refresh token can be used only once. As soon as the new access token is used to access the API for the first time, the previous refresh token will be revoked.\n",
+      "parameters": [
+       {
+        "name": "client_id",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        },
+        "example": "{{client_id}}",
+        "description": "required for both access token and refresh request",
+        "required": true
+       },
+       {
+        "name": "client_secret",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        },
+        "example": "{{secret}}",
+        "description": "required for both access token and refresh request",
+        "required": true
+       },
+       {
+        "name": "grant_type",
+        "in": "query",
+        "schema": {
+         "type": "string",
+         "enum": [
+          "authorization_code",
+          "refresh_token"
+         ]
+        },
+        "description": "set 'authorization_code' for initial request or 'refresh_token' for refresh request\n",
+        "required": true
+       },
+       {
+        "name": "code",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        },
+        "description": "provide authorization_code for initial access token request"
+       },
+       {
+        "name": "redirect_uri",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        },
+        "example": "{{callback_url}}",
+        "description": "required for both access token and refresh request",
+        "required": true
+       },
+       {
+        "name": "refresh_token",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        },
+        "example": "{{refresh_token}}",
+        "description": "provide refresh_token for refresh request"
+       },
+       {
+        "name": "firm_id",
+        "in": "path",
+        "schema": {
+         "type": "string"
+        },
+        "required": true,
+        "example": "{{firm_id}}"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Successful response",
+        "content": {
+         "application/json": {}
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/authorizeuser-1.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Authentication"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    }
+   },
+   "paths": {
+    "/oauth/authorize": {
+     "get": {
+      "tags": [
+       "Sync Authentication"
+      ],
+      "summary": "Authorize",
+      "description": "Generates an OAuth authorization URL that redirects users to authenticate\nand authorize your application. Use this URL to initiate the OAuth flow\nby redirecting users to the authorization page. The URL must be opened\nin a new tab or window.\n",
+      "security": [
+       {
+        "OAuth2": [
+         "user:profile"
+        ]
+       }
+      ],
+      "operationId": "authorizeUser",
+      "parameters": [
+       {
+        "name": "client_id",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        },
+        "example": "{{client_id}}"
+       },
+       {
+        "name": "redirect_uri",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        },
+        "example": "{{callback_url}}"
+       },
+       {
+        "name": "response_type",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        },
+        "example": "code"
+       },
+       {
+        "name": "scope",
+        "in": "query",
+        "schema": {
+         "type": "string"
+        },
+        "example": "user:profile user:email webhooks administration:read administration:write permanent_documents:read permanent_documents:write communication:read communication:write financials:read financials:write financials:transactions:read financials:transactions:write links workflows:read"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Successful response",
+        "content": {
+         "application/json": {}
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/setsyncreferences.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Firm-Related"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    },
+    "parameters": {
+     "FirmId": {
+      "name": "firm_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the firm."
+     }
+    }
+   },
+   "paths": {
+    "/api/v4/f/{firm_id}/syncs/sync_references": {
+     "post": {
+      "summary": "Update Sync References",
+      "description": "Updates the sync references for the current application. This allows users to configure a company for synchronization with a third-party service by selecting the appropriate references.\n<b>Required scope(s):</b> `financials:transactions:sync`\n",
+      "security": [
+       {
+        "OAuth2": [
+         "financials:transactions:sync"
+        ]
+       }
+      ],
+      "operationId": "setSyncReferences",
+      "tags": [
+       "Sync Firm-Related"
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/FirmId"
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "required": [
+           "company_references"
+          ],
+          "properties": {
+           "company_references": {
+            "type": "array",
+            "items": {
+             "type": "object",
+             "required": [
+              "id",
+              "name"
+             ],
+             "properties": {
+              "id": {
+               "type": "string",
+               "example": "company-123",
+               "description": "The unique ID of the company."
+              },
+              "name": {
+               "type": "string",
+               "example": "Company Name",
+               "description": "The name of the company."
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "201": {
+        "description": "Sync references updated successfully.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object"
+          }
+         }
+        }
+       },
+       "422": {
+        "description": "The request payload is invalid.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "errors"
+           ],
+           "properties": {
+            "errors": {
+             "type": "object"
+            }
+           },
+           "example": {
+            "errors": {
+             "company_references": {
+              "0": {
+               "id": [
+                "must be a string"
+               ],
+               "name": [
+                "must be a string"
+               ]
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/getsyncsettings.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Firm-Related"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    },
+    "parameters": {
+     "FirmId": {
+      "name": "firm_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the firm."
+     }
+    }
+   },
+   "paths": {
+    "/api/v4/f/{firm_id}/syncs/settings": {
+     "get": {
+      "summary": "Get Overview and Transaction Limits",
+      "description": "Returns various settings related to the Silverfin platform, such as the maximum number of supported analytical dimensions per transaction, supported locales for account names and the maximum amount of actions that can be submitted per request.\n<b>Required scope(s):</b> `financials:transactions:sync`\n",
+      "security": [
+       {
+        "OAuth2": [
+         "financials:transactions:sync"
+        ]
+       }
+      ],
+      "operationId": "getSyncSettings",
+      "tags": [
+       "Sync Firm-Related"
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/FirmId"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Successfully retrieved platform settings.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "analytical_dimensions",
+            "extra_fields",
+            "locales"
+           ],
+           "properties": {
+            "analytical_dimensions": {
+             "type": "number",
+             "description": "The maximum number of analytical dimensions allowed per transaction."
+            },
+            "extra_fields": {
+             "type": "number",
+             "description": "The maximum number of extra fields allowed per transaction."
+            },
+            "locales": {
+             "type": "array",
+             "description": "List of supported locales for account names.",
+             "items": {
+              "type": "string"
+             },
+             "example": [
+              "nl",
+              "fr",
+              "en",
+              "de"
+             ]
+            },
+            "actions_per_request": {
+             "type": "number",
+             "description": "The maximum number of actions that can be pushed in a single request."
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/getsynccompanies.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Firm-Related"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    },
+    "parameters": {
+     "FirmId": {
+      "name": "firm_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the firm."
+     }
+    },
+    "schemas": {
+     "SyncStartAt": {
+      "type": "string",
+      "format": "date",
+      "description": "The date at which the company is configured to start on Silverfin."
+     },
+     "SyncPoint": {
+      "type": "string",
+      "example": "f9a7c6df341325822e3ea264cfe39e5ef8c73aa4",
+      "description": "A unique string representing a sync point used to track sync states."
+     },
+     "SyncReference": {
+      "type": "string",
+      "example": "company-123",
+      "description": "The sync reference used by the company. This is the uniq identifier in the third party sync supplied throught the `POST /sync_references` endpoint."
+     }
+    }
+   },
+   "paths": {
+    "/api/v4/f/{firm_id}/syncs/companies": {
+     "get": {
+      "summary": "Get Syncable Companies List",
+      "description": "This provide the list of silverfin companies currently configured to rely on this API sync. This list is paginated.\n<b>Required scope(s):</b> `financials:transactions:sync`\n",
+      "security": [
+       {
+        "OAuth2": [
+         "financials:transactions:sync"
+        ]
+       }
+      ],
+      "operationId": "getSyncCompanies",
+      "tags": [
+       "Sync Firm-Related"
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/FirmId"
+       },
+       {
+        "name": "per_page",
+        "in": "query",
+        "description": "The number of companies returned per page during the pagination",
+        "schema": {
+         "type": "integer",
+         "default": 50
+        }
+       },
+       {
+        "name": "page",
+        "in": "query",
+        "description": "The page number used for paginating companies",
+        "schema": {
+         "type": "integer",
+         "default": 1
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "The list of companies configured with this Sync.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "required": [
+             "id",
+             "name",
+             "sync_reference",
+             "sync_point",
+             "sync_start_at"
+            ],
+            "properties": {
+             "id": {
+              "type": "integer",
+              "description": "The uniq identifier of the company in Silverfin, this is later interpolated in the URL."
+             },
+             "name": {
+              "type": "string",
+              "description": "The name of the company as it can be seen in Silverfin."
+             },
+             "sync_reference": {
+              "$ref": "#/components/schemas/SyncReference"
+             },
+             "sync_point": {
+              "$ref": "#/components/schemas/SyncPoint"
+             },
+             "sync_start_at": {
+              "$ref": "#/components/schemas/SyncStartAt"
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/getsynccompanyinfo.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Company-Specific"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    },
+    "parameters": {
+     "FirmId": {
+      "name": "firm_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the firm."
+     },
+     "CompanyId": {
+      "name": "company_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the company."
+     }
+    },
+    "schemas": {
+     "SyncStartAt": {
+      "type": "string",
+      "format": "date",
+      "description": "The date at which the company is configured to start on Silverfin."
+     },
+     "SyncPoint": {
+      "type": "string",
+      "example": "f9a7c6df341325822e3ea264cfe39e5ef8c73aa4",
+      "description": "A unique string representing a sync point used to track sync states."
+     },
+     "SyncReference": {
+      "type": "string",
+      "example": "company-123",
+      "description": "The sync reference used by the company. This is the uniq identifier in the third party sync supplied throught the `POST /sync_references` endpoint."
+     }
+    }
+   },
+   "paths": {
+    "/api/v4/f/{firm_id}/syncs/companies/{company_id}/info": {
+     "get": {
+      "summary": "Get Sync Information",
+      "description": "Retrieves the current synchronization state for a specific company.\n<b>Required scope(s):</b> `financials:transactions:sync`\n",
+      "security": [
+       {
+        "OAuth2": [
+         "financials:transactions:sync"
+        ]
+       }
+      ],
+      "operationId": "getSyncCompanyInfo",
+      "tags": [
+       "Sync Company-Specific"
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/FirmId"
+       },
+       {
+        "$ref": "#/components/parameters/CompanyId"
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Successfully retrieved sync information.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "sync_point",
+            "sync_start_at",
+            "sync_reference"
+           ],
+           "properties": {
+            "sync_point": {
+             "$ref": "#/components/schemas/SyncPoint"
+            },
+            "sync_start_at": {
+             "$ref": "#/components/schemas/SyncStartAt"
+            },
+            "sync_reference": {
+             "$ref": "#/components/schemas/SyncReference"
+            }
+           }
+          }
+         }
+        }
+       },
+       "409": {
+        "description": "Conflict occurred, preventing the request from being processed (e.g., invalid sync point, misconfigured company). The error message will provide more details.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "error"
+           ],
+           "properties": {
+            "error": {
+             "type": "string"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/setsynccompanysettings.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Company-Specific"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    },
+    "parameters": {
+     "FirmId": {
+      "name": "firm_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the firm."
+     },
+     "CompanyId": {
+      "name": "company_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the company."
+     }
+    },
+    "schemas": {
+     "AccountType": {
+      "type": "string",
+      "enum": [
+       "asset",
+       "liability",
+       "income",
+       "expense",
+       "equity"
+      ],
+      "description": "The classification of an account type."
+     },
+     "AccountWithoutTypePayload": {
+      "type": "object",
+      "required": [
+       "number",
+       "name"
+      ],
+      "properties": {
+       "number": {
+        "type": "string",
+        "description": "The account number.",
+        "example": "1234567890"
+       },
+       "name": {
+        "type": "string",
+        "description": "The account name.",
+        "example": "John Doe"
+       },
+       "name_nl": {
+        "type": "string",
+        "description": "Account name (for NL localisation)"
+       },
+       "name_fr": {
+        "type": "string",
+        "description": "Account name (for FR localisation)"
+       },
+       "name_en": {
+        "type": "string",
+        "description": "Account name (for EN localisation)"
+       },
+       "name_de": {
+        "type": "string",
+        "description": "Account name (for DE localisation)"
+       },
+       "name_da": {
+        "type": "string",
+        "description": "Account name (for DA localisation)"
+       },
+       "name_es": {
+        "type": "string",
+        "description": "Account name (for ES localisation)"
+       },
+       "name_fi": {
+        "type": "string",
+        "description": "Account name (for FI localisation)"
+       },
+       "name_it": {
+        "type": "string",
+        "description": "Account name (for IT localisation)"
+       },
+       "name_nb": {
+        "type": "string",
+        "description": "Account name (for NB localisation)"
+       },
+       "name_pl": {
+        "type": "string",
+        "description": "Account name (for PL localisation)"
+       },
+       "name_se": {
+        "type": "string",
+        "description": "Account name (for SE localisation)"
+       },
+       "name_cs": {
+        "type": "string",
+        "description": "Account name (for CS localisation)"
+       },
+       "name_ar": {
+        "type": "string",
+        "description": "Account name (for AR localisation)"
+       },
+       "name_az": {
+        "type": "string",
+        "description": "Account name (for AZ localisation)"
+       },
+       "name_bs": {
+        "type": "string",
+        "description": "Account name (for BS localisation)"
+       },
+       "name_bg": {
+        "type": "string",
+        "description": "Account name (for BG localisation)"
+       },
+       "name_el": {
+        "type": "string",
+        "description": "Account name (for EL localisation)"
+       },
+       "name_et": {
+        "type": "string",
+        "description": "Account name (for ET localisation)"
+       },
+       "name_hr": {
+        "type": "string",
+        "description": "Account name (for HR localisation)"
+       },
+       "name_hu": {
+        "type": "string",
+        "description": "Account name (for HU localisation)"
+       },
+       "name_id": {
+        "type": "string",
+        "description": "Account name (for ID localisation)"
+       },
+       "name_is": {
+        "type": "string",
+        "description": "Account name (for IS localisation)"
+       },
+       "name_ja": {
+        "type": "string",
+        "description": "Account name (for JA localisation)"
+       },
+       "name_ka": {
+        "type": "string",
+        "description": "Account name (for KA localisation)"
+       },
+       "name_kk": {
+        "type": "string",
+        "description": "Account name (for KK localisation)"
+       },
+       "name_km": {
+        "type": "string",
+        "description": "Account name (for KM localisation)"
+       },
+       "name_ko": {
+        "type": "string",
+        "description": "Account name (for KO localisation)"
+       },
+       "name_lt": {
+        "type": "string",
+        "description": "Account name (for LT localisation)"
+       },
+       "name_lv": {
+        "type": "string",
+        "description": "Account name (for LV localisation)"
+       },
+       "name_pt": {
+        "type": "string",
+        "description": "Account name (for PT localisation)"
+       },
+       "name_ro": {
+        "type": "string",
+        "description": "Account name (for RO localisation)"
+       },
+       "name_ru": {
+        "type": "string",
+        "description": "Account name (for RU localisation)"
+       },
+       "name_sk": {
+        "type": "string",
+        "description": "Account name (for SK localisation)"
+       },
+       "name_sl": {
+        "type": "string",
+        "description": "Account name (for SL localisation)"
+       },
+       "name_sr": {
+        "type": "string",
+        "description": "Account name (for SR localisation)"
+       },
+       "name_th": {
+        "type": "string",
+        "description": "Account name (for TH localisation)"
+       },
+       "name_tr": {
+        "type": "string",
+        "description": "Account name (for TR localisation)"
+       },
+       "name_uk": {
+        "type": "string",
+        "description": "Account name (for UK localisation)"
+       },
+       "name_vi": {
+        "type": "string",
+        "description": "Account name (for VI localisation)"
+       },
+       "name_zh": {
+        "type": "string",
+        "description": "Account name (for ZH localisation)"
+       },
+       "name_ca": {
+        "type": "string",
+        "description": "Account name (for CA localisation)"
+       },
+       "mapped_number": {
+        "type": "string",
+        "description": "The mapped account number for reference."
+       }
+      }
+     },
+     "AccountWithTypePayload": {
+      "type": "object",
+      "allOf": [
+       {
+        "$ref": "#/components/schemas/AccountWithoutTypePayload"
+       },
+       {
+        "type": "object",
+        "required": [
+         "type"
+        ],
+        "properties": {
+         "type": {
+          "$ref": "#/components/schemas/AccountType"
+         }
+        },
+        "description": "Extends 'AccountWithoutTypePayload' to include account type information."
+       }
+      ]
+     },
+     "RetainedEarningsAccountPayload": {
+      "type": "object",
+      "allOf": [
+       {
+        "$ref": "#/components/schemas/AccountWithTypePayload"
+       },
+       {
+        "type": "object",
+        "description": "The retained earnings account is only required if retained earnings are being computed\nfor at least one of the specified years; otherwise, it is optional.\n"
+       }
+      ]
+     }
+    }
+   },
+   "paths": {
+    "/api/v4/f/{firm_id}/syncs/companies/{company_id}/settings": {
+     "post": {
+      "summary": "Update Sync Settings for a Company",
+      "description": "Allows you to modify sync settings for a company, such as financial years, computations to be performed by Silverfin, and the retained earnings account.\n\nEach \"year\" can be configured to make Silverfin compute opening balances and retained earnings\nautomatically for you. You can read more about it on [Opening Balances and Retained Earnings](/reference/opening-balances-and-retained-earnings) page.\n\n<b>Required scope(s):</b> `financials:transactions:sync`\n",
+      "security": [
+       {
+        "OAuth2": [
+         "financials:transactions:sync"
+        ]
+       }
+      ],
+      "operationId": "setSyncCompanySettings",
+      "tags": [
+       "Sync Company-Specific"
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/FirmId"
+       },
+       {
+        "$ref": "#/components/parameters/CompanyId"
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "required": [
+           "years"
+          ],
+          "properties": {
+           "years": {
+            "type": "array",
+            "items": {
+             "type": "object",
+             "required": [
+              "start_date",
+              "end_date",
+              "compute_opening_balances",
+              "compute_retained_earnings"
+             ],
+             "properties": {
+              "start_date": {
+               "type": "string",
+               "format": "date"
+              },
+              "end_date": {
+               "type": "string",
+               "format": "date"
+              },
+              "compute_opening_balances": {
+               "type": "boolean",
+               "description": "Recommended passing \"true\" to avoid potential data consistency issues.\nMore information [Opening Balances and Retained Earnings](/reference/opening-balances-and-retained-earnings) page.\n"
+              },
+              "compute_retained_earnings": {
+               "type": "boolean",
+               "description": "Recommended passing \"true\" to avoid potential data consistency issues.\nMore information [Opening Balances and Retained Earnings](/reference/opening-balances-and-retained-earnings) page.\n"
+              }
+             }
+            }
+           },
+           "retained_earnings_account": {
+            "$ref": "#/components/schemas/RetainedEarningsAccountPayload"
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "201": {
+        "description": "Sync settings updated successfully.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object"
+          }
+         }
+        }
+       },
+       "409": {
+        "description": "Conflict occurred, preventing the request from being processed (e.g., invalid sync point, misconfigured company). The error message will provide more details.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "error"
+           ],
+           "properties": {
+            "error": {
+             "type": "string"
+            }
+           }
+          }
+         }
+        }
+       },
+       "422": {
+        "description": "The request payload is invalid.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "errors"
+           ],
+           "properties": {
+            "errors": {
+             "type": "object"
+            }
+           },
+           "example": {
+            "errors": {
+             "retained_earnings_account": {
+              "name": [
+               "must be filled"
+              ],
+              "number": [
+               "must be a string"
+              ]
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/submitsynctransactions.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Company-Specific"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    },
+    "parameters": {
+     "FirmId": {
+      "name": "firm_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the firm."
+     },
+     "CompanyId": {
+      "name": "company_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the company."
+     }
+    },
+    "schemas": {
+     "AccountType": {
+      "type": "string",
+      "enum": [
+       "asset",
+       "liability",
+       "income",
+       "expense",
+       "equity"
+      ],
+      "description": "The classification of an account type."
+     },
+     "AccountWithoutTypePayload": {
+      "type": "object",
+      "required": [
+       "number",
+       "name"
+      ],
+      "properties": {
+       "number": {
+        "type": "string",
+        "description": "The account number.",
+        "example": "1234567890"
+       },
+       "name": {
+        "type": "string",
+        "description": "The account name.",
+        "example": "John Doe"
+       },
+       "name_nl": {
+        "type": "string",
+        "description": "Account name (for NL localisation)"
+       },
+       "name_fr": {
+        "type": "string",
+        "description": "Account name (for FR localisation)"
+       },
+       "name_en": {
+        "type": "string",
+        "description": "Account name (for EN localisation)"
+       },
+       "name_de": {
+        "type": "string",
+        "description": "Account name (for DE localisation)"
+       },
+       "name_da": {
+        "type": "string",
+        "description": "Account name (for DA localisation)"
+       },
+       "name_es": {
+        "type": "string",
+        "description": "Account name (for ES localisation)"
+       },
+       "name_fi": {
+        "type": "string",
+        "description": "Account name (for FI localisation)"
+       },
+       "name_it": {
+        "type": "string",
+        "description": "Account name (for IT localisation)"
+       },
+       "name_nb": {
+        "type": "string",
+        "description": "Account name (for NB localisation)"
+       },
+       "name_pl": {
+        "type": "string",
+        "description": "Account name (for PL localisation)"
+       },
+       "name_se": {
+        "type": "string",
+        "description": "Account name (for SE localisation)"
+       },
+       "name_cs": {
+        "type": "string",
+        "description": "Account name (for CS localisation)"
+       },
+       "name_ar": {
+        "type": "string",
+        "description": "Account name (for AR localisation)"
+       },
+       "name_az": {
+        "type": "string",
+        "description": "Account name (for AZ localisation)"
+       },
+       "name_bs": {
+        "type": "string",
+        "description": "Account name (for BS localisation)"
+       },
+       "name_bg": {
+        "type": "string",
+        "description": "Account name (for BG localisation)"
+       },
+       "name_el": {
+        "type": "string",
+        "description": "Account name (for EL localisation)"
+       },
+       "name_et": {
+        "type": "string",
+        "description": "Account name (for ET localisation)"
+       },
+       "name_hr": {
+        "type": "string",
+        "description": "Account name (for HR localisation)"
+       },
+       "name_hu": {
+        "type": "string",
+        "description": "Account name (for HU localisation)"
+       },
+       "name_id": {
+        "type": "string",
+        "description": "Account name (for ID localisation)"
+       },
+       "name_is": {
+        "type": "string",
+        "description": "Account name (for IS localisation)"
+       },
+       "name_ja": {
+        "type": "string",
+        "description": "Account name (for JA localisation)"
+       },
+       "name_ka": {
+        "type": "string",
+        "description": "Account name (for KA localisation)"
+       },
+       "name_kk": {
+        "type": "string",
+        "description": "Account name (for KK localisation)"
+       },
+       "name_km": {
+        "type": "string",
+        "description": "Account name (for KM localisation)"
+       },
+       "name_ko": {
+        "type": "string",
+        "description": "Account name (for KO localisation)"
+       },
+       "name_lt": {
+        "type": "string",
+        "description": "Account name (for LT localisation)"
+       },
+       "name_lv": {
+        "type": "string",
+        "description": "Account name (for LV localisation)"
+       },
+       "name_pt": {
+        "type": "string",
+        "description": "Account name (for PT localisation)"
+       },
+       "name_ro": {
+        "type": "string",
+        "description": "Account name (for RO localisation)"
+       },
+       "name_ru": {
+        "type": "string",
+        "description": "Account name (for RU localisation)"
+       },
+       "name_sk": {
+        "type": "string",
+        "description": "Account name (for SK localisation)"
+       },
+       "name_sl": {
+        "type": "string",
+        "description": "Account name (for SL localisation)"
+       },
+       "name_sr": {
+        "type": "string",
+        "description": "Account name (for SR localisation)"
+       },
+       "name_th": {
+        "type": "string",
+        "description": "Account name (for TH localisation)"
+       },
+       "name_tr": {
+        "type": "string",
+        "description": "Account name (for TR localisation)"
+       },
+       "name_uk": {
+        "type": "string",
+        "description": "Account name (for UK localisation)"
+       },
+       "name_vi": {
+        "type": "string",
+        "description": "Account name (for VI localisation)"
+       },
+       "name_zh": {
+        "type": "string",
+        "description": "Account name (for ZH localisation)"
+       },
+       "name_ca": {
+        "type": "string",
+        "description": "Account name (for CA localisation)"
+       },
+       "mapped_number": {
+        "type": "string",
+        "description": "The mapped account number for reference."
+       }
+      }
+     },
+     "AccountWithTypePayload": {
+      "type": "object",
+      "allOf": [
+       {
+        "$ref": "#/components/schemas/AccountWithoutTypePayload"
+       },
+       {
+        "type": "object",
+        "required": [
+         "type"
+        ],
+        "properties": {
+         "type": {
+          "$ref": "#/components/schemas/AccountType"
+         }
+        },
+        "description": "Extends 'AccountWithoutTypePayload' to include account type information."
+       }
+      ]
+     },
+     "ActionPayload": {
+      "type": "object",
+      "description": "Represents an action that can either be an \"upsert\" or \"delete.\"",
+      "oneOf": [
+       {
+        "type": "object",
+        "required": [
+         "upsert"
+        ],
+        "properties": {
+         "upsert": {
+          "$ref": "#/components/schemas/UpsertActionPayload"
+         }
+        }
+       },
+       {
+        "type": "object",
+        "required": [
+         "delete"
+        ],
+        "properties": {
+         "delete": {
+          "$ref": "#/components/schemas/DeleteActionPayload"
+         }
+        }
+       }
+      ]
+     },
+     "DeleteActionPayload": {
+      "type": "object",
+      "required": [
+       "id"
+      ],
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/TransactionId"
+       }
+      },
+      "description": "Payload for deleting an existing transaction by ID."
+     },
+     "ExtraFieldLabelsPayload": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 10,
+      "items": {
+       "type": "string"
+      },
+      "example": [
+       "label1",
+       "label2"
+      ],
+      "description": "Array of labels for extra fields, with a maximum of 10 items."
+     },
+     "OpenTransactionPayload": {
+      "type": "object",
+      "nullable": true,
+      "required": [
+       "value",
+       "category"
+      ],
+      "properties": {
+       "value": {
+        "type": "number",
+        "example": 42.12,
+        "description": "The monetary value of the transaction."
+       },
+       "category": {
+        "type": "string",
+        "enum": [
+         "payable",
+         "receivable"
+        ],
+        "description": "The category of the transaction, either 'payable' or 'receivable.'"
+       }
+      }
+     },
+     "SyncPoint": {
+      "type": "string",
+      "example": "f9a7c6df341325822e3ea264cfe39e5ef8c73aa4",
+      "description": "A unique string representing a sync point used to track sync states."
+     },
+     "TransactionId": {
+      "type": "string",
+      "description": "The unique ID referencing a single transaction (or booking).",
+      "example": "17653417362"
+     },
+     "UpsertActionPayload": {
+      "type": "object",
+      "description": "Payload for an \"upsert\" action, meaning update the record if it exists, or insert it if it does not.",
+      "required": [
+       "id",
+       "account_number",
+       "period_end_date",
+       "value"
+      ],
+      "properties": {
+       "id": {
+        "$ref": "#/components/schemas/TransactionId"
+       },
+       "account_number": {
+        "type": "string",
+        "description": "The account number from the request's \"accounts\" section.",
+        "example": "1234567890"
+       },
+       "period_end_date": {
+        "type": "string",
+        "format": "date",
+        "description": "The end date for the period of the transaction."
+       },
+       "value": {
+        "type": "number",
+        "example": 123.45,
+        "description": "The value of the transaction."
+       },
+       "transaction_id": {
+        "type": "string",
+        "description": "The unique ID referencing multiple transactions (or bookings) as a group."
+       },
+       "journal_id": {
+        "type": "string",
+        "description": "A unique identifier from the source system for the journal used to record this transaction. Transactions sharing the same journal_id will be grouped and accessible via a link in the Silverfin UI.",
+        "example": "J-2026-001"
+       },
+       "journal_type": {
+        "type": "string",
+        "description": "The type of journal from the source system (e.g. \"Sales\", \"Purchases\", \"Bank\", \"General\").",
+        "example": "Sales"
+       },
+       "booking_date": {
+        "type": "string",
+        "format": "date",
+        "description": "The date when the transaction was booked."
+       },
+       "description": {
+        "type": "string",
+        "description": "A detailed description of the transaction."
+       },
+       "relation": {
+        "type": "string",
+        "description": "The relation of the transaction, required if 'open_transaction' is provided."
+       },
+       "document_id": {
+        "type": "string",
+        "description": "The ID of the associated document."
+       },
+       "analytical_dimensions": {
+        "type": "array",
+        "minItems": 0,
+        "maxItems": 6,
+        "items": {
+         "type": "string",
+         "nullable": true
+        },
+        "example": [
+         "one",
+         "two",
+         "three"
+        ],
+        "description": "Array of analytical dimension labels, with a maximum of 6 items."
+       },
+       "extra_fields": {
+        "type": "array",
+        "description": "Additional fields related to the transaction. Must have the same size as 'extra_field_labels' if provided.",
+        "minItems": 0,
+        "maxItems": 10,
+        "items": {
+         "type": "string",
+         "nullable": true
+        },
+        "example": [
+         "field1",
+         "field2"
+        ]
+       },
+       "open_transaction": {
+        "$ref": "#/components/schemas/OpenTransactionPayload"
+       }
+      }
+     }
+    }
+   },
+   "paths": {
+    "/api/v4/f/{firm_id}/syncs/companies/{company_id}/transactions": {
+     "post": {
+      "summary": "Submit Bookkeeping Transactions",
+      "description": "Allows you to submit, modify, or delete bookkeeping transactions in Silverfin using an incremental approach. This means you must only perform one request at a time per company.\nBased on the action type, you can add new transactions, update existing ones, or remove them.\nThere is a limit of 500 actions per request.\n<b>Required scope(s):</b> `financials:transactions:sync`\n",
+      "security": [
+       {
+        "OAuth2": [
+         "financials:transactions:sync"
+        ]
+       }
+      ],
+      "operationId": "submitSyncTransactions",
+      "tags": [
+       "Sync Company-Specific"
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/FirmId"
+       },
+       {
+        "$ref": "#/components/parameters/CompanyId"
+       }
+      ],
+      "requestBody": {
+       "content": {
+        "application/json": {
+         "schema": {
+          "type": "object",
+          "required": [
+           "sync_point",
+           "actions"
+          ],
+          "properties": {
+           "sync_point": {
+            "$ref": "#/components/schemas/SyncPoint"
+           },
+           "actions": {
+            "type": "array",
+            "maxItems": 500,
+            "items": {
+             "$ref": "#/components/schemas/ActionPayload"
+            }
+           },
+           "accounts": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/AccountWithTypePayload"
+            }
+           },
+           "extra_field_labels": {
+            "$ref": "#/components/schemas/ExtraFieldLabelsPayload"
+           }
+          }
+         }
+        }
+       }
+      },
+      "responses": {
+       "201": {
+        "description": "Transactions have been successfully processed and accepted.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "sync_point"
+           ],
+           "properties": {
+            "sync_point": {
+             "$ref": "#/components/schemas/SyncPoint"
+            }
+           }
+          }
+         }
+        }
+       },
+       "409": {
+        "description": "Conflict occurred, preventing the request from being processed (e.g., invalid sync point, misconfigured company). The error message will provide more details.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "error"
+           ],
+           "properties": {
+            "error": {
+             "type": "string"
+            }
+           }
+          }
+         }
+        }
+       },
+       "422": {
+        "description": "The request payload is invalid.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "errors"
+           ],
+           "properties": {
+            "errors": {
+             "type": "object"
+            }
+           },
+           "example": {
+            "errors": {
+             "sync_point": [
+              "must be filled"
+             ]
+            }
+           }
+          }
+         }
+        }
+       },
+       "429": {
+        "description": "Too many requests at the same time. You must perform only one request at a time per company.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "error"
+           ],
+           "properties": {
+            "error": {
+             "type": "string"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/resetsyncbookkeepingdata.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Company-Specific"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    },
+    "parameters": {
+     "FirmId": {
+      "name": "firm_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the firm."
+     },
+     "CompanyId": {
+      "name": "company_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "number"
+      },
+      "description": "The unique identifier of the company."
+     }
+    },
+    "schemas": {
+     "SyncPoint": {
+      "type": "string",
+      "example": "f9a7c6df341325822e3ea264cfe39e5ef8c73aa4",
+      "description": "A unique string representing a sync point used to track sync states."
+     }
+    }
+   },
+   "paths": {
+    "/api/v4/f/{firm_id}/syncs/companies/{company_id}/reset": {
+     "delete": {
+      "summary": "Reset Bookkeeping Data",
+      "description": "Allows you to reset bookkeeping data for a company up to a specified date. If no date is provided, all bookkeeping data will be reset. Silverfin expect an incremental approach. This means you must only perform one request at a time per company.\n<b>Required scope(s):</b> `financials:transactions:sync`\n\n<b>after_date</b>: It is recommended to always use this endpoint with the after_date parameter set to the date of the oldest change for regular sync attempts. The \"oldest change\" refers to the earliest date of any financial transaction or record that has changed. If a customer notices an inconsistency, you can perform a reset without date, allowing you to re-sync all data.\n",
+      "security": [
+       {
+        "OAuth2": [
+         "financials:transactions:sync"
+        ]
+       }
+      ],
+      "operationId": "resetSyncBookkeepingData",
+      "tags": [
+       "Sync Company-Specific"
+      ],
+      "parameters": [
+       {
+        "$ref": "#/components/parameters/FirmId"
+       },
+       {
+        "$ref": "#/components/parameters/CompanyId"
+       },
+       {
+        "name": "after_date",
+        "in": "query",
+        "description": "Recommended setting the date to the oldest change.\nExample: \"01/01/2023\" would reset all data from 1 January 2023 onward.\n",
+        "schema": {
+         "type": "string",
+         "format": "date"
+        }
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Bookkeeping data successfully reset.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "sync_point"
+           ],
+           "properties": {
+            "sync_point": {
+             "$ref": "#/components/schemas/SyncPoint"
+            }
+           }
+          }
+         }
+        }
+       },
+       "409": {
+        "description": "Conflict occurred, preventing the request from being processed (e.g., invalid sync point, misconfigured company). The error message will provide more details.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "error"
+           ],
+           "properties": {
+            "error": {
+             "type": "string"
+            }
+           }
+          }
+         }
+        }
+       },
+       "422": {
+        "description": "The request payload is invalid.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "errors"
+           ],
+           "properties": {
+            "errors": {
+             "type": "object"
+            }
+           },
+           "example": {
+            "errors": {
+             "after_date": [
+              "must be a valid date string"
+             ]
+            }
+           }
+          }
+         }
+        }
+       },
+       "429": {
+        "description": "Too many requests at the same time. You must perform only one request at a time per company.",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "required": [
+            "error"
+           ],
+           "properties": {
+            "error": {
+             "type": "string"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/getsyncwebhookslist-1.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Webhooks"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    }
+   },
+   "paths": {
+    "/api/v4/f/{firm_id}/syncs/webhooks": {
+     "get": {
+      "tags": [
+       "Sync Webhooks"
+      ],
+      "summary": "List all sync webhooks",
+      "description": "List all sync webhooks. <br>\n<b>Required scope(s):</b> `webhooks`\n",
+      "security": [
+       {
+        "OAuth2": [
+         "webhooks"
+        ]
+       }
+      ],
+      "operationId": "getSyncWebhooksList",
+      "parameters": [
+       {
+        "name": "page",
+        "in": "query",
+        "schema": {
+         "type": "integer",
+         "default": 1
+        }
+       },
+       {
+        "name": "per_page",
+        "in": "query",
+        "schema": {
+         "type": "integer",
+         "default": 200
+        }
+       },
+       {
+        "name": "firm_id",
+        "in": "path",
+        "schema": {
+         "type": "integer"
+        },
+        "required": true
+       }
+      ],
+      "responses": {
+       "200": {
+        "description": "Successful response",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "array",
+           "items": {
+            "type": "object",
+            "properties": {
+             "id": {
+              "type": "integer",
+              "description": "webhook_id"
+             },
+             "url": {
+              "type": "string"
+             },
+             "events": {
+              "type": "array",
+              "items": {
+               "type": "string"
+              }
+             },
+             "user_id": {
+              "type": "integer"
+             },
+             "expired_at": {
+              "type": "string"
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/createsyncwebhook-1.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Webhooks"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    },
+    "schemas": {
+     "WebhookEvent": {
+      "type": "string",
+      "enum": [
+       "sync.requested",
+       "sync.company_added",
+       "sync.company_removed"
+      ],
+      "description": "The webhook event name."
+     }
+    }
+   },
+   "paths": {
+    "/api/v4/f/{firm_id}/syncs/webhooks": {
+     "post": {
+      "tags": [
+       "Sync Webhooks"
+      ],
+      "summary": "Register a webhook.",
+      "description": "<b>Required scope(s):</b> `webhooks`",
+      "security": [
+       {
+        "OAuth2": [
+         "webhooks"
+        ]
+       }
+      ],
+      "operationId": "createSyncWebhook",
+      "requestBody": {
+       "content": {
+        "multipart/form-data": {
+         "schema": {
+          "type": "object",
+          "properties": {
+           "url": {
+            "type": "string",
+            "description": "Valid https url"
+           },
+           "events": {
+            "type": "array",
+            "items": {
+             "$ref": "#/components/schemas/WebhookEvent"
+            },
+            "description": "List of events that will trigger this webhook, you cannot update this list, so you should destroy the webhook and create a new one when you want to add or remove an event."
+           }
+          },
+          "required": [
+           "url",
+           "events[]"
+          ]
+         }
+        }
+       }
+      },
+      "parameters": [
+       {
+        "name": "firm_id",
+        "in": "path",
+        "schema": {
+         "type": "integer"
+        },
+        "required": true
+       }
+      ],
+      "responses": {
+       "201": {
+        "description": "Successful response",
+        "content": {
+         "application/json": {
+          "schema": {
+           "type": "object",
+           "properties": {
+            "id": {
+             "type": "integer",
+             "description": "webhook_id"
+            },
+            "url": {
+             "type": "string"
+            },
+            "events": {
+             "type": "array",
+             "items": {
+              "type": "string"
+             }
+            },
+            "user_id": {
+             "type": "integer"
+            },
+            "expired_at": {
+             "type": "string"
+            }
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "page": "https://developer.silverfin.com/reference/deletesyncwebhook-1.md",
+  "definition": {
+   "openapi": "3.0.1",
+   "info": {
+    "title": "Silverfin SyncAPI",
+    "version": "v1"
+   },
+   "servers": [
+    {
+     "url": "https://live.getsilverfin.com"
+    }
+   ],
+   "tags": [
+    {
+     "name": "Sync Webhooks"
+    }
+   ],
+   "components": {
+    "securitySchemes": {
+     "OAuth2": {
+      "type": "oauth2",
+      "flows": {
+       "authorizationCode": {
+        "authorizationUrl": "https://live.getsilverfin.com/oauth/authorize",
+        "tokenUrl": "https://live.getsilverfin.com/oauth/token",
+        "scopes": {
+         "financials:transactions:sync": ""
+        }
+       }
+      }
+     }
+    }
+   },
+   "paths": {
+    "/api/v4/f/{firm_id}/syncs/webhooks/{webhook_id}": {
+     "delete": {
+      "tags": [
+       "Sync Webhooks"
+      ],
+      "summary": "Destroy a webhook",
+      "description": "Destroy a webhook. <br>\n<b>Required scope(s):</b> `webhooks`\n",
+      "security": [
+       {
+        "OAuth2": [
+         "webhooks"
+        ]
+       }
+      ],
+      "operationId": "deleteSyncWebhook",
+      "parameters": [
+       {
+        "name": "firm_id",
+        "in": "path",
+        "schema": {
+         "type": "integer"
+        },
+        "required": true
+       },
+       {
+        "name": "webhook_id",
+        "in": "path",
+        "schema": {
+         "type": "integer"
+        },
+        "required": true
+       }
+      ],
+      "responses": {
+       "204": {
+        "description": "Successful empty body response"
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+]

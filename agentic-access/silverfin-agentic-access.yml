@@ -1,0 +1,2918 @@
+generated: '2026-10-14'
+method: generated
+source: openapi/silverfin-api-openapi.yml, openapi/silverfin-syncapi-openapi.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 192
+  by_action_class:
+    connected: 91
+    acting: 101
+  by_consequence:
+    read: 91
+    write: 100
+    safety-critical: 1
+  human_in_the_loop_required: 1
+operations:
+- path: /api/v4/f/{firm_id}/account_mapping_lists
+  method: get
+  operationId: getAccountMappingLists
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/account_mapping_lists/{account_mapping_list_id}
+  method: get
+  operationId: getAccountMappingByAccountMappingListId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/account_templates
+  method: get
+  operationId: getAccountTemplatesList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/account_templates
+  method: post
+  operationId: createAccountTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/account_templates/{id}
+  method: delete
+  operationId: deleteAccountTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/account_templates/{id}
+  method: get
+  operationId: getAccountTemplateContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/account_templates/{id}
+  method: post
+  operationId: updateAccountTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/account_templates/{id}/shared_parts/{shared_part_id}
+  method: delete
+  operationId: deleteSharedPartfromAccountTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/account_templates/{id}/shared_parts/{shared_part_id}
+  method: post
+  operationId: addSharedPartToAccountTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/accountancy_synchronisation_entities
+  method: get
+  operationId: getAccountancySyncEntities
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/app/links
+  method: get
+  operationId: getAppLinkByUser
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - links
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/app/links
+  method: post
+  operationId: createAppLink
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - links
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/app/links/{link_id}
+  method: delete
+  operationId: deleteAppLink
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - links
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies
+  method: get
+  operationId: getCompanies
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies
+  method: post
+  operationId: createCompany
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/archived
+  method: get
+  operationId: getArchivedCompanyList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/archived/{archived_company_id}/unarchive
+  method: post
+  operationId: updateArchivedCompany
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}
+  method: delete
+  operationId: deleteCompany
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}
+  method: get
+  operationId: getCompanyDetails
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}
+  method: post
+  operationId: updateCompanyDetails
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/accounts
+  method: post
+  operationId: createNewAccount
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/accounts
+  method: get
+  operationId: getCompanyAccounts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/accounts/bulk_update
+  method: post
+  operationId: updateBatchAccountContent
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/accounts/{account_id}
+  method: get
+  operationId: getAccountContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/accounts/{account_id}
+  method: post
+  operationId: updateAccountContent
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/add_workflow
+  method: post
+  operationId: addFirmWorkflowToCompany
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - workflows:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/all_people
+  method: get
+  operationId: getAllPeople
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/all_people
+  method: post
+  operationId: updateAllPeople
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/analytical_dimensions
+  method: get
+  operationId: getAnalyticalDimensionsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/budgets
+  method: get
+  operationId: getBudgetEntriesList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/budgets/{budget_id}
+  method: get
+  operationId: getBudgetEntryContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/budgets/{budget_id}/account_ids
+  method: get
+  operationId: getBudgetEntryAccountIds
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/budgets/{budget_id}/end_dates
+  method: get
+  operationId: getBudgetEntryEndDates
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/budgets/{budget_id}/entries
+  method: get
+  operationId: getBudgetEntriesListByAccountId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/client_meetings
+  method: get
+  operationId: getClientMeetingsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - client_meetings:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/client_meetings/attachments
+  method: post
+  operationId: createClientMeetingAttachment
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - client_meetings:external_notes:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/client_meetings/current
+  method: get
+  operationId: getCurrentClientMeeting
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - client_meetings:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/client_meetings/{client_meeting_id}
+  method: get
+  operationId: getClientMeeting
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - client_meetings:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/custom
+  method: get
+  operationId: getCompanyCustomProperties
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/custom
+  method: post
+  operationId: createCompanyCustomProperty
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/followers
+  method: get
+  operationId: getCompanyFollowers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/followers
+  method: post
+  operationId: createCompanyFollowerById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/followers/{user_id}
+  method: delete
+  operationId: deleteCompanyFollowerById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/open_transactions
+  method: get
+  operationId: getOpenTransactions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:transactions:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods
+  method: get
+  operationId: getPeriods
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - communication:read, financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods
+  method: post
+  operationId: createPeriod
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/public
+  method: post
+  operationId: updatePeriodsPublicFlag
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}
+  method: get
+  operationId: getPeriodDetails
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - communication:read, financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts
+  method: get
+  operationId: getAccountsValuesByPeriodId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts/{account_id}
+  method: get
+  operationId: getAccountContentByPeriodId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts/{account_id}
+  method: post
+  operationId: updateAccountContentByPeriodId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts/{account_id}/custom
+  method: get
+  operationId: getAccountCustomProperties
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts/{account_id}/custom
+  method: post
+  operationId: createAccountCustomProperties
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts/{account_id}/custom
+  method: delete
+  operationId: deleteAccountCustomProperty
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts/{account_id}/results
+  method: get
+  operationId: getAccountResults
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/custom
+  method: get
+  operationId: getPeriodCustomProperties
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/custom
+  method: post
+  operationId: createPeriodCustomProperties
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_file_instances
+  method: get
+  operationId: getExportFileInstancesList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_file_instances
+  method: post
+  operationId: createExportFileInstance
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_file_instances/{export_file_instance_id}
+  method: get
+  operationId: getExportFileInstanceContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_files
+  method: get
+  operationId: getExportFilesList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_pdf_instances
+  method: get
+  operationId: getExportPdfInstancesList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_pdf_instances
+  method: post
+  operationId: createExportPdfInstance
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_pdf_instances/{export_pdf_instance_id}
+  method: get
+  operationId: getExportPdfInstanceContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_pdf_instances/{export_pdf_instance_id}/content_blocks/{block_id}
+  method: post
+  operationId: createLiveExportDocumentInExportPdfInstance
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_pdf_instances/{export_pdf_instance_id}/move
+  method: post
+  operationId: moveExportPdfInstanceToDocuments
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/export_pdfs
+  method: get
+  operationId: getExportPdfsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/financials/adjustments
+  method: get
+  operationId: getAdjustmentsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/financials/adjustments
+  method: post
+  operationId: createAdjustment
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/financials/adjustments/{adjustment_id}
+  method: delete
+  operationId: deleteAdjustment
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/financials/adjustments/{adjustment_id}
+  method: post
+  operationId: updateAdjustment
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/financials/balances
+  method: get
+  operationId: getBalancesList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/period_specific_documents
+  method: get
+  operationId: getPeriodSpecificDocumentsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/period_specific_documents/{id}
+  method: delete
+  operationId: deletePeriodSpecificDocument
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/period_specific_documents/{id}/replace
+  method: post
+  operationId: replacePeriodSpecificDocument
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts
+  method: get
+  operationId: getPermanentTextsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts
+  method: post
+  operationId: createPermanentText
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts/{permanent_text_id}
+  method: get
+  operationId: getPermanentTextContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts/{permanent_text_id}
+  method: post
+  operationId: updatePermanentText
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts/{permanent_text_id}/custom
+  method: get
+  operationId: getPermanentTextCustomProperties
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts/{permanent_text_id}/custom
+  method: post
+  operationId: createPermanentTextCustomProperties
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts/{permanent_text_id}/results
+  method: get
+  operationId: getPermanentTextResults
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts/{permanent_text_id}/sign_markers
+  method: get
+  operationId: getPermanentTextSignMarkers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations
+  method: get
+  operationId: getReconciliationTexts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}
+  method: get
+  operationId: getReconciliationTextContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}
+  method: post
+  operationId: updateReconciliationTextStarringStatus
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}/custom
+  method: delete
+  operationId: deleteReconciliationTextCustomProperty
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}/custom
+  method: get
+  operationId: getReconciliationTextCustomProperties
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}/custom
+  method: post
+  operationId: createReconciliationTextCustomProperties
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}/results
+  method: get
+  operationId: getReconciliationTextResults
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}/sign_markers
+  method: get
+  operationId: getReconciliationTextSignMarkers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/remarks
+  method: get
+  operationId: getRemarksList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - communication:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/remarks
+  method: post
+  operationId: createRemark
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - communication:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reports
+  method: get
+  operationId: getReportsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reports/{report_id}/results
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/workflows
+  method: get
+  operationId: getPeriodWorkflowsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - workflows:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/workflows/{workflow_id}/archive
+  method: post
+  operationId: archiveWorkflow
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - workflows:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/workflows/{workflow_id}/reactivate
+  method: post
+  operationId: updateInactiveWorkflow
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - workflows:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/workflows/{workflow_id}/reconciliations
+  method: get
+  operationId: getWorkflowReconciliationTextsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/workflows/{workflow_id}/status
+  method: get
+  operationId: getWorkflowStatus
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - workflows:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/permanent_documents
+  method: post
+  operationId: createPermanentDocument
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - permanent_documents:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/permanent_documents/{permanent_document_id}
+  method: delete
+  operationId: deletePermanentDocument
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - permanent_documents:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/permanent_documents/{permanent_document_id}
+  method: get
+  operationId: getPermanentDocumentContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - permanent_documents:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/permanent_documents/{permanent_document_id}
+  method: post
+  operationId: updatePermanentDocument
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - permanent_documents:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/permanent_folders
+  method: post
+  operationId: createPermanentFolder
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - permanent_documents:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/permanent_folders/{permanent_folder_id}
+  method: delete
+  operationId: deletePermanentFolder
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - permanent_documents:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/permanent_folders/{permanent_folder_id}
+  method: get
+  operationId: getPermanentFolderContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - permanent_documents:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/permanent_folders/{permanent_folder_id}
+  method: post
+  operationId: updatePermanentFolder
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - permanent_documents:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/permanent_mail/{permanent_mail_id}
+  method: delete
+  operationId: deletePermanentMail
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - permanent_documents:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/permanent_mail/{permanent_mail_id}
+  method: post
+  operationId: movePermanentMail
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - permanent_documents:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/personal_income_tax/{year}/document
+  method: post
+  operationId: attachPersonalIncomeTaxDocument
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/personal_income_tax/{year}/metadata
+  method: post
+  operationId: updatePersonalIncomeTaxMetadata
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/personal_income_tax/{year}/questionnaire
+  method: get
+  operationId: getPersonalIncomeTaxQuestionnaire
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/personal_income_tax/{year}/questionnaire
+  method: post
+  operationId: createPersonalIncomeTaxQuestionnaire
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/personal_income_tax/{year}/tax_on_web
+  method: post
+  operationId: createPersonalIncomeTaxTaxOnWeb
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/remarks/{remark_id}
+  method: delete
+  operationId: deleteRemark
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - communication:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/remarks/{remark_id}/comments
+  method: get
+  operationId: getCommentsListFromRemark
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - communication:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/remarks/{remark_id}/comments
+  method: post
+  operationId: createComment
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - communication:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/remarks/{remark_id}/done
+  method: post
+  operationId: updateRemarkFlag
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - communication:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/users
+  method: get
+  operationId: getCompanyUserList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/users
+  method: post
+  operationId: createCompanyUserById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/users/{user_id}
+  method: delete
+  operationId: deleteCompanyUserById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/webhooks
+  method: get
+  operationId: getWebhooksList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - webhooks
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/companies/{company_id}/webhooks
+  method: post
+  operationId: createWebhook
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - webhooks
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/companies/{company_id}/webhooks/{webhook_id}
+  method: delete
+  operationId: deleteWebhook
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - webhooks
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/company_templates
+  method: get
+  operationId: getClientTemplatesList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/export_files
+  method: get
+  operationId: getExportFileTemplatesList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/export_files
+  method: post
+  operationId: createExportFileTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/export_files/{id}
+  method: get
+  operationId: getExportFileTemplateContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/export_files/{id}
+  method: post
+  operationId: updateExportFileTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/export_files/{id}
+  method: delete
+  operationId: deleteExportFileTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/export_files/{id}/shared_parts/{shared_part_id}
+  method: delete
+  operationId: deleteSharedPartFromExportFileTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/export_files/{id}/shared_parts/{shared_part_id}
+  method: post
+  operationId: addSharedPartToExportFileTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/export_pdfs
+  method: get
+  operationId: getExportPdfTemplatesList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/firm_workflows
+  method: get
+  operationId: getActiveFirmWorkflowsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/groups
+  method: get
+  operationId: getGroupsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/groups
+  method: post
+  operationId: createGroup
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/groups/{group_id}
+  method: delete
+  operationId: deleteGroup
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/groups/{group_id}/companies
+  method: get
+  operationId: getCompaniesFromGroupList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/groups/{group_id}/companies
+  method: post
+  operationId: addCompanyToGroupById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/groups/{group_id}/companies/{company_id}
+  method: delete
+  operationId: deleteCompanyFromGroupById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/groups/{group_id}/users
+  method: delete
+  operationId: deleteUserFromGroupById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/groups/{group_id}/users
+  method: get
+  operationId: getUsersFromGroupList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/groups/{group_id}/users
+  method: post
+  operationId: addUserToGroupById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/live_export_documents
+  method: get
+  operationId: getLiveExportDocumentsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/live_export_documents
+  method: post
+  operationId: createLiveExportDocument
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/live_export_documents/{id}
+  method: get
+  operationId: getLiveExportDocument
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/live_export_documents/{id}
+  method: post
+  operationId: updateLiveExportDocument
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/permanent_texts
+  method: get
+  operationId: getPermanentTextTemplateList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/reconciliations
+  method: get
+  operationId: getReconciliationTextTemplateList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/reconciliations
+  method: post
+  operationId: createReconciliationTextTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/reconciliations/test
+  method: post
+  operationId: createLiquidTestRun
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/reconciliations/test_runs/{id}
+  method: get
+  operationId: getReconciliationTextTemplateLiquidTestRun
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:write
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/reconciliations/verify_liquid
+  method: post
+  operationId: lintLiquidCode
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/reconciliations/{reconciliation_id}
+  method: get
+  operationId: getReconciliationTextTemplateContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/reconciliations/{reconciliation_id}
+  method: post
+  operationId: updateReconciliationTextTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/reconciliations/{reconciliation_id}
+  method: delete
+  operationId: deleteReconciliationTextTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/reconciliations/{reconciliation_id}/shared_parts/{shared_part_id}
+  method: delete
+  operationId: deleteSharedPartFromReconciliationTextTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/reconciliations/{reconciliation_id}/shared_parts/{shared_part_id}
+  method: post
+  operationId: addSharedPartToReconciliationTextTemplate
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/segments/{id}/results
+  method: get
+  operationId: getInsightsSegmentResults
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - insights:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/segments/{id}/runs
+  method: post
+  operationId: runInsightsSegment
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - insights:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/shared_parts
+  method: get
+  operationId: getSharedPartsList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/shared_parts
+  method: post
+  operationId: createSharedPart
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/shared_parts/{shared_part_id}
+  method: delete
+  operationId: deleteSharedPart
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/shared_parts/{shared_part_id}
+  method: get
+  operationId: getSharedPartContent
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/shared_parts/{shared_part_id}
+  method: post
+  operationId: updateSharedPart
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/user
+  method: get
+  operationId: getCurrentUserDetails
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - user:profile
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/user/emails
+  method: get
+  operationId: getCurrentUserEmail
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - user:email
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/user/firm
+  method: get
+  operationId: getCurrentUserFirm
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/users
+  method: get
+  operationId: getActiveUsersList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/users
+  method: post
+  operationId: createUser
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/users/inactive
+  method: get
+  operationId: getInactiveUsersList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/users/inactive/{user_id}/activate
+  method: post
+  operationId: updateInactiveUser
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/users/{user_id}
+  method: delete
+  operationId: deleteUser
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/users/{user_id}
+  method: post
+  operationId: updateUser
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/users/{user_id}/companies
+  method: get
+  operationId: getUserCompaniesList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - administration:read
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/users/{user_id}/companies
+  method: post
+  operationId: addCompanyToUserById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/users/{user_id}/companies/{company_id}
+  method: delete
+  operationId: deleteCompanyFromUserById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - administration:write
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /f/{firm_id}/oauth/token
+  method: post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /oauth/authorize
+  method: get
+  operationId: authorizeUser
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - user:profile
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/syncs/companies
+  method: get
+  operationId: getSyncCompanies
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:transactions:sync
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/syncs/companies/{company_id}/info
+  method: get
+  operationId: getSyncCompanyInfo
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:transactions:sync
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/syncs/companies/{company_id}/reset
+  method: delete
+  operationId: resetSyncBookkeepingData
+  x-agentic-access:
+    action-class: acting
+    consequence: safety-critical
+    subject: required
+    scope:
+    - financials:transactions:sync
+    audience: null
+    token:
+      max-ttl: 120
+      exchange: true
+      purpose-required: true
+      proof-of-possession: true
+    escalation:
+      human-in-the-loop: required
+    audit: required
+- path: /api/v4/f/{firm_id}/syncs/companies/{company_id}/settings
+  method: post
+  operationId: setSyncCompanySettings
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:transactions:sync
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/syncs/companies/{company_id}/transactions
+  method: post
+  operationId: submitSyncTransactions
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:transactions:sync
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/syncs/settings
+  method: get
+  operationId: getSyncSettings
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - financials:transactions:sync
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/syncs/sync_references
+  method: post
+  operationId: setSyncReferences
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - financials:transactions:sync
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/syncs/webhooks
+  method: get
+  operationId: getSyncWebhooksList
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - webhooks
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v4/f/{firm_id}/syncs/webhooks
+  method: post
+  operationId: createSyncWebhook
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - webhooks
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v4/f/{firm_id}/syncs/webhooks/{webhook_id}
+  method: delete
+  operationId: deleteSyncWebhook
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - webhooks
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /f/{firm_id}/oauth/token
+  method: post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /oauth/authorize
+  method: get
+  operationId: authorizeUser
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - user:profile
+    token:
+      max-ttl: 3600
+    audit: none

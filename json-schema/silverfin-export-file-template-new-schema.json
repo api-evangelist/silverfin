@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silverfin/main/json-schema/silverfin-export-file-template-new-schema.json",
+  "title": "ExportFileTemplateNew",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/silverfin-api-openapi.yml#/components/schemas/ExportFileTemplateNew",
+  "type": "object",
+  "required": [
+    "name",
+    "file_name"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "name_nl": {
+      "type": "string"
+    },
+    "name_en": {
+      "type": "string"
+    },
+    "name_fr": {
+      "type": "string"
+    },
+    "name_de": {
+      "type": "string"
+    },
+    "name_da": {
+      "type": "string"
+    },
+    "name_se": {
+      "type": "string"
+    },
+    "file_name": {
+      "type": "string"
+    },
+    "enconding": {
+      "type": "string"
+    },
+    "externally_managed": {
+      "type": "boolean",
+      "description": "When this value is set to true the shared parts are not allowed\nto be edited via the web interface, only via API.\n"
+    },
+    "text": {
+      "type": "string"
+    },
+    "text_parts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/TextPart"
+      }
+    }
+  },
+  "$defs": {
+    "TextPart": {
+      "type": "object",
+      "required": [
+        "name",
+        "content"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

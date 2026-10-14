@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silverfin/main/json-schema/silverfin-sync-reference-schema.json",
+  "title": "SyncReference",
+  "description": "The sync reference used by the company. This is the uniq identifier in the third party sync supplied throught the `POST /sync_references` endpoint.",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/silverfin-syncapi-openapi.yml#/components/schemas/SyncReference",
+  "type": "string"
+}

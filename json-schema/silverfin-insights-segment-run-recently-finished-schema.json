@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/silverfin/main/json-schema/silverfin-insights-segment-run-recently-finished-schema.json",
+  "title": "InsightsSegmentRunRecentlyFinished",
+  "x-generated": "2026-10-14",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/silverfin-api-openapi.yml#/components/schemas/InsightsSegmentRunRecentlyFinished",
+  "allOf": [
+    {
+      "$ref": "#/$defs/InsightsSegmentRunBase"
+    },
+    {
+      "type": "object",
+      "required": [
+        "message",
+        "next_run_allowed_at"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "finished"
+          ]
+        },
+        "finished_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "next_run_allowed_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The earliest time a request can start a new run: 12 hours after finished_at"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "InsightsSegmentRunBase": {
+      "type": "object",
+      "required": [
+        "status",
+        "request_ref",
+        "started_at",
+        "finished_at"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "finished"
+          ]
+        },
+        "request_ref": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Run creation time, with millisecond precision"
+        },
+        "finished_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Calculation completion time, or null while pending"
+        }
+      }
+    }
+  }
+}

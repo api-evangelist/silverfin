@@ -1,16 +1,15 @@
 aid: silverfin
+
 name: Silverfin
-description: >-
-  Silverfin is a cloud connected-accounting platform for accountancy firms and
-  finance teams that standardises and automates the financial close. It pulls
-  ledger data from bookkeeping systems, runs working papers, reconciliations and
-  analytical review through a Liquid-based templating language, and produces
-  reports, PDF exports and compliance filings. Founded in Ghent, Belgium and now
-  part of Visma, Silverfin exposes a v4 REST API plus a dedicated SyncAPI that
-  let third-party bookkeeping software and integrators submit transactions,
-  manage companies, periods and accounts, drive workflows, generate exports, and
-  subscribe to webhooks — all over OAuth 2.0.
+
+description: Silverfin is a cloud connected-accounting platform for accountancy firms and finance teams that standardises and automates the financial
+  close. It pulls ledger data from bookkeeping systems, runs working papers, reconciliations and analytical review through a Liquid-based templating
+  language, and produces reports, PDF exports and compliance filings. Founded in Ghent, Belgium and now part of Visma, Silverfin exposes a v4
+  REST API plus a dedicated SyncAPI that let third-party bookkeeping software and integrators submit transactions, manage companies, periods and
+  accounts, drive workflows, generate exports, and subscribe to webhooks — all over OAuth 2.0.
+
 url: https://raw.githubusercontent.com/api-evangelist/silverfin/refs/heads/main/apis.yml
+
 deliveryModel:
   model: library
   open_source: false
@@ -22,6 +21,7 @@ deliveryModel:
   - none
   generated: '2026-08-28'
   method: derived
+
 accessModel:
   pricing: unknown
   onboarding: self-serve
@@ -34,16 +34,26 @@ accessModel:
   - authentication
   generated: '2026-07-22'
   method: derived
+
 image: https://github.com/silverfin.png
+
 x-type: company
+
 x-source: vc-portfolio
+
 x-backed-by:
 - index-ventures
+
 x-tier: stub
+
 x-tier-reason: portfolio-lead
+
 specificationVersion: '0.23'
+
 created: '2026-07-17'
+
 modified: '2026-07-21'
+
 tags:
 - Company
 - Business Applications
@@ -55,6 +65,7 @@ tags:
 - Fintech
 - Software-as-a-Service
 - Belgium
+
 tags_raw:
 - Company
 - Business Applications
@@ -66,41 +77,28 @@ tags_raw:
 - Fintech
 - SaaS
 - Belgium
-apis:
-- name: Silverfin API v4
-  description: >-
-    Silverfin's public v4 REST API and SyncAPI for accountancy automation:
-    companies, periods, accounts, reconciliations, reports, adjustments,
-    budgets, workflows, users, permanent documents, exports, and bookkeeping
-    transaction synchronisation. OAuth 2.0 with scoped access.
-  humanURL: https://developer.silverfin.com/reference
-  baseURL: https://live.getsilverfin.com/api/v4
-  properties:
-  - type: Authentication
-    url: authentication/silverfin-authentication.yml
-  - type: OAuthScopes
-    url: scopes/silverfin-scopes.yml
-  - type: Conventions
-    url: conventions/silverfin-conventions.yml
-  - type: ErrorCatalog
-    url: errors/silverfin-problem-types.yml
-  - type: Lifecycle
-    url: lifecycle/silverfin-lifecycle.yml
-  - type: Webhooks
-    url: asyncapi/silverfin-webhooks.yml
-  - type: X-MCPServerCandidate
-    url: mcp/silverfin-mcp.yml
-    note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
-  - type: DataModel
-    url: data-model/silverfin-data-model.yml
-  - type: Conformance
-    url: conformance/silverfin-conformance.yml
+
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+
 common:
+- type: AgenticAccess
+  url: agentic-access/silverfin-agentic-access.yml
+- type: Spectral
+  url: rules/silverfin-rules.yml
+- type: JSONLD
+  url: json-ld/silverfin-context.jsonld
+- type: Vocabulary
+  url: vocabulary/silverfin-vocabulary.yml
+- type: Hosts
+  url: hosts/silverfin-hosts.yml
+- type: Vendors
+  url: vendors/silverfin-vendors.yml
+- type: SDKs
+  url: packages/silverfin-packages.yml
 - type: Website
   url: https://silverfin.com
 - type: DeveloperPortal
@@ -131,7 +129,9 @@ common:
   url: asyncapi/silverfin-webhooks.yml
 - type: X-MCPServerCandidate
   url: mcp/silverfin-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published
+    API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting
+    the artifact-type surfaces with a server that does not exist.'
 - type: CLI
   url: cli/silverfin-cli.yml
 - type: Packages
@@ -152,8 +152,89 @@ common:
   url: https://community.silverfin.com
 - type: DomainSecurity
   url: security/silverfin-domain-security.yml
+
+apis:
+- name: Silverfin API v4
+  description: 'Silverfin''s public v4 REST API and SyncAPI for accountancy automation: companies, periods, accounts, reconciliations, reports,
+    adjustments, budgets, workflows, users, permanent documents, exports, and bookkeeping transaction synchronisation. OAuth 2.0 with scoped access.'
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  properties:
+  - type: Authentication
+    url: authentication/silverfin-authentication.yml
+  - type: OAuthScopes
+    url: scopes/silverfin-scopes.yml
+  - type: Conventions
+    url: conventions/silverfin-conventions.yml
+  - type: ErrorCatalog
+    url: errors/silverfin-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/silverfin-lifecycle.yml
+  - type: Webhooks
+    url: asyncapi/silverfin-webhooks.yml
+  - type: X-MCPServerCandidate
+    url: mcp/silverfin-mcp.yml
+    note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published
+      API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting
+      the artifact-type surfaces with a server that does not exist.'
+  - type: DataModel
+    url: data-model/silverfin-data-model.yml
+  - type: Conformance
+    url: conformance/silverfin-conformance.yml
+  aid: silverfin:silverfin-api-v4
+- aid: silverfin:silverfin-api
+  name: Silverfin Authentication API
+  description: The Authentication API from Silverfin — 122 operation(s) for authentication.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+- aid: silverfin:silverfin-syncapi
+  name: Silverfin Sync Authentication API
+  description: The Sync Authentication API from Silverfin — 11 operation(s) for sync authentication.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Sync Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-syncapi-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+
 x-enrichment:
   date: '2026-07-21'
   status: enriched
   artifacts_added: 19
   pass: local-v1
+
+x-readme-harvest:
+  date: '2026-10-14'
+  ops: 192
+  tool: harvest-readme-openapi.py
+  portal: https://developer.silverfin.com

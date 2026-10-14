@@ -1,0 +1,78 @@
+generated: '2026-10-14'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 6
+  own: 4
+  other_domain: 1
+  platform: 1
+  roles:
+  - other
+  - portal
+  - source
+  - status
+  - support
+  - website
+hosts:
+- host: community.silverfin.com
+  found_by:
+  - pointer
+  types:
+  - Support
+  serves: []
+  registrable_domain: silverfin.com
+  role: support
+  relation: own
+- host: developer.silverfin.com
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - DeveloperPortal
+  - Documentation
+  - APIReference
+  - GettingStarted
+  - Deprecation
+  - Postman
+  serves:
+  - docs
+  registrable_domain: silverfin.com
+  role: portal
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: live.getsilverfin.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: getsilverfin.com
+  role: other
+  relation: other-domain
+- host: silverfin.com
+  found_by:
+  - pointer
+  types:
+  - Website
+  serves: []
+  registrable_domain: silverfin.com
+  role: website
+  relation: own
+- host: status.silverfin.com
+  found_by:
+  - pointer
+  types:
+  - StatusPage
+  serves: []
+  registrable_domain: silverfin.com
+  role: status
+  relation: own

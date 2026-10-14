@@ -1,0 +1,125 @@
+generated: '2026-10-14'
+method: searched
+source:
+- https://zapier.com/apps/silverfin/integrations
+checked:
+- https://composio.dev/toolkits/silverfin
+- https://monid.ai/tools/silverfin
+- https://n8n.io/integrations/silverfin/
+- https://zapier.com/apps/silverfin/integrations
+summary: null
+marketplace_apps:
+- marketplace: zapier
+  channel: ipaas-listing
+  app: silverfin
+  url: https://zapier.com/apps/silverfin/integrations
+  external_url: https://silverfin.com/
+  partner_tier: BRONZE
+  triggers:
+  - key: accountList
+    label: New Account
+  - key: budgetList
+    label: New Budget
+  - key: exportFileInstanceList
+    label: New Export File Instance
+  - key: exportFileList
+    label: New Export File
+  - key: exportFileTemplateList
+    label: New Export File Template
+  - key: list_companies
+    label: New Company
+  - key: periodList
+    label: New Period
+  - key: reconciliationList
+    label: New Reconciliation
+  - key: remarkList
+    label: New Remark
+  - key: reportList
+    label: New Report
+  - key: workflowList
+    label: New Workflow
+  actions:
+  - key: addCompanyToGroup
+    label: Add Company to Group
+  - key: addUserToGroup
+    label: Add User to Group
+  - key: createComment
+    label: Create Comment
+  - key: createCompany
+    label: Create Company
+  - key: createExportFileInstance
+    label: Create Export File Instance
+  - key: createGroup
+    label: Create Group
+  - key: createRemark
+    label: Create Remark
+  - key: createUser
+    label: Create User
+  - key: deleteGroup
+    label: Delete Group
+  - key: removeCompanyFromGroup
+    label: Remove Company From Group
+  - key: removeUserFromGroup
+    label: Remove User From Group
+  searches:
+  - key: getAccounts
+    label: Get Accounts
+  - key: getBudgets
+    label: Get Budgets
+  - key: getCompanies
+    label: Get Companies
+  - key: getExportFileInstance
+    label: Get Export File Instance Content
+  - key: getExportFileInstances
+    label: Get Export File Instances
+  - key: getExportFiles
+    label: Get Export Files
+  - key: getExportFileTemplates
+    label: Get Export File Templates
+  - key: getGroupCompanies
+    label: Get Companies in Group
+  - key: getGroups
+    label: Get Groups
+  - key: getGroupUsers
+    label: Get Users in Group
+  - key: getPeriods
+    label: Get Periods
+  - key: getReconciliations
+    label: Get Reconciliations
+  - key: getRemarks
+    label: Get Remarks
+  - key: getReports
+    label: Get Reports
+  - key: getUsers
+    label: Get Active Users
+  - key: getWorkflows
+    label: Get Workflows
+  - key: getWorkflowStatus
+    label: Get Workflow Status
+edges: []
+templates:
+- title: Create comments in Silverfin for new approval requests in Human in the Loop
+  url: https://zapier.com/apps/human-in-the-loop/integrations/silverfin/255672705/create-comments-in-silverfin-for-new-approval-requests-in-human-in-the-loop
+  apps:
+  - human-in-the-loop
+  - silverfin
+- title: Create remarks in Silverfin for new budgets in Silverfin
+  url: https://zapier.com/apps/silverfin/integrations/silverfin/255672989/create-remarks-in-silverfin-for-new-budgets-in-silverfin
+  apps:
+  - silverfin
+- title: Create to-dos from new companies in Silverfin
+  url: https://zapier.com/apps/silverfin/integrations/silverfin/255673933/create-to-dos-from-new-companies-in-silverfin
+  apps:
+  - silverfin
+- title: Add new Microsoft Entra ID users to Silverfin
+  url: https://zapier.com/apps/microsoft-entra-id/integrations/silverfin/255673935/add-new-microsoft-entra-id-users-to-silverfin
+  apps:
+  - microsoft-entra-id
+  - filter
+  - silverfin
+- title: Create Slack messages when new remarks are created in Silverfin
+  url: https://zapier.com/apps/silverfin/integrations/slack/255673936/create-slack-messages-when-new-remarks-are-created-in-silverfin
+  apps:
+  - silverfin
+  - slack
+template_total: 5
