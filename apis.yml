@@ -155,8 +155,10 @@ common:
 
 apis:
 - name: Silverfin API v4
-  description: 'Silverfin''s public v4 REST API and SyncAPI for accountancy automation: companies, periods, accounts, reconciliations, reports,
-    adjustments, budgets, workflows, users, permanent documents, exports, and bookkeeping transaction synchronisation. OAuth 2.0 with scoped access.'
+  description: >-
+    Silverfin's public v4 REST API and SyncAPI for accountancy automation: companies, periods, accounts,
+    reconciliations, reports, adjustments, budgets, workflows, users, permanent documents, exports, and
+    bookkeeping transaction synchronisation. OAuth 2.0 with scoped access.
   humanURL: https://developer.silverfin.com/reference
   baseURL: https://live.getsilverfin.com/api/v4
   properties:
@@ -174,24 +176,26 @@ apis:
     url: asyncapi/silverfin-webhooks.yml
   - type: X-MCPServerCandidate
     url: mcp/silverfin-mcp.yml
-    note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published
-      API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting
-      the artifact-type surfaces with a server that does not exist.'
+    note: >-
+      Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+      — a tool list derived from the published API contracts, not an existing server. The scorer already
+      read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+      surfaces with a server that does not exist.
   - type: DataModel
     url: data-model/silverfin-data-model.yml
   - type: Conformance
     url: conformance/silverfin-conformance.yml
   aid: silverfin:silverfin-api-v4
-- aid: silverfin:silverfin-api
-  name: Silverfin Authentication API
-  description: The Authentication API from Silverfin — 122 operation(s) for authentication.
+- aid: silverfin:silverfin-account-mapping-lists-api
+  name: Silverfin Account Mapping Lists API
+  description: The Account Mapping Lists API from Silverfin — 2 operation(s) for account mapping lists.
   humanURL: https://developer.silverfin.com/reference
   baseURL: https://live.getsilverfin.com/api/v4
   tags:
-  - Authentication
+  - Account Mapping Lists
   properties:
   - type: OpenAPI
-    url: openapi/silverfin-api-openapi.yml
+    url: openapi/silverfin-account-mapping-lists-api-openapi.yml
   - type: JSONSchema
     url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
   - type: JSONSchema
@@ -204,16 +208,6 @@ apis:
     url: json-schema/silverfin-export-file-template-info-schema.json
   - type: JSONSchema
     url: json-schema/silverfin-insights-segment-run-pending-schema.json
-- aid: silverfin:silverfin-syncapi
-  name: Silverfin Sync Authentication API
-  description: The Sync Authentication API from Silverfin — 11 operation(s) for sync authentication.
-  humanURL: https://developer.silverfin.com/reference
-  baseURL: https://live.getsilverfin.com/api/v4
-  tags:
-  - Sync Authentication
-  properties:
-  - type: OpenAPI
-    url: openapi/silverfin-syncapi-openapi.yml
   - type: JSONSchema
     url: json-schema/silverfin-action-payload-schema.json
   - type: JSONSchema
@@ -226,7 +220,892 @@ apis:
     url: json-schema/silverfin-extra-field-labels-payload-schema.json
   - type: JSONSchema
     url: json-schema/silverfin-sync-point-schema.json
-
+- aid: silverfin:silverfin-accountancy-synchronisation-entities-api
+  name: Silverfin Accountancy Synchronisation Entities API
+  description: >-
+    The Accountancy Synchronisation Entities API from Silverfin — 1 operation(s) for accountancy synchronisation
+    entities.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Accountancy Synchronisation Entities
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-accountancy-synchronisation-entities-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-accounts-api
+  name: Silverfin Accounts API
+  description: The Accounts API from Silverfin — 3 operation(s) for accounts.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-accounts-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-app-api
+  name: Silverfin App API
+  description: The App API from Silverfin — 2 operation(s) for app.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - App
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-app-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-budgets-api
+  name: Silverfin Budgets API
+  description: The Budgets API from Silverfin — 5 operation(s) for budgets.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Budgets
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-budgets-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-client-meetings-api
+  name: Silverfin Client Meetings API
+  description: The Client Meetings API from Silverfin — 4 operation(s) for client meetings.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Client Meetings
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-client-meetings-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-companies-api
+  name: Silverfin Companies API
+  description: The Companies API from Silverfin — 10 operation(s) for companies.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Companies
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-companies-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-company-templates-api
+  name: Silverfin Company Templates API
+  description: The Company Templates API from Silverfin — 1 operation(s) for company templates.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Company Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-company-templates-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-exports-api
+  name: Silverfin Exports API
+  description: The Exports API from Silverfin — 7 operation(s) for exports.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Exports
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-exports-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-financials-api
+  name: Silverfin Financials API
+  description: The Financials API from Silverfin — 24 operation(s) for financials.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Financials
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-financials-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-groups-api
+  name: Silverfin Groups API
+  description: The Groups API from Silverfin — 5 operation(s) for groups.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-groups-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-insights-api
+  name: Silverfin Insights API
+  description: The Insights API from Silverfin — 2 operation(s) for insights.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Insights
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-insights-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-live-export-documents-api
+  name: Silverfin Live Export Documents API
+  description: The Live Export Documents API from Silverfin — 3 operation(s) for live export documents.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Live Export Documents
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-live-export-documents-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-periods-api
+  name: Silverfin Periods API
+  description: The Periods API from Silverfin — 4 operation(s) for periods.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Periods
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-periods-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-permanent-api
+  name: Silverfin Permanent API
+  description: The Permanent API from Silverfin — 5 operation(s) for permanent.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Permanent
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-permanent-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-personal-income-tax-api
+  name: Silverfin Personal Income Tax API
+  description: The Personal Income Tax API from Silverfin — 4 operation(s) for personal income tax.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Personal Income Tax
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-personal-income-tax-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-remarks-api
+  name: Silverfin Remarks API
+  description: The Remarks API from Silverfin — 4 operation(s) for remarks.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Remarks
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-remarks-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-sync-authentication-api
+  name: Silverfin Sync Authentication API
+  description: The Sync Authentication API from Silverfin — 2 operation(s) for sync authentication.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Sync Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-sync-authentication-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-sync-company-specific-api
+  name: Silverfin Sync Company-Specific API
+  description: The Sync Company-Specific API from Silverfin — 4 operation(s) for sync company-specific.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Sync Company-Specific
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-sync-company-specific-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-sync-firm-related-api
+  name: Silverfin Sync Firm-Related API
+  description: The Sync Firm-Related API from Silverfin — 3 operation(s) for sync firm-related.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Sync Firm-Related
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-sync-firm-related-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-sync-webhooks-api
+  name: Silverfin Sync Webhooks API
+  description: The Sync Webhooks API from Silverfin — 2 operation(s) for sync webhooks.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Sync Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-sync-webhooks-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-talking-points-api
+  name: Silverfin Talking Points API
+  description: The Talking Points API from Silverfin — 1 operation(s) for talking points.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Talking Points
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-talking-points-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-templates-api
+  name: Silverfin Templates API
+  description: The Templates API from Silverfin — 16 operation(s) for templates.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-templates-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-user-api
+  name: Silverfin User API
+  description: The User API from Silverfin — 3 operation(s) for user.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-user-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-users-api
+  name: Silverfin Users API
+  description: The Users API from Silverfin — 6 operation(s) for users.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-users-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-webhooks-api
+  name: Silverfin Webhooks API
+  description: The Webhooks API from Silverfin — 2 operation(s) for webhooks.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-webhooks-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
+- aid: silverfin:silverfin-workflows-api
+  name: Silverfin Workflows API
+  description: The Workflows API from Silverfin — 7 operation(s) for workflows.
+  humanURL: https://developer.silverfin.com/reference
+  baseURL: https://live.getsilverfin.com/api/v4
+  tags:
+  - Workflows
+  properties:
+  - type: OpenAPI
+    url: openapi/silverfin-workflows-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-with-locale-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-new-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-results-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-recently-finished-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-export-file-template-info-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-insights-segment-run-pending-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-action-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-account-with-type-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-retained-earnings-account-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-reference-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-extra-field-labels-payload-schema.json
+  - type: JSONSchema
+    url: json-schema/silverfin-sync-point-schema.json
 x-enrichment:
   date: '2026-07-21'
   status: enriched

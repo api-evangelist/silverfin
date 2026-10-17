@@ -1,0 +1,545 @@
+openapi: 3.2.0
+info:
+  title: Silverfin App API
+  description: This is the currently supported stable version of the Silverfin API.
+  version: 1.0.0
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: App
+paths:
+  /api/v4/f/{firm_id}/app/links:
+    get:
+      tags:
+      - App
+      summary: List all links for the current app & user
+      description: 'List all links for the current app & user.
+
+
+        Required scope(s): `links`'
+      security:
+      - OAuth2:
+        - links
+      operationId: getAppLinkByUser
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: app_link_id
+                    name:
+                      type: string
+                      example: Go to sample app
+                    name_nl:
+                      type: string
+                      example: Ga naar voorbeeld app
+                    name_en:
+                      type: string
+                      example: Go to sample app
+                    name_fr:
+                      type: string
+                      example: Aller à l'application d'exemple
+                    name_da:
+                      type: string
+                      example: Gå til eksempel app
+                    target_url:
+                      type: string
+                      example: https://www.sample.com/callback
+                    placement:
+                      type: string
+                      example: reconciliation_action_menu
+                    placement_options:
+                      type: object
+                      properties:
+                        placement_option:
+                          type: array
+                          items:
+                            type: integer
+                            example: 1234
+    post:
+      tags:
+      - App
+      summary: Register an app link
+      description: 'You can register a link in a specific menu in Silverfin to send a user
+
+        from a context in Silverfin to your service or app. This can be useful
+
+        for things like e-signing flows, data integrations and more.
+
+        Please keep in mind that AppLinks are scoped to users, meaning only the
+
+        user who creates them has permissions to delete them. Also, fetching the
+
+        list of AppLinks will return those created by the user making the request.
+
+
+        ## Adding AppLinks as a partner
+
+        If you''re a partner, the placement options for marketplace reconciliation
+
+        text and/or export files is the one you will need if you want to add a
+
+        link for a globally managed template across firms.
+
+        The marketplace placement options should only be used for integrations
+
+        that are meant for the vast majority of Silverfin''s users.
+
+        Please contact Silverfin to request the necessary ids in such cases.
+
+        Since a marketplace reconciliation text/export file/report is globally
+
+        managed and used across multiple firms, this means that when this option
+
+        is used, the AppLink will be shown in the menu of all companies, and for
+
+        every firm that uses this marketplace export file.
+
+        For the ids in the placement options, you can provide a single id value
+
+        or multiple values. In case you omit the value (no id added) for the
+
+        placement options, your AppLink will be added to ALL templates of that
+
+        placement.
+
+
+        Required scope(s): `links`'
+      security:
+      - OAuth2:
+        - links
+      operationId: createAppLink
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name_nl:
+                  type: string
+                  description: 'Name of the link the user will see in NL (max. length 25)
+
+                    '
+                name_fr:
+                  type: string
+                  description: 'Name of the link the user will see in FR (max. length 25)
+
+                    '
+                name_da:
+                  type: string
+                  description: 'Name of the link the user will see in DA (max. length 25)
+
+                    '
+                name_en:
+                  type: string
+                  description: 'Name of the link the user will see in EN (max. length 25)
+
+                    '
+                target_url:
+                  type: string
+                  description: 'The url the user should be forwarded to when clicking
+
+                    the link in the menu
+
+                    '
+                placement:
+                  type: string
+                  enum:
+                  - firm_landing_action_menu
+                  - workflow_action_menu
+                  - export_file_action_menu
+                  - period_action_menu
+                  - reconciliation_action_menu
+                  - permanent_text_action_menu
+                  - permanent_folder_action_menu
+                  - report_action_menu
+                  - mapping_action_menu
+                  - export_action_menu
+                  description: 'The menu in which the link should be shown within Silverfin,
+
+                    you can only add one placement per request
+
+                    '
+                placement_options[firm_workflow_ids][]:
+                  type: string
+                  description: 'An id representing a workflow on firm-level.
+
+                    Use with the ''workflow_action_menu'' placement.
+
+                    '
+                placement_options[marketplace_export_file_ids][]:
+                  type: string
+                  description: 'An id representing an export file that is managed at the
+
+                    global level for all partners.
+
+                    Use with the ''export_file_action_menu''  placement.
+
+                    '
+                placement_options[export_file_ids][]:
+                  type: string
+                  description: 'An id representing an export file managed on firm-level.
+
+                    Use with the ''export_file_action_menu'' placement.
+
+                    '
+                placement_options[marketplace_reconciliation_ids][]:
+                  type: string
+                  description: 'An id representing a reconciliation text managed on
+
+                    partner-level.
+
+                    Use with the ''reconciliation_action_menu'' placement.
+
+                    '
+                placement_options[reconciliation_ids][]:
+                  type: string
+                  description: 'An id representing either a reconciliation text within
+
+                    a firm or the id of a reconciliation text within a company.
+
+                    Use with the ''reconciliation_action_menu'' placement.
+
+                    '
+                client_file_type:
+                  type: string
+                  enum:
+                  - regular
+                  - analytical
+                  - consolidation
+                  - sole_trader
+                  - personal
+                  description: 'Limit the app link to only be shown in a specific client type
+
+                    '
+                open_in_new_tab:
+                  type: boolean
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: app_link_id
+                  name:
+                    type: string
+                  name_nl:
+                    type: string
+                  name_fr:
+                    type: string
+                  name_en:
+                    type: string
+                  name_da:
+                    type: string
+                  target_url:
+                    type: string
+                  placement:
+                    type: string
+                  placement_options:
+                    type: object
+                    properties:
+                      placement_option:
+                        type: array
+                        items:
+                          type: integer
+  /api/v4/f/{firm_id}/app/links/{link_id}:
+    delete:
+      tags:
+      - App
+      summary: Destroy an app link
+      description: 'Destroy an app link.
+
+
+        Required scope(s): `links`'
+      security:
+      - OAuth2:
+        - links
+      operationId: deleteAppLink
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: link_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            administration:read: ''
+            administration:write: ''
+            client_meetings:read: ''
+            client_meetings:external_notes:write: ''
+            communication:read: ''
+            communication:write: ''
+            financials:read: ''
+            financials:write: ''
+            financials:transactions:read: ''
+            financials:transactions:write: ''
+            insights:read: ''
+            insights:write: ''
+            workflows:read: ''
+            workflows:write: ''
+            permanent_documents:read: ''
+            permanent_documents:write: ''
+            webhooks: ''
+            links: ''
+            user:email: ''
+            user:firm: ''
+            user:profile: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/addcompanytogroupbyid.md
+  - https://developer.silverfin.com/reference/addcompanytouserbyid.md
+  - https://developer.silverfin.com/reference/addfirmworkflowtocompany.md
+  - https://developer.silverfin.com/reference/addsharedparttoaccounttemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoexportfiletemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/addusertogroupbyid.md
+  - https://developer.silverfin.com/reference/archiveworkflow.md
+  - https://developer.silverfin.com/reference/attachpersonalincometaxdocument.md
+  - https://developer.silverfin.com/reference/authorizeuser.md
+  - https://developer.silverfin.com/reference/createaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/createaccounttemplate.md
+  - https://developer.silverfin.com/reference/createadjustment.md
+  - https://developer.silverfin.com/reference/createapplink.md
+  - https://developer.silverfin.com/reference/createclientmeetingattachment.md
+  - https://developer.silverfin.com/reference/createcomment.md
+  - https://developer.silverfin.com/reference/createcompany.md
+  - https://developer.silverfin.com/reference/createcompanycustomproperty.md
+  - https://developer.silverfin.com/reference/createcompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/createcompanyuserbyid.md
+  - https://developer.silverfin.com/reference/createexportfileinstance.md
+  - https://developer.silverfin.com/reference/createexportfiletemplate.md
+  - https://developer.silverfin.com/reference/createexportpdfinstance.md
+  - https://developer.silverfin.com/reference/creategroup.md
+  - https://developer.silverfin.com/reference/createliquidtestrun.md
+  - https://developer.silverfin.com/reference/createliveexportdocument.md
+  - https://developer.silverfin.com/reference/createliveexportdocumentinexportpdfinstance.md
+  - https://developer.silverfin.com/reference/createnewaccount.md
+  - https://developer.silverfin.com/reference/createperiod.md
+  - https://developer.silverfin.com/reference/createperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/createpermanentdocument.md
+  - https://developer.silverfin.com/reference/createpermanentfolder.md
+  - https://developer.silverfin.com/reference/createpermanenttext.md
+  - https://developer.silverfin.com/reference/createpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxtaxonweb.md
+  - https://developer.silverfin.com/reference/createreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/createreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/createremark.md
+  - https://developer.silverfin.com/reference/createsharedpart.md
+  - https://developer.silverfin.com/reference/createuser.md
+  - https://developer.silverfin.com/reference/createwebhook.md
+  - https://developer.silverfin.com/reference/deleteaccountcustomproperty.md
+  - https://developer.silverfin.com/reference/deleteaccounttemplate.md
+  - https://developer.silverfin.com/reference/deleteadjustment.md
+  - https://developer.silverfin.com/reference/deleteapplink.md
+  - https://developer.silverfin.com/reference/deletecompany.md
+  - https://developer.silverfin.com/reference/deletecompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromuserbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyuserbyid.md
+  - https://developer.silverfin.com/reference/deleteexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletegroup.md
+  - https://developer.silverfin.com/reference/deleteperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentfolder.md
+  - https://developer.silverfin.com/reference/deletepermanentmail.md
+  - https://developer.silverfin.com/reference/deletereconciliationtextcustomproperty.md
+  - https://developer.silverfin.com/reference/deletereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteremark.md
+  - https://developer.silverfin.com/reference/deletesharedpart.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromaccounttemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteuser.md
+  - https://developer.silverfin.com/reference/deleteuserfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletewebhook.md
+  - https://developer.silverfin.com/reference/get_api-v4-f-firm-id-companies-company-id-periods-period-id-reports-report-id-results.md
+  - https://developer.silverfin.com/reference/getaccountancysyncentities.md
+  - https://developer.silverfin.com/reference/getaccountcontent.md
+  - https://developer.silverfin.com/reference/getaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/getaccountmappingbyaccountmappinglistid.md
+  - https://developer.silverfin.com/reference/getaccountmappinglists.md
+  - https://developer.silverfin.com/reference/getaccountresults.md
+  - https://developer.silverfin.com/reference/getaccountsvaluesbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccounttemplatecontent.md
+  - https://developer.silverfin.com/reference/getaccounttemplateslist.md
+  - https://developer.silverfin.com/reference/getactivefirmworkflowslist.md
+  - https://developer.silverfin.com/reference/getactiveuserslist.md
+  - https://developer.silverfin.com/reference/getadjustmentslist.md
+  - https://developer.silverfin.com/reference/getallpeople.md
+  - https://developer.silverfin.com/reference/getanalyticaldimensionslist.md
+  - https://developer.silverfin.com/reference/getapplinkbyuser.md
+  - https://developer.silverfin.com/reference/getarchivedcompanylist.md
+  - https://developer.silverfin.com/reference/getbalanceslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslistbyaccountid.md
+  - https://developer.silverfin.com/reference/getbudgetentryaccountids.md
+  - https://developer.silverfin.com/reference/getbudgetentrycontent.md
+  - https://developer.silverfin.com/reference/getbudgetentryenddates.md
+  - https://developer.silverfin.com/reference/getclientmeeting.md
+  - https://developer.silverfin.com/reference/getclientmeetingslist.md
+  - https://developer.silverfin.com/reference/getclienttemplateslist.md
+  - https://developer.silverfin.com/reference/getcommentslistfromremark.md
+  - https://developer.silverfin.com/reference/getcompanies.md
+  - https://developer.silverfin.com/reference/getcompaniesfromgrouplist.md
+  - https://developer.silverfin.com/reference/getcompanyaccounts.md
+  - https://developer.silverfin.com/reference/getcompanycustomproperties.md
+  - https://developer.silverfin.com/reference/getcompanydetails.md
+  - https://developer.silverfin.com/reference/getcompanyfollowers.md
+  - https://developer.silverfin.com/reference/getcompanyuserlist.md
+  - https://developer.silverfin.com/reference/getcurrentclientmeeting.md
+  - https://developer.silverfin.com/reference/getcurrentuserdetails.md
+  - https://developer.silverfin.com/reference/getcurrentuseremail.md
+  - https://developer.silverfin.com/reference/getcurrentuserfirm.md
+  - https://developer.silverfin.com/reference/getexportfileinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportfileinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportfileslist.md
+  - https://developer.silverfin.com/reference/getexportfiletemplatecontent.md
+  - https://developer.silverfin.com/reference/getexportfiletemplateslist.md
+  - https://developer.silverfin.com/reference/getexportpdfinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportpdfinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportpdfslist.md
+  - https://developer.silverfin.com/reference/getexportpdftemplateslist.md
+  - https://developer.silverfin.com/reference/getgroupslist.md
+  - https://developer.silverfin.com/reference/getinactiveuserslist.md
+  - https://developer.silverfin.com/reference/getinsightssegmentresults.md
+  - https://developer.silverfin.com/reference/getliveexportdocument.md
+  - https://developer.silverfin.com/reference/getliveexportdocumentslist.md
+  - https://developer.silverfin.com/reference/getopentransactions.md
+  - https://developer.silverfin.com/reference/getperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/getperioddetails.md
+  - https://developer.silverfin.com/reference/getperiods.md
+  - https://developer.silverfin.com/reference/getperiodspecificdocumentslist.md
+  - https://developer.silverfin.com/reference/getperiodworkflowslist.md
+  - https://developer.silverfin.com/reference/getpermanentdocumentcontent.md
+  - https://developer.silverfin.com/reference/getpermanentfoldercontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/getpermanenttextresults.md
+  - https://developer.silverfin.com/reference/getpermanenttextsignmarkers.md
+  - https://developer.silverfin.com/reference/getpermanenttextslist.md
+  - https://developer.silverfin.com/reference/getpermanenttexttemplatelist.md
+  - https://developer.silverfin.com/reference/getpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/getreconciliationtextresults.md
+  - https://developer.silverfin.com/reference/getreconciliationtexts.md
+  - https://developer.silverfin.com/reference/getreconciliationtextsignmarkers.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatecontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplateliquidtestrun.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatelist.md
+  - https://developer.silverfin.com/reference/getremarkslist.md
+  - https://developer.silverfin.com/reference/getreportslist.md
+  - https://developer.silverfin.com/reference/getsharedpartcontent.md
+  - https://developer.silverfin.com/reference/getsharedpartslist.md
+  - https://developer.silverfin.com/reference/getusercompanieslist.md
+  - https://developer.silverfin.com/reference/getusersfromgrouplist.md
+  - https://developer.silverfin.com/reference/getwebhookslist.md
+  - https://developer.silverfin.com/reference/getworkflowreconciliationtextslist.md
+  - https://developer.silverfin.com/reference/getworkflowstatus.md
+  - https://developer.silverfin.com/reference/lintliquidcode.md
+  - https://developer.silverfin.com/reference/moveexportpdfinstancetodocuments.md
+  - https://developer.silverfin.com/reference/movepermanentmail.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token.md
+  - https://developer.silverfin.com/reference/replaceperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/runinsightssegment.md
+  - https://developer.silverfin.com/reference/updateaccountcontent.md
+  - https://developer.silverfin.com/reference/updateaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/updateaccounttemplate.md
+  - https://developer.silverfin.com/reference/updateadjustment.md
+  - https://developer.silverfin.com/reference/updateallpeople.md
+  - https://developer.silverfin.com/reference/updatearchivedcompany.md
+  - https://developer.silverfin.com/reference/updatebatchaccountcontent.md
+  - https://developer.silverfin.com/reference/updatecompanydetails.md
+  - https://developer.silverfin.com/reference/updateexportfiletemplate.md
+  - https://developer.silverfin.com/reference/updateinactiveuser.md
+  - https://developer.silverfin.com/reference/updateinactiveworkflow.md
+  - https://developer.silverfin.com/reference/updateliveexportdocument.md
+  - https://developer.silverfin.com/reference/updateperiodspublicflag.md
+  - https://developer.silverfin.com/reference/updatepermanentdocument.md
+  - https://developer.silverfin.com/reference/updatepermanentfolder.md
+  - https://developer.silverfin.com/reference/updatepermanenttext.md
+  - https://developer.silverfin.com/reference/updatepersonalincometaxmetadata.md
+  - https://developer.silverfin.com/reference/updatereconciliationtextstarringstatus.md
+  - https://developer.silverfin.com/reference/updatereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/updateremarkflag.md
+  - https://developer.silverfin.com/reference/updatesharedpart.md
+  - https://developer.silverfin.com/reference/updateuser.md
+  merge:
+    pages: 180
+    deduped: 213
+    conflicts_kept_first: 0

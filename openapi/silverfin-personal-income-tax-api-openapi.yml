@@ -1,0 +1,2308 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Personal Income Tax API
+  description: This is the currently supported stable version of the Silverfin API.
+  version: 1.0.0
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Personal Income Tax
+paths:
+  /api/v4/f/{firm_id}/companies/{company_id}/personal_income_tax/{year}/document:
+    post:
+      tags:
+      - Personal Income Tax
+      summary: Attach a document to PIT workflow
+      description: 'Attach a PDF document to the PIT workflow for the specified year.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: attachPersonalIncomeTaxDocument
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The firm ID
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The company ID
+      - name: year
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The tax year (e.g., 2024)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              - source
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: A PDF document to attach to the PIT workflow
+                source:
+                  type: string
+                  enum:
+                  - my_minfin
+                  - tax_on_web
+                  - questionnaire
+                  - manual
+                  description: Declares where this file is originating from
+      responses:
+        '201':
+          description: Document attached successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Document ID
+                  name:
+                    type: string
+                    description: Document name
+                  downloadable:
+                    type: boolean
+                  size:
+                    type: integer
+                    description: File size in bytes
+                  content_type:
+                    type: string
+                    description: MIME type of the document
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/personal_income_tax/{year}/metadata:
+    post:
+      tags:
+      - Personal Income Tax
+      summary: Update PIT metadata
+      description: 'Update metadata for a PIT file for a given year.
+
+
+        Currently available metadata: deadline_date
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: updatePersonalIncomeTaxMetadata
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The firm ID
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The company ID
+      - name: year
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The tax year (e.g., 2024)
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metadata:
+                  type: object
+                  properties:
+                    deadline_date:
+                      type: string
+                      format: date
+                      description: Deadline date in YYYY-MM-DD format
+      responses:
+        '200':
+          description: Metadata updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                    properties:
+                      deadline_date:
+                        type: string
+                        format: date
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/personal_income_tax/{year}/questionnaire:
+    get:
+      tags:
+      - Personal Income Tax
+      summary: Get PIT questionnaire data
+      description: 'Get data from PIT questionnaire for the specified year.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getPersonalIncomeTaxQuestionnaire
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The firm ID
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The company ID
+      - name: year
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The tax year (e.g., 2024)
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionnaire:
+                    type: object
+                    properties:
+                      immovable_properties:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            street:
+                              type: string
+                              description: Property street address.
+                            number:
+                              type: string
+                              description: Property number.
+                            box:
+                              type: string
+                              description: 'Property address: Post box number (Belgian address component).'
+                            postal_code:
+                              type: string
+                              description: Property postal code.
+                            city:
+                              type: string
+                              description: Property city.
+                            country:
+                              type: string
+                              description: 'Property country: Country related to the property.'
+                            date_of_acquisition:
+                              type: string
+                              description: 'Property date of acquisition: Related to property purchase.'
+                            non_indexed_cadastral_income:
+                              type: number
+                              description: Property non-indexed cadastral income.
+                            date_of_sale:
+                              type: string
+                              description: Property date of sale.
+                            date_of_change:
+                              type: string
+                              description: Property date of change; related to property changes.
+                            new_non_indexed_cadastral_income:
+                              type: number
+                              description: 'Property: New non-indexed cadastral income after change.'
+                            type:
+                              type: string
+                              description: Type of property.
+                            right_of_use_received:
+                              type: string
+                              description: Related to type of right of use received.
+                            right_of_use_explanation:
+                              type: string
+                              description: Property right of use explanation.
+                            date_leasehold:
+                              type: string
+                              description: Property date related to leasehold.
+                            name_and_address_receiver:
+                              type: string
+                              description: Property related to the name and address of the receiver.
+                            ownership_type_main:
+                              type: string
+                              description: Property ownership type for main.
+                            third_party_ownership_percentage:
+                              type: number
+                              description: Related to ownership percentage held by third parties.
+                            ownership_percentage_main:
+                              type: number
+                              description: Property ownership percentage for main applicant.
+                            received_leasehold_and_fees_main:
+                              type: number
+                              description: 'Property: Leasehold and fees received for main applicant.'
+                            paid_leasehold_and_fees_main:
+                              type: number
+                              description: 'Property: Leasehold and fees paid for main applicant.'
+                            ownership_type_partner:
+                              type: string
+                              description: Property ownership type related to partner.
+                            ownership_percentage_partner:
+                              type: number
+                              description: Property ownership percentage for partner.
+                            received_leasehold_and_fees_partner:
+                              type: number
+                              description: 'Property: Leasehold and fees received related to partner.'
+                            paid_leasehold_and_fees_partner:
+                              type: number
+                              description: 'Property: leasehold and fees paid by partner.'
+                            loan_applicable:
+                              type: string
+                              description: Yes/No boolean. Related to loan applicability for tax deduction.
+                            uuid:
+                              type: string
+                              description: Unique identifier for the immovable property.
+                            destinations_and_partitions:
+                              type: array
+                              description: Property destination and partition details (e.g., self-inhabited, rented).
+                              items:
+                                type: object
+                                properties:
+                                  yes_no:
+                                    type: string
+                                    description: Yes/No boolean.
+                                  start_date:
+                                    type: string
+                                    description: Start date of the destination/partition period.
+                                  received_rent:
+                                    type: number
+                                    description: Received rent amount.
+                                  percentage_furnished:
+                                    type: number
+                                    description: Percentage furnished for the property's destination and partition.
+                                  percentage_cadastral_income:
+                                    type: number
+                                    description: Related to cadastral income percentage.
+                                  mandated_manager:
+                                    type: string
+                                    description: Related to mandated property manager.
+                                  maintenance_costs:
+                                    type: number
+                                    description: Maintenance costs amount.
+                                  end_date:
+                                    type: string
+                                    description: End date of the destination/partition period.
+                                  destination:
+                                    type: string
+                                    description: Property destination.
+                                  uuid:
+                                    type: string
+                                    description: Unique identifier for the destination and partition.
+                                required:
+                                - uuid
+                            loans:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  type_of_house:
+                                    type: string
+                                    description: Type of house related to the loan.
+                                  end_date:
+                                    type: string
+                                    description: Loan end date.
+                                  early_reimbursement_date:
+                                    type: string
+                                    description: Date related to early loan reimbursement, if applicable.
+                                  amount:
+                                    type: number
+                                    description: Loan amount for the immovable property.
+                                  mortgage_registration:
+                                    type: number
+                                    description: Loan mortgage registration amount.
+                                  duration_extension_covid:
+                                    type: integer
+                                    description: Related to COVID-related loan duration extension.
+                                  date_end_renovation_works:
+                                    type: string
+                                    description: Related to end date of renovation works for this loan.
+                                  amount_renovation_vat_included:
+                                    type: number
+                                    description: Related to renovation loan amount, VAT included.
+                                  date_commissioning_new_housing:
+                                    type: string
+                                    description: Date of commissioning related to new housing loan.
+                                  number_children_on_date:
+                                    type: integer
+                                    description: Number of children on reference date related to loan.
+                                  of_which_disabled:
+                                    type: integer
+                                    description: Related to disabled children.
+                                  percentage_co_borrower:
+                                    type: number
+                                    description: Percentage related to co-borrower of loan.
+                                  percentage_housing_rented_on_date:
+                                    type: number
+                                    description: Loan percentage related to housing rented on date.
+                                  capital_repaid:
+                                    type: number
+                                    description: Capital repaid for loan related to immovable property.
+                                  interest_paid:
+                                    type: number
+                                    description: Loan interest amount paid for the property.
+                                  additional_refinancing:
+                                    type: string
+                                    description: Related to additional refinancing.
+                                  ownership_historic_main:
+                                    type: number
+                                    description: Historic ownership percentage for main applicant.
+                                  ownership_historic_partner:
+                                    type: number
+                                    description: Related to historic ownership percentage for partner.
+                                  who_borrowed_main:
+                                    type: string
+                                    description: Yes/No boolean. Related to main applicant being the borrower.
+                                  who_borrowed_partner:
+                                    type: string
+                                    description: Yes/No boolean. Related to whether partner borrowed.
+                                  housing_on_date_main:
+                                    type: string
+                                    description: Yes/No boolean. Related to main taxpayer occupancy of housing on reference date.
+                                  housing_on_date_partner:
+                                    type: string
+                                    description: Yes/No boolean. Related to partner's housing on reference date.
+                                  housing_only_main:
+                                    type: string
+                                    description: Yes/No boolean. Related to main applicant's only housing status regarding the loan.
+                                  housing_only_partner:
+                                    type: string
+                                    description: Yes/No boolean. Related to the partner's only housing status for this loan.
+                                  housing_still_only_main:
+                                    type: string
+                                    description: Yes/No boolean. Related to only housing for main applicant.
+                                  housing_still_only_partner:
+                                    type: string
+                                    description: Yes/No boolean. Related to partner's only housing status for the loan.
+                                  renovation_finished:
+                                    type: string
+                                    description: Yes/No boolean. Related to whether renovation works are finished for loan.
+                                  residential_bonus:
+                                    type: string
+                                    description: Yes/No boolean. Whether residential bonus applies.
+                                  debt_balance_insurance_contracted:
+                                    type: string
+                                    description: Yes/No boolean. Related to debt balance insurance contracted.
+                                  purpose_loan:
+                                    type: string
+                                    description: Loan purpose related to immovable property.
+                                  loan_contract_date:
+                                    type: string
+                                    description: Date the loan contract was signed.
+                                  additional_loan:
+                                    type: string
+                                    description: Yes/No boolean. Related to additional loan.
+                                  uuid:
+                                    type: string
+                                    description: Unique identifier for the loan.
+                                  refinancings:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        type_of_house:
+                                          type: string
+                                          description: Type of house related to the refinancing.
+                                        end_date:
+                                          type: string
+                                          description: Refinancing end date related to the loan for immovable property.
+                                        early_reimbursement_date:
+                                          type: string
+                                          description: Date of early reimbursement, related to the refinancing of the loan.
+                                        amount:
+                                          type: number
+                                          description: Refinancing amount related to the immovable property loan.
+                                        mortgage_registration:
+                                          type: number
+                                          description: Refinancing mortgage registration amount.
+                                        duration_extension_covid:
+                                          type: integer
+                                          description: Related to COVID loan duration extension.
+                                        remaining_capital:
+                                          type: number
+                                          description: Remaining loan capital.
+                                        number_children_on_date:
+                                          type: integer
+                                          description: Related to the number of children on a specific date.
+                                        of_which_disabled:
+                                          type: integer
+                                          description: Related to disabled children count in refinancing.
+                                        percentage_co_borrower:
+                                          type: number
+                                          description: Percentage related to co-borrower.
+                                        capital_repaid:
+                                          type: number
+                                          description: Refinancing capital repaid.
+                                        interest_paid:
+                                          type: number
+                                          description: 'Related to refinancing: interest amount paid.'
+                                        ownership_historic_main:
+                                          type: number
+                                          description: Related to ownership percentage for main applicant.
+                                        ownership_historic_partner:
+                                          type: number
+                                          description: Refinancing historic ownership percentage related to partner.
+                                        who_borrowed_main:
+                                          type: string
+                                          description: Yes/No boolean. Related to borrower for main applicant.
+                                        who_borrowed_partner:
+                                          type: string
+                                          description: Yes/No boolean. Related to partner as a borrower.
+                                        housing_only_main:
+                                          type: string
+                                          description: Yes/No boolean. Related to main taxpayer's only housing.
+                                        housing_only_partner:
+                                          type: string
+                                          description: Yes/No boolean. Related to housing status for partner.
+                                        housing_still_only_main:
+                                          type: string
+                                          description: Yes/No boolean. Related to main applicant's only housing status.
+                                        housing_still_only_partner:
+                                          type: string
+                                          description: Yes/No boolean. Related to housing, for partner.
+                                        residential_bonus:
+                                          type: string
+                                          description: Yes/No boolean. Related to residential bonus.
+                                        debt_balance_insurance_contracted:
+                                          type: string
+                                          description: Yes/No boolean. Related to debt balance insurance on refinancing.
+                                        type_refinancing:
+                                          type: string
+                                          description: Type of refinancing.
+                                        refinancing_contract_date:
+                                          type: string
+                                          description: Date refinancing contract was signed.
+                                        refinanced_again:
+                                          type: string
+                                          description: Yes/No boolean. Related to whether the loan was refinanced again.
+                                        uuid:
+                                          type: string
+                                          description: Unique identifier for the refinancing.
+                                      required:
+                                      - uuid
+                                  loan_debt_insurance_contracts:
+                                    type: array
+                                    description: Loan debt insurance contracts linked to the loan.
+                                    items:
+                                      type: object
+                                      properties:
+                                        applicant_insured:
+                                          type: string
+                                        date_contract:
+                                          type: string
+                                          description: Date the insurance contract was signed.
+                                        name_insurance_company:
+                                          type: string
+                                        paid_premium:
+                                          type: number
+                                        contract_number_insurance:
+                                          type: string
+                                          description: Insurance contract number related to the loan debt insurance contract.
+                                        uuid:
+                                          type: string
+                                          description: Unique identifier for the loan debt insurance contract.
+                                      required:
+                                      - uuid
+                                required:
+                                - uuid
+                          required:
+                          - uuid
+                      life_insurance_contracts:
+                        type: array
+                        description: List of standalone life insurance contracts related to the Belgian PIT.
+                        items:
+                          type: object
+                          properties:
+                            applicant_insured:
+                              type: string
+                            date_contract:
+                              type: string
+                              description: Date the insurance contract was signed.
+                            name_insurance_company:
+                              type: string
+                            paid_premium:
+                              type: number
+                            uuid:
+                              type: string
+                              description: Unique identifier for the life insurance contract.
+                          required:
+                          - uuid
+    post:
+      tags:
+      - Personal Income Tax
+      summary: Submit PIT questionnaire data
+      description: 'Post data to PIT via questionnaire.
+
+
+        **WARNING:** Each request REPLACES ALL previously submitted questionnaire data for the specified year.
+
+        Any fields not included in the request will be deleted.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: createPersonalIncomeTaxQuestionnaire
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The firm ID
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The company ID
+      - name: year
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The tax year (e.g., 2024)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questionnaire:
+                  type: object
+                  properties:
+                    iban_number:
+                      type: string
+                      description: IBAN number for taxpayer's bank account; used for refunds or direct debit.
+                    cost_type_net_income:
+                      type: string
+                      description: Related to eligible net income types.
+                    cost_rate_net_income:
+                      type: integer
+                      description: Related to net income cost rate.
+                    additional_children:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          income_categories:
+                            type: array
+                            description: Additional child income category objects, attributes within each category.
+                            items:
+                              type: object
+                              properties:
+                                actual_costs:
+                                  type: number
+                                received_income:
+                                  type: number
+                                income_association_activities_subcategory:
+                                  type: string
+                                profits_subcategory:
+                                  type: string
+                                other_income_subcategory:
+                                  type: string
+                                maintenance_allowance_subcategory:
+                                  type: string
+                                pension_income_subcategory:
+                                  type: string
+                                wages_subcategory:
+                                  type: string
+                                selected_income_category:
+                                  type: string
+                          properties_income:
+                            type: array
+                            description: Children's property income objects, with attributes for each income-generating property.
+                            items:
+                              type: object
+                              properties:
+                                actual_costs:
+                                  type: number
+                                cadastral_income:
+                                  type: number
+                                rented_property_boolean:
+                                  type: string
+                                  description: Yes/No boolean value.
+                                property_income_subcategory:
+                                  type: string
+                    additional_dependents:
+                      type: array
+                      description: Additional dependents list, each with income category and property income objects.
+                      items:
+                        type: object
+                        properties:
+                          income_categories:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                received_income:
+                                  type: number
+                          properties_income:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                actual_costs:
+                                  type: number
+                                cadastral_income:
+                                  type: number
+                                rented_property_boolean:
+                                  type: string
+                                  description: Yes/No boolean value.
+                    alimony_beneficiaries:
+                      type: array
+                      description: Array of alimony beneficiaries' details (name, address, etc.) for deduction calculation.
+                      items:
+                        type: object
+                        properties:
+                          beneficiary_address:
+                            type: string
+                            description: Beneficiary address related to alimony.
+                          beneficiary_first_name:
+                            type: string
+                            description: Related to the beneficiary's first name.
+                          beneficiary_last_name:
+                            type: string
+                            description: Beneficiary last name related to alimony.
+                          beneficiary_country:
+                            type: string
+                            description: Related to the beneficiary's country.
+                          beneficiary_monthly_amount:
+                            type: number
+                            description: Related to monthly alimony amount for beneficiary.
+                    alimony_debtors:
+                      type: array
+                      description: List of alimony debtors.
+                      items:
+                        type: object
+                        properties:
+                          debtor_address:
+                            type: string
+                            description: Related to alimony debtor address.
+                          debtor_first_name:
+                            type: string
+                            description: Related to debtor's first name.
+                          debtor_last_name:
+                            type: string
+                            description: Debtor's last name related to alimony payments.
+                          debtor_country:
+                            type: string
+                            description: Related to alimony debtor country.
+                    children:
+                      type: array
+                      description: List of child objects for PIT calculation, including personal information.
+                      items:
+                        type: object
+                        properties:
+                          surname:
+                            type: string
+                            description: Surname related to a child.
+                          first_name:
+                            type: string
+                            description: Related to child's first name.
+                          date_of_birth:
+                            type: string
+                            format: date
+                            description: Related to child's birth.
+                          child_has_income:
+                            type: string
+                            description: Related to child's income. Yes/No boolean value.
+                          child_has_disability:
+                            type: string
+                            description: Related to child's disability status. Yes/No boolean value.
+                          child_dependency_type:
+                            type: string
+                            description: Related to child dependency type.
+                          date_of_death:
+                            type: string
+                            format: date
+                            description: Related to child's death.
+                          childcare_applicable:
+                            type: string
+                            description: Related to childcare expenses for this child. Yes/No boolean value.
+                          months_child_lived_in_belgium:
+                            type: string
+                            description: Related to the number of months child lived in Belgium.
+                    childcare_expenses:
+                      type: array
+                      description: List of children for whom childcare expenses are claimed.
+                      items:
+                        type: object
+                        properties:
+                          paid_amount:
+                            type: number
+                          number_of_days:
+                            type: integer
+                          daily_rate:
+                            type: number
+                          childcare_name:
+                            type: string
+                          child_name:
+                            type: string
+                    copyright_income_new_cost_type:
+                      type: string
+                      description: Related to type of copyright income eligible for new income scheme.
+                    copyright_income_cost_type_transitional:
+                      type: string
+                      description: Related to copyright income eligible for a transitional arrangement.
+                    foreign_bank_accounts:
+                      type: array
+                      description: Foreign bank accounts of the taxpayer, partner, or children; reported by the taxpayer.
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: Foreign bank account name or foreign life insurance contract name.
+                          discontinued:
+                            type: boolean
+                            description: Related to if the bank account has been closed.
+                          cpc_checkbox:
+                            type: boolean
+                            description: Central Point of Contact declaration checkbox.
+                          country_dropdown:
+                            type: string
+                            description: Country related to the foreign bank account.
+                    movable_income_foreign_income_items:
+                      type: array
+                      description: Exemptions for foreign movable income (dividends, interest, etc.)
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                          amount:
+                            type: number
+                          nature:
+                            type: string
+                    foreign_life_insurance:
+                      type: array
+                      description: Taxpayer, partner, or children's foreign life insurance policies held during the income year.
+                      items:
+                        type: object
+                        properties:
+                          discontinued:
+                            type: boolean
+                            description: Related to foreign life insurance discontinuation.
+                          country_dropdown:
+                            type: string
+                            description: Related to foreign life insurance.
+                    immovable_properties:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - uuid
+                        properties:
+                          street:
+                            type: string
+                            description: Property street address.
+                          number:
+                            type: string
+                            description: Property number.
+                          box:
+                            type: string
+                            description: 'Property address: Post box number (Belgian address component).'
+                          postal_code:
+                            type: string
+                            description: Property postal code.
+                          city:
+                            type: string
+                            description: Property city.
+                          country:
+                            type: string
+                            description: 'Property country: Country related to the property [attribute].'
+                          date_of_acquisition:
+                            type: string
+                            format: date
+                            description: 'Property date of acquisition: Related to property purchase.'
+                          non_indexed_cadastral_income:
+                            type: number
+                            description: Property non-indexed cadastral income.
+                          date_of_sale:
+                            type: string
+                            format: date
+                            description: Property date of sale.
+                          date_of_change:
+                            type: string
+                            format: date
+                            description: Property date of change; related to property changes.
+                          new_non_indexed_cadastral_income:
+                            type: number
+                            description: 'Property: New non-indexed cadastral income after change.'
+                          type:
+                            type: string
+                            description: Type of property
+                          right_of_use_received:
+                            type: string
+                            description: 'Property [right_of_use_received]: Related to type of right of use received.'
+                          right_of_use_explanation:
+                            type: string
+                            description: Property right of use explanation.
+                          date_leasehold:
+                            type: string
+                            format: date
+                            description: Property date related to leasehold.
+                          name_and_address_receiver:
+                            type: string
+                            description: Property related to the name and address of the receiver.
+                          ownership_type_main:
+                            type: string
+                            description: Property ownership type for main.
+                          third_party_ownership_percentage:
+                            type: number
+                            description: Related to ownership percentage held by third parties.
+                          ownership_percentage_main:
+                            type: number
+                            description: Property ownership percentage for main applicant.
+                          received_leasehold_and_fees_main:
+                            type: number
+                            description: 'Property: Leasehold and fees received for main applicant.'
+                          paid_leasehold_and_fees_main:
+                            type: number
+                            description: 'Property: Leasehold and fees paid for main applicant.'
+                          ownership_type_partner:
+                            type: string
+                            description: Property ownership type related to partner.
+                          ownership_percentage_partner:
+                            type: number
+                            description: Property ownership percentage for partner.
+                          received_leasehold_and_fees_partner:
+                            type: number
+                            description: 'Property: Leasehold and fees received related to partner.'
+                          paid_leasehold_and_fees_partner:
+                            type: number
+                            description: 'Property: leasehold and fees paid by partner.'
+                          loan_applicable:
+                            type: string
+                            description: Related to loan applicability for tax deduction. Yes/No boolean value.
+                          uuid:
+                            type: string
+                            description: Unique identifier for the immovable property.
+                          destinations_and_partitions:
+                            type: array
+                            description: Property destination and partition details (e.g., self-inhabited, rented).
+                            items:
+                              type: object
+                              required:
+                              - uuid
+                              properties:
+                                yes_no:
+                                  type: string
+                                  description: Yes/No boolean value.
+                                start_date:
+                                  type: string
+                                  format: date
+                                received_rent:
+                                  type: number
+                                percentage_furnished:
+                                  type: number
+                                  description: Percentage furnished for the property's destination and partition.
+                                percentage_cadastral_income:
+                                  type: number
+                                  description: Related to cadastral income percentage.
+                                mandated_manager:
+                                  type: string
+                                  description: Related to mandated property manager.
+                                maintenance_costs:
+                                  type: number
+                                end_date:
+                                  type: string
+                                  format: date
+                                destination:
+                                  type: string
+                                  description: Property destination.
+                                uuid:
+                                  type: string
+                                  description: Unique identifier for the destination and partition.
+                          loans:
+                            type: array
+                            items:
+                              type: object
+                              required:
+                              - uuid
+                              properties:
+                                type_of_house:
+                                  type: string
+                                  description: Type of house related to the loan.
+                                end_date:
+                                  type: string
+                                  format: date
+                                  description: Loan end date.
+                                early_reimbursement_date:
+                                  type: string
+                                  format: date
+                                  description: Date related to early loan reimbursement, if applicable.
+                                amount:
+                                  type: number
+                                  description: Loan amount for the immovable property.
+                                mortgage_registration:
+                                  type: number
+                                  description: Loan mortgage registration amount.
+                                duration_extension_covid:
+                                  type: integer
+                                  description: Related to COVID-related loan duration extension.
+                                date_end_renovation_works:
+                                  type: string
+                                  format: date
+                                  description: Related to end date of renovation works for this loan.
+                                amount_renovation_vat_included:
+                                  type: number
+                                  description: Related to renovation loan amount, VAT included.
+                                date_commissioning_new_housing:
+                                  type: string
+                                  format: date
+                                  description: Date of commissioning related to new housing loan.
+                                number_children_on_date:
+                                  type: integer
+                                  description: Number of children on reference date related to loan.
+                                of_which_disabled:
+                                  type: integer
+                                  description: Related to disabled children.
+                                percentage_co_borrower:
+                                  type: number
+                                  description: Percentage related to co-borrower of loan.
+                                percentage_housing_rented_on_date:
+                                  type: number
+                                  description: Loan percentage related to housing rented on date.
+                                capital_repaid:
+                                  type: number
+                                  description: Capital repaid for loan related to immovable property.
+                                interest_paid:
+                                  type: number
+                                  description: Loan interest amount paid for the property.
+                                additional_refinancing:
+                                  type: string
+                                  description: Related to additional refinancing.
+                                ownership_historic_main:
+                                  type: number
+                                  description: Historic ownership percentage for main applicant.
+                                ownership_historic_partner:
+                                  type: number
+                                  description: Related to historic ownership percentage for partner.
+                                who_borrowed_main:
+                                  type: string
+                                  description: Related to main applicant being the borrower. Yes/No boolean value.
+                                who_borrowed_partner:
+                                  type: string
+                                  description: Related to whether partner borrowed. Yes/No boolean value.
+                                housing_on_date_main:
+                                  type: string
+                                  description: Related to main taxpayer occupancy of housing on reference date. Yes/No boolean value.
+                                housing_on_date_partner:
+                                  type: string
+                                  description: Related to partner's housing on reference date. Yes/No boolean value.
+                                housing_only_main:
+                                  type: string
+                                  description: Related to main applicant's only housing status regarding the loan. Yes/No boolean value.
+                                housing_only_partner:
+                                  type: string
+                                  description: Related to the partner's only housing status for this loan. Yes/No boolean value.
+                                housing_still_only_main:
+                                  type: string
+                                  description: Related to only housing for main applicant. Yes/No boolean value.
+                                housing_still_only_partner:
+                                  type: string
+                                  description: Related to partner's only housing status for the loan. Yes/No boolean value.
+                                renovation_finished:
+                                  type: string
+                                  description: Related to whether renovation works are finished for loan. Yes/No boolean value.
+                                residential_bonus:
+                                  type: string
+                                  description: Whether residential bonus applies. Yes/No boolean value.
+                                debt_balance_insurance_contracted:
+                                  type: string
+                                  description: Related to debt balance insurance contracted. Yes/No boolean value.
+                                purpose_loan:
+                                  type: string
+                                  description: Loan purpose related to immovable property.
+                                loan_contract_date:
+                                  type: string
+                                  format: date
+                                  description: Date the loan contract was signed.
+                                additional_loan:
+                                  type: string
+                                  description: Related to additional loan. Yes/No boolean value.
+                                uuid:
+                                  type: string
+                                  description: Unique identifier for the loan.
+                                refinancings:
+                                  type: array
+                                  items:
+                                    type: object
+                                    required:
+                                    - uuid
+                                    properties:
+                                      type_of_house:
+                                        type: string
+                                        description: Type of house related to the refinancing.
+                                      end_date:
+                                        type: string
+                                        format: date
+                                        description: Refinancing end date related to the loan for immovable property.
+                                      early_reimbursement_date:
+                                        type: string
+                                        format: date
+                                        description: Date of early reimbursement, related to the refinancing of the loan.
+                                      amount:
+                                        type: number
+                                        description: Refinancing amount related to the immovable property loan.
+                                      mortgage_registration:
+                                        type: number
+                                        description: Refinancing mortgage registration amount.
+                                      duration_extension_covid:
+                                        type: integer
+                                        description: Related to COVID loan duration extension.
+                                      remaining_capital:
+                                        type: number
+                                        description: Remaining loan capital.
+                                      number_children_on_date:
+                                        type: integer
+                                        description: Related to the number of children on a specific date.
+                                      of_which_disabled:
+                                        type: integer
+                                        description: Related to disabled children count in refinancing.
+                                      percentage_co_borrower:
+                                        type: number
+                                        description: Percentage related to co-borrower.
+                                      capital_repaid:
+                                        type: number
+                                        description: Refinancing capital repaid.
+                                      interest_paid:
+                                        type: number
+                                        description: 'Related to refinancing: interest amount paid.'
+                                      ownership_historic_main:
+                                        type: number
+                                        description: Related to ownership percentage for main applicant.
+                                      ownership_historic_partner:
+                                        type: number
+                                        description: Refinancing historic ownership percentage related to partner.
+                                      who_borrowed_main:
+                                        type: string
+                                        description: Related to borrower for main applicant. Yes/No boolean value.
+                                      who_borrowed_partner:
+                                        type: string
+                                        description: Related to partner as a borrower. Yes/No boolean value.
+                                      housing_only_main:
+                                        type: string
+                                        description: Related to main taxpayer's only housing. Yes/No boolean value.
+                                      housing_only_partner:
+                                        type: string
+                                        description: Related to housing status for partner. Yes/No boolean value.
+                                      housing_still_only_main:
+                                        type: string
+                                        description: Related to main applicant's only housing status. Yes/No boolean value.
+                                      housing_still_only_partner:
+                                        type: string
+                                        description: Related to housing, for partner. Yes/No boolean value.
+                                      residential_bonus:
+                                        type: string
+                                        description: Related to residential bonus. Yes/No boolean value.
+                                      debt_balance_insurance_contracted:
+                                        type: string
+                                        description: Related to debt balance insurance on refinancing. Yes/No boolean value.
+                                      type_refinancing:
+                                        type: string
+                                        description: Type of refinancing.
+                                      refinancing_contract_date:
+                                        type: string
+                                        format: date
+                                        description: Date refinancing contract was signed.
+                                      refinanced_again:
+                                        type: string
+                                        description: Related to whether the loan was refinanced again. Yes/No boolean value.
+                                      uuid:
+                                        type: string
+                                        description: Unique identifier for the refinancing.
+                                loan_debt_insurance_contracts:
+                                  type: array
+                                  description: Loan debt insurance contracts linked to the loan.
+                                  items:
+                                    type: object
+                                    required:
+                                    - uuid
+                                    properties:
+                                      applicant_insured:
+                                        type: string
+                                      date_contract:
+                                        type: string
+                                        format: date
+                                      name_insurance_company:
+                                        type: string
+                                      paid_premium:
+                                        type: number
+                                      contract_number_insurance:
+                                        type: string
+                                        description: Insurance contract number related to the loan debt insurance contract.
+                                      uuid:
+                                        type: string
+                                        description: Unique identifier for the extra property.
+                    life_insurance_contracts:
+                      type: array
+                      description: List of standalone life insurance contracts related to the Belgian PIT.
+                      items:
+                        type: object
+                        required:
+                        - uuid
+                        properties:
+                          applicant_insured:
+                            type: string
+                          date_contract:
+                            type: string
+                            format: date
+                          name_insurance_company:
+                            type: string
+                          paid_premium:
+                            type: number
+                          uuid:
+                            type: string
+                            description: Unique identifier for the life insurance contract.
+                    main_person:
+                      type: object
+                      properties:
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        national_registry_number:
+                          type: string
+                        date_of_birth:
+                          type: string
+                          format: date
+                        street:
+                          type: string
+                        number:
+                          type: string
+                        postal_code:
+                          type: string
+                        box:
+                          type: string
+                        city:
+                          type: string
+                        country:
+                          type: string
+                        phone_number:
+                          type: string
+                        date_available_amounts:
+                          type: string
+                          format: date
+                          description: Main applicant date win-win funds available (Wallonia region).
+                    other_dependents:
+                      type: array
+                      description: List of other dependents (not children) claimed on the tax return.
+                      items:
+                        type: object
+                        properties:
+                          surname:
+                            type: string
+                          other_person_dependency_type:
+                            type: string
+                            description: Related to type of dependency for other dependents.
+                          other_dependent_severe_disability:
+                            type: string
+                            description: Related to dependent's severe disability. Yes/No boolean value.
+                          other_dependent_reduced_self_sufficiency:
+                            type: string
+                            description: Related to dependent's reduced self-sufficiency. Yes/No boolean value.
+                          other_dependent_dependency_last_year:
+                            type: string
+                            description: Related to whether dependent last year. Yes/No boolean value.
+                          months_other_dependent_lived_in_belgium:
+                            type: integer
+                            description: Related to number of months dependent lived in Belgium during the tax year.
+                          first_name:
+                            type: string
+                          does_this_other_dependent_have_income:
+                            type: string
+                            description: Related to dependent's income. Yes/No boolean value.
+                          date_of_birth:
+                            type: string
+                            format: date
+                    partner_person:
+                      type: object
+                      properties:
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        national_registry_number:
+                          type: string
+                        date_of_birth:
+                          type: string
+                          format: date
+                        date_available_amounts:
+                          type: string
+                          format: date
+                          description: Partner taxpayer date funds available for Wallonia win-win loan.
+                    code_1001:
+                      type: string
+                      description: Related to marital status on January 1, 2025.
+                    code_1002:
+                      type: string
+                      description: Related to marital status or legal cohabitation status on 01.01.2025.
+                    code_1003:
+                      type: string
+                      description: Related to marital/legal cohabitation status on 01.01.2025 and marriage/declaration in 2024. Yes/No boolean value.
+                    code_1010:
+                      type: string
+                      description: Related to widower/widow status or equivalent on 01.01.2025. Yes/No boolean value.
+                    code_1011:
+                      type: string
+                      description: Related to spouse or legally cohabiting partner's death in 2024. Yes/No boolean value.
+                    code_1028:
+                      type: string
+                      description: Declaration regarding severe disability for main applicant. Yes/No boolean value.
+                    code_1077:
+                      type: string
+                      description: Related to founder status or benefits from a legal construct. Yes/No boolean value.
+                    code_1390:
+                      type: number
+                      description: Maintenance payments paid by applicant (amount actually paid).
+                    code_1392:
+                      type: number
+                      description: Joint maintenance payments owed by spouses/cohabitants (amount paid).
+                    code_1437:
+                      type: number
+                      description: Deductible withholding tax on dividends exempt from personal income tax.
+                    code_2028:
+                      type: string
+                      description: Related to a partner with a severe disability. Yes/No boolean value.
+                    code_2390:
+                      type: number
+                      description: 'Partner: Maintenance payments amount actually paid.'
+                    code_2437:
+                      type: number
+                      description: Deductible withholding tax on dividends exempt from personal income tax.
+      responses:
+        '201':
+          description: Questionnaire data submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionnaire:
+                    type: object
+                    description: The submitted questionnaire data
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/personal_income_tax/{year}/tax_on_web:
+    post:
+      tags:
+      - Personal Income Tax
+      summary: Submit PIT data from TaxOnWeb
+      description: 'Post data to PIT from TaxOnWeb.
+
+
+        **WARNING:** Each request REPLACES ALL previously submitted
+
+        TaxOnWeb data for the specified year.
+
+        Any fields not included in the request will be deleted.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: createPersonalIncomeTaxTaxOnWeb
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The firm ID
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The company ID
+      - name: year
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: The tax year (e.g., 2024)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tax_on_web:
+                  type: object
+                  description: TaxOnWeb data containing Belgian tax codes and related information
+                  properties:
+                    code_1001:
+                      type: boolean
+                      description: Marital status code
+                    code_1002:
+                      type: boolean
+                      description: Legal cohabitation status code
+                    code_1003:
+                      type: boolean
+                      description: Marriage/declaration in tax year
+                    code_1010:
+                      type: boolean
+                      description: Widower/widow status
+                    code_1011:
+                      type: boolean
+                      description: Spouse death in tax year
+                    code_1028:
+                      type: boolean
+                      description: Severe disability declaration - main applicant
+                    code_2028:
+                      type: boolean
+                      description: Severe disability declaration - partner
+                    code_1077:
+                      type: boolean
+                      description: Founder status or legal construct benefits
+                    code_1105:
+                      type: number
+                      description: Tax code 1105 value
+                    code_1106:
+                      type: number
+                      description: Tax code 1106 value
+                    code_1199:
+                      type: integer
+                      enum:
+                      - 0
+                      - 1
+                      - 2
+                      - 3
+                      - 4
+                      - 5
+                      - 6
+                      - 7
+                      - 8
+                      - 9
+                      - 10
+                      - 11
+                      description: Tax code 1199 value (enumerated)
+                    code_1390:
+                      type: number
+                      description: Maintenance payments paid by applicant
+                    code_1392:
+                      type: number
+                      description: Joint maintenance payments
+                    code_1437:
+                      type: number
+                      description: Deductible withholding tax on dividends
+                    code_2390:
+                      type: number
+                      description: Partner maintenance payments
+                    code_2437:
+                      type: number
+                      description: Partner deductible withholding tax
+                    bic_code:
+                      type: string
+                      description: Bank Identifier Code (BIC) for the tax declaration.
+                    iban_number:
+                      type: string
+                      description: IBAN number for tax declaration, used for refund or payment purposes.
+                    salaries_not_on_form_1400:
+                      type: number
+                      description: Salaries not included on Belgian tax form 1400.
+                    salaries_not_on_form_2400:
+                      type: number
+                      description: Salaries not included on Belgian tax form 2400.
+                    salary_not_on_form_1250:
+                      type: number
+                      description: Salary not included on Belgian tax form 1250.
+                    salary_not_on_form_2250:
+                      type: number
+                      description: Salary not included on Belgian tax form 2250.
+                    salaries_self_employed_not_on_form_1411:
+                      type: number
+                      description: Self-employed salaries not on tax form 1411.
+                    salaries_self_employed_not_on_form_2411:
+                      type: number
+                      description: Self-employed salaries not on tax form 2411.
+                    payroll_tax_not_on_form_1286:
+                      type: number
+                      description: Related to payroll tax not on tax form 1286.
+                    payroll_tax_not_on_form_2286:
+                      type: number
+                      description: Payroll tax not included on tax form 2286.
+                    withholding_tax_on_form_1225:
+                      type: number
+                      description: Withholding tax on tax form 1225.
+                    withholding_tax_on_form_2225:
+                      type: number
+                      description: Withholding tax from tax form 2225.
+                    withholding_tax_not_on_form_1407:
+                      type: number
+                      description: Withholding tax not on tax form 1407.
+                    withholding_tax_not_on_form_2407:
+                      type: number
+                      description: Withholding tax amount not on form 2407.
+                    property_name_and_address_receiver:
+                      type: string
+                      description: Name and address related to the property income receiver.
+                    alimony_beneficiaries:
+                      type: array
+                      description: Alimony beneficiary names.
+                      items:
+                        type: string
+                    alimony_debtors_resident:
+                      type: array
+                      description: Related to alimony debtors resident names.
+                      items:
+                        type: string
+                    alimony_debtors_non_resident:
+                      type: array
+                      description: Related to alimony debtors non-resident.
+                      items:
+                        type: string
+                    foreign_bank_accounts:
+                      type: array
+                      description: Foreign bank accounts list for taxpayer, partner, or children.
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: Name of the foreign bank account for tax declaration purposes.
+                          national_bank:
+                            type: boolean
+                            description: Foreign bank account reported to the National Bank of Belgium (NBB).
+                          country:
+                            type: string
+                            description: Country where the foreign bank account is located.
+                    immovable_foreign_income_progression_reserve:
+                      type: array
+                      description: Related to immovable foreign income exempted with progression reservation.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country for foreign income progression reserve.
+                          code:
+                            type: integer
+                            description: 'Foreign immovable income progression reserve code, template: immovable income.'
+                          amount:
+                            type: number
+                            description: Amount of foreign immovable income subject to progression reserve taxation.
+                          nature:
+                            type: string
+                            description: Related to immovable foreign income progression reserve.
+                    foreign_immovable_income_tax_reduction:
+                      type: array
+                      description: Related to foreign immovable income tax reduction.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country related to foreign immovable income tax reduction.
+                          code:
+                            type: integer
+                            description: Foreign immovable income tax reduction code from declaration (Tax-on-Web).
+                          amount:
+                            type: number
+                            description: Foreign immovable income tax reduction amount, related to foreign income.
+                          nature:
+                            type: string
+                            description: Related to foreign immovable income tax reduction.
+                    foreign_income_not_exempt_in_belgium:
+                      type: array
+                      description: Related to foreign incomes not exempt in Belgium or France.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Country of foreign income not exempt in Belgium.
+                          code:
+                            type: integer
+                            description: Foreign income code, not exempt in Belgium, related to income gains.
+                          amount:
+                            type: number
+                            description: Foreign income amount not exempt from Belgian tax, from foreign income collection.
+                          nature:
+                            type: string
+                            description: Nature of foreign income not exempt in Belgium.
+                    foreign_origin_profits_business_activity:
+                      type: array
+                      description: Related to foreign business activity profits.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country related to foreign origin profits business activity.
+                          code:
+                            type: integer
+                            description: Code identifying foreign-origin profits from business activity; related to income gains.
+                          amount:
+                            type: number
+                            description: Amount of foreign origin profits from business activity.
+                          nature:
+                            type: string
+                            description: Related to nature of foreign origin profits business activity.
+                    foreign_pensions:
+                      type: array
+                      description: Related to foreign pensions not exempt in Belgium or France.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country related to foreign pensions declared on the web.
+                          code:
+                            type: integer
+                            description: Foreign pension income code; attribute of income gains details.
+                          amount:
+                            type: number
+                            description: Amount of foreign pension income declared on tax return.
+                          nature:
+                            type: string
+                            description: Related to nature of foreign pension.
+                    professional_income_frontier_workers_other:
+                      type: array
+                      description: Foreign incomes not exempt in Belgium or France.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country for professional income frontier workers.
+                          code:
+                            type: integer
+                            description: Code identifying income gain detail or exempted foreign income type.
+                          amount:
+                            type: number
+                            description: Amount of professional income for frontier workers from other sources.
+                          nature:
+                            type: string
+                            description: Related to nature of professional or foreign income.
+                    various_foreign_income_collaborative_economy:
+                      type: array
+                      description: Related to various foreign income from collaborative economy.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country, collaborative economy foreign income.
+                          code:
+                            type: integer
+                            description: Code for various collaborative economy foreign income; attribute of income gains.
+                          amount:
+                            type: number
+                            description: Amount of collaborative economy income from various foreign sources.
+                          taxed_abroad:
+                            type: string
+                            description: Yes/No boolean. Related to taxed abroad income from collaborative economy.
+                    various_foreign_income_outside_collaborative_economy:
+                      type: array
+                      description: Related to various foreign income outside collaborative economy.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Country of foreign income outside collaborative economy.
+                          code:
+                            type: integer
+                            description: Foreign income code outside collaborative economy; from gains details/exempted income.
+                          amount:
+                            type: number
+                            description: Amount of various foreign income outside collaborative economy, declared on tax-on-web.
+                          taxed_abroad:
+                            type: string
+                            description: Yes/No boolean. Related to foreign income taxed abroad.
+                    subsidies_foreign_origin:
+                      type: array
+                      description: Subsidies from foreign origin, exempted with progression reservation or separately taxable.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Country related to subsidy of foreign origin.
+                          code:
+                            type: integer
+                            description: Code for foreign-origin subsidies related to professional or immovable income.
+                          amount:
+                            type: number
+                            description: Amount of subsidy received from foreign origin.
+                          taxed_abroad:
+                            type: string
+                            description: Yes/No boolean. Related to subsidies of foreign origin, taxed abroad.
+                    inventions_income_foreign_origin:
+                      type: array
+                      description: List of incomes of foreign origin exempted with progression reservation or separately taxable.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country related to inventions income of foreign origin.
+                          code:
+                            type: integer
+                            description: Foreign inventions income code; attribute of foreign exempted income.
+                          amount:
+                            type: number
+                            description: Foreign origin inventions income amount declared via tax-on-web.
+                          taxed_abroad:
+                            type: string
+                            description: Yes/No boolean. Related to income taxed abroad.
+                    exploitation_allowances:
+                      type: array
+                      description: List of exempted foreign incomes (progression reservation or separately taxable).
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country related to exploitation allowances for tax on web.
+                          code:
+                            type: integer
+                            description: Exploitation allowance code; attribute of income gains details or foreign income.
+                          amount:
+                            type: number
+                            description: Amount of exploitation allowances related to professional or foreign income.
+                          taxed_abroad:
+                            type: string
+                            description: Yes/No boolean. Related to allowance taxed abroad.
+                    foreign_origin_income_company_directors:
+                      type: array
+                      description: Related to foreign-origin income of company directors, subject to specific tax rules.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country (foreign origin income company directors).
+                          code:
+                            type: integer
+                            description: Foreign origin income code for company directors; dependent on income type.
+                          amount:
+                            type: number
+                            description: Amount of foreign-origin income for company directors, subject to tax.
+                    foreign_origin_profits_liberal_profession:
+                      type: array
+                      description: Related to profits from foreign origin liberal profession.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country related to foreign origin profits from liberal profession.
+                          code:
+                            type: integer
+                            description: Code for foreign origin profits, applicable to liberal profession income.
+                          amount:
+                            type: number
+                            description: Amount of foreign-origin profits from liberal profession activities.
+                    foreign_origin_remuneration_expenses_active_partner:
+                      type: array
+                      description: Related to partner's foreign origin remuneration expenses.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country related to partner's foreign origin remuneration expenses.
+                          code:
+                            type: integer
+                            description: Code identifying foreign-origin remuneration expenses for the active partner.
+                          amount:
+                            type: number
+                            description: Partner's foreign-origin remuneration expenses amount from active professional income.
+                    foreign_origin_income_expenses_former_professional_activity:
+                      type: array
+                      description: Related to income expenses from foreign professional activity.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Property country related to foreign origin income expenses.
+                          code:
+                            type: integer
+                            description: Code for foreign origin income expenses from former professional activity.
+                          amount:
+                            type: number
+                            description: Amount of foreign-origin income expenses from former professional activity.
+                    movable_income_foreign_income_items:
+                      type: array
+                      description: List of foreign movable income exemptions.
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            type: string
+                            description: Country related to movable income foreign income item.
+                          code:
+                            type: integer
+                            description: Foreign movable income item code (exemption context).
+                          amount:
+                            type: number
+                            description: Amount of movable or foreign income for tax on web calculation.
+                          nature:
+                            type: string
+                            description: Related to movable income/gains nature.
+                    foreign_life_insurance:
+                      type: array
+                      description: Foreign life insurances for taxpayer, partner, or children.
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                            description: Name of the foreign life insurance contract.
+                          company_name:
+                            type: string
+                            description: Related to foreign life insurance contract.
+                          country:
+                            type: string
+                            description: Related to foreign life insurance contract country.
+                    helping_family_members:
+                      type: array
+                      description: Codes and amounts where helping family member's income is declared.
+                      items:
+                        type: object
+                        properties:
+                          code:
+                            type: integer
+                            description: Code for helping family members, foreign income, or income gains details.
+                          amount:
+                            type: number
+                            description: Amount of financial support provided to helping family members.
+                    income_gains_details_defacto:
+                      type: array
+                      description: 'Income/expenses details: activity carried out as a de facto association.'
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            description: Type of income gains.
+                          nature:
+                            type: string
+                            description: Related to nature of income gains details/foreign movable income.
+                          code:
+                            type: integer
+                            description: Code attribute of de facto income gains details or foreign income exempted.
+                          amount:
+                            type: number
+                            description: Amount of gains for de facto situation.
+                    profits_income_expenses_de_facto_association_business_activity:
+                      type: array
+                      description: Income/expenses details related to de facto association business activity.
+                      items:
+                        type: object
+                        properties:
+                          nature:
+                            type: string
+                            description: Related to the nature of income/gains for tax calculation.
+                          code:
+                            type: integer
+                            description: Code related to income, gains, or expenses of a de facto association.
+                          amount:
+                            type: number
+                            description: Amount of profits income expenses for de facto association business activity.
+                    individual_life_insurance_policies_integrated_bonus_flanders:
+                      type: array
+                      description: Related to life insurance contracts.
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Life insurance company name for individual life insurance policy (integrated bonus, Flanders).
+                          contract_number_insurance:
+                            type: string
+                            description: Life insurance contract number, part of individual life insurance integrated bonus (Flanders).
+                    individual_life_insurance_policies_cheque_in_2023_wallonia:
+                      type: array
+                      description: Life insurance contract list related to tax on web declarations.
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Name of the insurance company for the life insurance contract.
+                          contract_number_insurance:
+                            type: string
+                            description: Life insurance contract number for Tax-on-Web individual policy (Wallonia).
+                    individual_life_insurance_policies_cheque_before_2023_wallonia:
+                      type: array
+                      description: Related to individual life insurance policies (Wallonia, before 2023).
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Name of the insurance company for the life insurance policy.
+                          contract_number_insurance:
+                            type: string
+                            description: Life insurance contract number (cheque before 2023, Wallonia).
+                    individual_life_insurance_policies_regional_bonus_in_2015:
+                      type: array
+                      description: List of life insurance contracts related to regional bonus in 2015.
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Life insurance company name for regional bonus in 2015 calculation.
+                          contract_number_insurance:
+                            type: string
+                            description: Life insurance contract number related to regional bonus in 2015 calculation.
+                    individual_life_insurance_policies_regional_bonus_2015_2016_brussels:
+                      type: array
+                      description: List of life insurance contracts related to the Brussels regional bonus.
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Name of the insurance company related to the life insurance contract.
+                          contract_number_insurance:
+                            type: string
+                            description: Life insurance contract number related to Brussels regional bonus 2015-2016.
+                    individual_life_insurance_policies_regional_bonus_before_2015:
+                      type: array
+                      description: Related to life insurance contracts.
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Name of the insurance company for the life insurance contract.
+                          contract_number_insurance:
+                            type: string
+                            description: Life insurance contract number for regional bonus before 2015 calculation.
+                    individual_life_insurance_policies_regional_bonus_before_2015_brussels:
+                      type: array
+                      description: List of life insurance contracts regional bonus before 2015 Brussels.
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Life insurance company name for regional bonus before 2015 (Brussels).
+                          contract_number_insurance:
+                            type: string
+                            description: Individual life insurance contract number for regional bonus (Brussels, before 2015).
+                    individual_life_insurance_policies_long_term_savings:
+                      type: array
+                      description: List of life insurance contracts (long-term savings)
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Name of the insurance company for the individual life insurance policy.
+                          contract_number_insurance:
+                            type: string
+                            description: Life insurance contract number for long-term savings, individual policy.
+                    individual_life_insurance_policies_long_term_savings_brussels:
+                      type: array
+                      description: List of life insurance contracts (long-term savings, Brussels region).
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Name of the insurance company for this individual life insurance contract.
+                          contract_number_insurance:
+                            type: string
+                            description: Individual life insurance contract number for long-term savings in Brussels.
+                    individual_life_insurance_policies_federal_bonus:
+                      type: array
+                      description: List of life insurance contracts related to federal tax bonus.
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Name of the insurance company for the individual life insurance policy.
+                          contract_number_insurance:
+                            type: string
+                            description: Life insurance contract number for federal bonus calculation.
+                    individual_life_insurance_policies_long_term_savings_federal_reduction:
+                      type: array
+                      description: List of life insurance contracts related to long-term savings federal reduction.
+                      items:
+                        type: object
+                        properties:
+                          name_insurance_company:
+                            type: string
+                            description: Name of the insurance company for the individual life insurance policy.
+                          contract_number_insurance:
+                            type: string
+                            description: Life insurance contract number related to long-term savings federal reduction.
+                    phone_number_oldest:
+                      type: string
+                      description: Main applicant's oldest known phone number.
+                    phone_number_youngest:
+                      type: string
+                      description: Partner applicant's phone number (youngest child context, if applicable).
+                    company_number_oldest:
+                      type: string
+                      description: Company number for the oldest applicant (professional income, current year).
+                    company_number_youngest:
+                      type: string
+                      description: Company number for the youngest (most recent) company for partner applicant.
+                    profession_oldest:
+                      type: string
+                      description: Profession of the oldest applicant, current year.
+                    profession_youngest:
+                      type: string
+                      description: Profession of the youngest applicant (main or partner) for the tax year.
+                    loss_left_column_oldest:
+                      type: number
+                      description: Loss understood in left column, from oldest previous professional activity.
+                    loss_left_column_youngest:
+                      type: number
+                      description: Loss from previous professional activity, left column, youngest activity.
+                    loss_right_column_oldest:
+                      type: number
+                      description: 'Oldest previous professional activity: main applicant loss right from previous period.'
+                    loss_right_column_youngest:
+                      type: number
+                      description: Loss included in the right column for the youngest previous professional activity.
+                    business_address_profits_oldest:
+                      type: string
+                      description: Business HQ address if different from partner applicant's domicile (oldest period).
+                    business_address_profits_youngest:
+                      type: string
+                      description: Business HQ address if different from partner's domicile (youngest applicant).
+                    business_address_gains_oldest:
+                      type: string
+                      description: Company registered office address if different from main taxpayer's domicile.
+                    business_address_gains_youngest:
+                      type: string
+                      description: Partner's company registered office address if different from partner's domicile.
+      responses:
+        '201':
+          description: TaxOnWeb data submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tax_on_web:
+                    type: object
+                    description: The submitted TaxOnWeb data
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            administration:read: ''
+            administration:write: ''
+            client_meetings:read: ''
+            client_meetings:external_notes:write: ''
+            communication:read: ''
+            communication:write: ''
+            financials:read: ''
+            financials:write: ''
+            financials:transactions:read: ''
+            financials:transactions:write: ''
+            insights:read: ''
+            insights:write: ''
+            workflows:read: ''
+            workflows:write: ''
+            permanent_documents:read: ''
+            permanent_documents:write: ''
+            webhooks: ''
+            links: ''
+            user:email: ''
+            user:firm: ''
+            user:profile: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/addcompanytogroupbyid.md
+  - https://developer.silverfin.com/reference/addcompanytouserbyid.md
+  - https://developer.silverfin.com/reference/addfirmworkflowtocompany.md
+  - https://developer.silverfin.com/reference/addsharedparttoaccounttemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoexportfiletemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/addusertogroupbyid.md
+  - https://developer.silverfin.com/reference/archiveworkflow.md
+  - https://developer.silverfin.com/reference/attachpersonalincometaxdocument.md
+  - https://developer.silverfin.com/reference/authorizeuser.md
+  - https://developer.silverfin.com/reference/createaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/createaccounttemplate.md
+  - https://developer.silverfin.com/reference/createadjustment.md
+  - https://developer.silverfin.com/reference/createapplink.md
+  - https://developer.silverfin.com/reference/createclientmeetingattachment.md
+  - https://developer.silverfin.com/reference/createcomment.md
+  - https://developer.silverfin.com/reference/createcompany.md
+  - https://developer.silverfin.com/reference/createcompanycustomproperty.md
+  - https://developer.silverfin.com/reference/createcompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/createcompanyuserbyid.md
+  - https://developer.silverfin.com/reference/createexportfileinstance.md
+  - https://developer.silverfin.com/reference/createexportfiletemplate.md
+  - https://developer.silverfin.com/reference/createexportpdfinstance.md
+  - https://developer.silverfin.com/reference/creategroup.md
+  - https://developer.silverfin.com/reference/createliquidtestrun.md
+  - https://developer.silverfin.com/reference/createliveexportdocument.md
+  - https://developer.silverfin.com/reference/createliveexportdocumentinexportpdfinstance.md
+  - https://developer.silverfin.com/reference/createnewaccount.md
+  - https://developer.silverfin.com/reference/createperiod.md
+  - https://developer.silverfin.com/reference/createperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/createpermanentdocument.md
+  - https://developer.silverfin.com/reference/createpermanentfolder.md
+  - https://developer.silverfin.com/reference/createpermanenttext.md
+  - https://developer.silverfin.com/reference/createpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxtaxonweb.md
+  - https://developer.silverfin.com/reference/createreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/createreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/createremark.md
+  - https://developer.silverfin.com/reference/createsharedpart.md
+  - https://developer.silverfin.com/reference/createuser.md
+  - https://developer.silverfin.com/reference/createwebhook.md
+  - https://developer.silverfin.com/reference/deleteaccountcustomproperty.md
+  - https://developer.silverfin.com/reference/deleteaccounttemplate.md
+  - https://developer.silverfin.com/reference/deleteadjustment.md
+  - https://developer.silverfin.com/reference/deleteapplink.md
+  - https://developer.silverfin.com/reference/deletecompany.md
+  - https://developer.silverfin.com/reference/deletecompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromuserbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyuserbyid.md
+  - https://developer.silverfin.com/reference/deleteexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletegroup.md
+  - https://developer.silverfin.com/reference/deleteperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentfolder.md
+  - https://developer.silverfin.com/reference/deletepermanentmail.md
+  - https://developer.silverfin.com/reference/deletereconciliationtextcustomproperty.md
+  - https://developer.silverfin.com/reference/deletereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteremark.md
+  - https://developer.silverfin.com/reference/deletesharedpart.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromaccounttemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteuser.md
+  - https://developer.silverfin.com/reference/deleteuserfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletewebhook.md
+  - https://developer.silverfin.com/reference/get_api-v4-f-firm-id-companies-company-id-periods-period-id-reports-report-id-results.md
+  - https://developer.silverfin.com/reference/getaccountancysyncentities.md
+  - https://developer.silverfin.com/reference/getaccountcontent.md
+  - https://developer.silverfin.com/reference/getaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/getaccountmappingbyaccountmappinglistid.md
+  - https://developer.silverfin.com/reference/getaccountmappinglists.md
+  - https://developer.silverfin.com/reference/getaccountresults.md
+  - https://developer.silverfin.com/reference/getaccountsvaluesbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccounttemplatecontent.md
+  - https://developer.silverfin.com/reference/getaccounttemplateslist.md
+  - https://developer.silverfin.com/reference/getactivefirmworkflowslist.md
+  - https://developer.silverfin.com/reference/getactiveuserslist.md
+  - https://developer.silverfin.com/reference/getadjustmentslist.md
+  - https://developer.silverfin.com/reference/getallpeople.md
+  - https://developer.silverfin.com/reference/getanalyticaldimensionslist.md
+  - https://developer.silverfin.com/reference/getapplinkbyuser.md
+  - https://developer.silverfin.com/reference/getarchivedcompanylist.md
+  - https://developer.silverfin.com/reference/getbalanceslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslistbyaccountid.md
+  - https://developer.silverfin.com/reference/getbudgetentryaccountids.md
+  - https://developer.silverfin.com/reference/getbudgetentrycontent.md
+  - https://developer.silverfin.com/reference/getbudgetentryenddates.md
+  - https://developer.silverfin.com/reference/getclientmeeting.md
+  - https://developer.silverfin.com/reference/getclientmeetingslist.md
+  - https://developer.silverfin.com/reference/getclienttemplateslist.md
+  - https://developer.silverfin.com/reference/getcommentslistfromremark.md
+  - https://developer.silverfin.com/reference/getcompanies.md
+  - https://developer.silverfin.com/reference/getcompaniesfromgrouplist.md
+  - https://developer.silverfin.com/reference/getcompanyaccounts.md
+  - https://developer.silverfin.com/reference/getcompanycustomproperties.md
+  - https://developer.silverfin.com/reference/getcompanydetails.md
+  - https://developer.silverfin.com/reference/getcompanyfollowers.md
+  - https://developer.silverfin.com/reference/getcompanyuserlist.md
+  - https://developer.silverfin.com/reference/getcurrentclientmeeting.md
+  - https://developer.silverfin.com/reference/getcurrentuserdetails.md
+  - https://developer.silverfin.com/reference/getcurrentuseremail.md
+  - https://developer.silverfin.com/reference/getcurrentuserfirm.md
+  - https://developer.silverfin.com/reference/getexportfileinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportfileinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportfileslist.md
+  - https://developer.silverfin.com/reference/getexportfiletemplatecontent.md
+  - https://developer.silverfin.com/reference/getexportfiletemplateslist.md
+  - https://developer.silverfin.com/reference/getexportpdfinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportpdfinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportpdfslist.md
+  - https://developer.silverfin.com/reference/getexportpdftemplateslist.md
+  - https://developer.silverfin.com/reference/getgroupslist.md
+  - https://developer.silverfin.com/reference/getinactiveuserslist.md
+  - https://developer.silverfin.com/reference/getinsightssegmentresults.md
+  - https://developer.silverfin.com/reference/getliveexportdocument.md
+  - https://developer.silverfin.com/reference/getliveexportdocumentslist.md
+  - https://developer.silverfin.com/reference/getopentransactions.md
+  - https://developer.silverfin.com/reference/getperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/getperioddetails.md
+  - https://developer.silverfin.com/reference/getperiods.md
+  - https://developer.silverfin.com/reference/getperiodspecificdocumentslist.md
+  - https://developer.silverfin.com/reference/getperiodworkflowslist.md
+  - https://developer.silverfin.com/reference/getpermanentdocumentcontent.md
+  - https://developer.silverfin.com/reference/getpermanentfoldercontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/getpermanenttextresults.md
+  - https://developer.silverfin.com/reference/getpermanenttextsignmarkers.md
+  - https://developer.silverfin.com/reference/getpermanenttextslist.md
+  - https://developer.silverfin.com/reference/getpermanenttexttemplatelist.md
+  - https://developer.silverfin.com/reference/getpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/getreconciliationtextresults.md
+  - https://developer.silverfin.com/reference/getreconciliationtexts.md
+  - https://developer.silverfin.com/reference/getreconciliationtextsignmarkers.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatecontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplateliquidtestrun.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatelist.md
+  - https://developer.silverfin.com/reference/getremarkslist.md
+  - https://developer.silverfin.com/reference/getreportslist.md
+  - https://developer.silverfin.com/reference/getsharedpartcontent.md
+  - https://developer.silverfin.com/reference/getsharedpartslist.md
+  - https://developer.silverfin.com/reference/getusercompanieslist.md
+  - https://developer.silverfin.com/reference/getusersfromgrouplist.md
+  - https://developer.silverfin.com/reference/getwebhookslist.md
+  - https://developer.silverfin.com/reference/getworkflowreconciliationtextslist.md
+  - https://developer.silverfin.com/reference/getworkflowstatus.md
+  - https://developer.silverfin.com/reference/lintliquidcode.md
+  - https://developer.silverfin.com/reference/moveexportpdfinstancetodocuments.md
+  - https://developer.silverfin.com/reference/movepermanentmail.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token.md
+  - https://developer.silverfin.com/reference/replaceperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/runinsightssegment.md
+  - https://developer.silverfin.com/reference/updateaccountcontent.md
+  - https://developer.silverfin.com/reference/updateaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/updateaccounttemplate.md
+  - https://developer.silverfin.com/reference/updateadjustment.md
+  - https://developer.silverfin.com/reference/updateallpeople.md
+  - https://developer.silverfin.com/reference/updatearchivedcompany.md
+  - https://developer.silverfin.com/reference/updatebatchaccountcontent.md
+  - https://developer.silverfin.com/reference/updatecompanydetails.md
+  - https://developer.silverfin.com/reference/updateexportfiletemplate.md
+  - https://developer.silverfin.com/reference/updateinactiveuser.md
+  - https://developer.silverfin.com/reference/updateinactiveworkflow.md
+  - https://developer.silverfin.com/reference/updateliveexportdocument.md
+  - https://developer.silverfin.com/reference/updateperiodspublicflag.md
+  - https://developer.silverfin.com/reference/updatepermanentdocument.md
+  - https://developer.silverfin.com/reference/updatepermanentfolder.md
+  - https://developer.silverfin.com/reference/updatepermanenttext.md
+  - https://developer.silverfin.com/reference/updatepersonalincometaxmetadata.md
+  - https://developer.silverfin.com/reference/updatereconciliationtextstarringstatus.md
+  - https://developer.silverfin.com/reference/updatereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/updateremarkflag.md
+  - https://developer.silverfin.com/reference/updatesharedpart.md
+  - https://developer.silverfin.com/reference/updateuser.md
+  merge:
+    pages: 180
+    deduped: 213
+    conflicts_kept_first: 0

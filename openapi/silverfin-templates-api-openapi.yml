@@ -1,0 +1,2012 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Templates API
+  description: This is the currently supported stable version of the Silverfin API.
+  version: 1.0.0
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Templates
+paths:
+  /api/v4/f/{firm_id}/account_templates:
+    get:
+      tags:
+      - Templates
+      summary: List all account templates in this firm
+      description: 'List all account templates in this firm.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getAccountTemplatesList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: account_template_id
+                    marketplace_template_id:
+                      type: integer
+                    account_range:
+                      type: string
+                    text_configuration:
+                      type: string
+                    name_nl:
+                      type: string
+                    name_fr:
+                      type: string
+                    name_en:
+                      type: string
+                    name_da:
+                      type: string
+                    text:
+                      type: string
+                    text_parts:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          content:
+                            type: string
+                    mapping_list_ranges:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          account_mapping_list_id:
+                            type: integer
+                          account_range:
+                            type: string
+                    externally_managed:
+                      type: boolean
+    post:
+      tags:
+      - Templates
+      summary: Create a new account template
+      description: 'Create a new account template.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: createAccountTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountTemplateCreateRequest'
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountTemplateCreateResponse'
+  /api/v4/f/{firm_id}/account_templates/{id}:
+    delete:
+      tags:
+      - Templates
+      summary: Remove an account template
+      description: 'Remove an account template.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: deleteAccountTemplate
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: Identifier of the account template
+      responses:
+        '204':
+          description: Successful empty body response
+    get:
+      tags:
+      - Templates
+      summary: Show all properties of a certain account template
+      description: 'Show all properties of a certain account template.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getAccountTemplateContent
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: Identifier of the account template
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportFileTemplate'
+    post:
+      tags:
+      - Templates
+      summary: Update an existing account template
+      description: 'Update an existing account template.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: updateAccountTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountTemplateUpdateRequest'
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: Identifier of the account template
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountTemplateUpdateResponse'
+  /api/v4/f/{firm_id}/account_templates/{id}/shared_parts/{shared_part_id}:
+    delete:
+      tags:
+      - Templates
+      summary: Remove a shared part from an account template
+      description: 'Remove a shared part from an account template.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: deleteSharedPartfromAccountTemplate
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: shared_part_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: Identifier of the account template
+      responses:
+        '204':
+          description: Successful empty body response
+    post:
+      tags:
+      - Templates
+      summary: Add a shared part to an account template
+      description: 'Add a shared part to an account template.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: addSharedPartToAccountTemplate
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: shared_part_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+        description: Identifier of the account template
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountTemplateUpdateRequest'
+  /api/v4/f/{firm_id}/export_files:
+    get:
+      tags:
+      - Templates
+      summary: List all existing export file templates
+      description: 'List all existing export file templates.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getExportFileTemplatesList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ExportFileTemplateInfo'
+    post:
+      tags:
+      - Templates
+      summary: Create a new export file template
+      description: 'Create a new export file template.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: createExportFileTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/ExportFileTemplateNew'
+              - $ref: '#/components/schemas/ExportFileTemplateNewWithLocale'
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportFileTemplate'
+  /api/v4/f/{firm_id}/export_files/{id}:
+    get:
+      tags:
+      - Templates
+      summary: Get details of an export file template
+      description: 'Get details of an export file template.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getExportFileTemplateContent
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportFileTemplate'
+    post:
+      tags:
+      - Templates
+      summary: Update an existing export file template
+      description: 'Update an existing export file template.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: updateExportFileTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/ExportFileTemplateNew'
+              - $ref: '#/components/schemas/ExportFileTemplateNewWithLocale'
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportFileTemplate'
+    delete:
+      tags:
+      - Templates
+      summary: Delete an export file template
+      description: 'Delete an export file template.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: deleteExportFileTemplate
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+  /api/v4/f/{firm_id}/export_files/{id}/shared_parts/{shared_part_id}:
+    delete:
+      tags:
+      - Templates
+      summary: Remove a shared part from an export file
+      description: 'Remove a shared part from an export file.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: deleteSharedPartFromExportFileTemplate
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: id
+        in: path
+        schema:
+          type: integer
+        description: Identifier of the export file
+        required: true
+      - name: shared_part_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+    post:
+      tags:
+      - Templates
+      summary: Add a shared part to an export file
+      description: 'Add a shared part to an export file.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: addSharedPartToExportFileTemplate
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: id
+        in: path
+        schema:
+          type: integer
+        description: Identifier of the export file
+        required: true
+      - name: shared_part_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: export_file_template_id
+                  marketplace_template_id:
+                    type: integer
+                  name:
+                    type: string
+                  file_name:
+                    type: string
+                  externally_managed:
+                    type: boolean
+                  enconding:
+                    type: string
+  /api/v4/f/{firm_id}/export_pdfs:
+    get:
+      tags:
+      - Templates
+      summary: List all existing export pdf styles
+      description: 'List all existing export pdf styles.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getExportPdfTemplatesList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: export_pdf_id
+                    name:
+                      type: string
+  /api/v4/f/{firm_id}/permanent_texts:
+    get:
+      tags:
+      - Templates
+      summary: List all permanent texts active in this firm
+      description: 'List all permanent texts active in this firm.
+
+
+        Required scopes: `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getPermanentTextTemplateList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: permanent_text_template_id
+                    name:
+                      type: string
+                    mother_version:
+                      type: integer
+                    locked:
+                      type: boolean
+                    created_at:
+                      type: string
+  /api/v4/f/{firm_id}/reconciliations:
+    get:
+      tags:
+      - Templates
+      summary: List all reconciliations active in this firm
+      description: 'List all reconciliations active in this firm.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getReconciliationTextTemplateList
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReconciliationTextUpdateResponse'
+    post:
+      tags:
+      - Templates
+      summary: Create a new reconciliation
+      description: 'Create a new reconciliation.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: createReconciliationTextTemplate
+      requestBody:
+        content:
+          application/jsoan:
+            schema:
+              $ref: '#/components/schemas/ReconciliationTextCreateRequest'
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationTextCreateResponse'
+  /api/v4/f/{firm_id}/reconciliations/test:
+    post:
+      tags:
+      - Templates
+      summary: Initiate a liquid test run
+      description: 'Initiate a liquid test run.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: createLiquidTestRun
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                template[handle]:
+                  type: string
+                template[auto_hide_formula]:
+                  type: string
+                template[name_nl]:
+                  type: string
+                template[name_fr]:
+                  type: string
+                template[name_en]:
+                  type: string
+                template[text_configuration]:
+                  type: string
+                template[text]:
+                  type: string
+                template[text_parts][][name]:
+                  type: string
+                template[text_parts][][content]:
+                  type: string
+                template[text_shared_parts][][name]:
+                  type: string
+                template[text_shared_parts][][content]:
+                  type: string
+                template[reconciliation_type]:
+                  type: string
+                tests:
+                  type: string
+                test_line:
+                  type: string
+              required:
+              - tests
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: integer
+                description: test_run_id
+  /api/v4/f/{firm_id}/reconciliations/test_runs/{id}:
+    get:
+      tags:
+      - Templates
+      summary: Check results of a liquid test run
+      description: 'Check results of a liquid test run.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: getReconciliationTextTemplateLiquidTestRun
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: started, completed, test_error, internal_error
+                  error_message:
+                    type: string
+                  error_line_number:
+                    type: integer
+  /api/v4/f/{firm_id}/reconciliations/verify_liquid:
+    post:
+      tags:
+      - Templates
+      summary: Lint Liquid code
+      description: 'Lint liquid code.
+
+
+        Required scope(s):`administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: lintLiquidCode
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: liquid code to verify
+                context[reconciliation]:
+                  type: boolean
+                  description: Default set to false
+                  default: false
+              required:
+              - code
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response with liquid errors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    row:
+                      type: integer
+                    text:
+                      type: string
+                    type:
+                      type: string
+                      example: warning
+  /api/v4/f/{firm_id}/reconciliations/{reconciliation_id}:
+    get:
+      tags:
+      - Templates
+      summary: Get details of a reconciliation template
+      description: 'Get details of a reconciliation template.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getReconciliationTextTemplateContent
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        example: '{{firm_id}}'
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationTextUpdateResponse'
+    post:
+      tags:
+      - Templates
+      summary: Update a reconciliation template
+      description: 'Update a reconciliation template.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: updateReconciliationTextTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReconciliationTextUpdateRequest'
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+        example: '{{firm_id}}'
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationTextUpdateResponse'
+    delete:
+      tags:
+      - Templates
+      summary: Remove a reconciliation template
+      description: 'Remove a reconciliation template.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: deleteReconciliationTextTemplate
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+  /api/v4/f/{firm_id}/reconciliations/{reconciliation_id}/shared_parts/{shared_part_id}:
+    delete:
+      tags:
+      - Templates
+      summary: Remove a shared part from a reconciliation
+      description: 'Remove a shared part from a reconciliation.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: deleteSharedPartFromReconciliationTextTemplate
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: shared_part_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+    post:
+      tags:
+      - Templates
+      summary: Add a shared part to a reconciliation
+      description: 'Add a shared part to a reconciliation.
+
+
+        Required scope(s):`administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: addSharedPartToReconciliationTextTemplate
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: shared_part_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationTextUpdateResponse'
+  /api/v4/f/{firm_id}/shared_parts:
+    get:
+      tags:
+      - Templates
+      summary: List all shared parts
+      description: 'List all shared parts.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getSharedPartsList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: shared_part_template_id
+                    name:
+                      type: string
+                    in_use:
+                      type: boolean
+    post:
+      tags:
+      - Templates
+      summary: Add a shared part
+      description: 'Add a shared part.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: createSharedPart
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                text:
+                  type: string
+                version_comment:
+                  type: string
+                  description: Comment on why this update is needed, used for version control.
+                externally_managed:
+                  type: boolean
+                  description: When this value is set to true the shared parts are not allowed to be edited via the web interface, only via API.
+              required:
+              - name
+              - text
+              - version_comment
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: shared_part_template_id
+                  name:
+                    type: string
+                  in_use:
+                    type: boolean
+                  text:
+                    type: string
+                  externally_managed:
+                    type: boolean
+                  used_in:
+                    type: array
+                    items:
+                      type: string
+  /api/v4/f/{firm_id}/shared_parts/{shared_part_id}:
+    delete:
+      tags:
+      - Templates
+      summary: Delete a shared part
+      description: 'Delete a shared part.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: deleteSharedPart
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: shared_part_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+      - Templates
+      summary: Get detail of a shared part
+      description: 'Get detail of a shared part.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getSharedPartContent
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: shared_part_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: shared_part_template_id
+                  name:
+                    type: string
+                  in_use:
+                    type: boolean
+                  text:
+                    type: string
+                  externally_managed:
+                    type: boolean
+                  used_in:
+                    type: array
+                    items:
+                      type: string
+    post:
+      tags:
+      - Templates
+      summary: Update a shared part
+      description: 'Update a shared part.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: updateSharedPart
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                text:
+                  type: string
+                externally_managed:
+                  type: boolean
+                  description: When this value is set to true the shared parts are not allowed to be edited via the web interface, only via API.
+                version_comment:
+                  type: string
+                  description: Comment on why this update is needed, used for version control.
+              required:
+              - version_comment
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: shared_part_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: shared_part_template_id
+                  name:
+                    type: string
+                  in_use:
+                    type: boolean
+                  text:
+                    type: string
+                  externally_managed:
+                    type: boolean
+                  used_in:
+                    type: array
+                    items:
+                      type: string
+components:
+  schemas:
+    TextPart:
+      type: object
+      required:
+      - name
+      - content
+      properties:
+        name:
+          type: string
+          example: part_name
+        content:
+          type: string
+          example: '{% comment %}liquid code in part{% endcomment %}'
+    AccountTemplateBase:
+      type: object
+      required:
+      - name_nl
+      properties:
+        name_nl:
+          type: string
+          example: Account Template Name
+        name_en:
+          type: string
+          example: Account Template Name
+        name_fr:
+          type: string
+          example: Account Template Name
+        account_range:
+          type: string
+        text_configuration:
+          type: string
+        text:
+          type: string
+        text_parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextPart'
+        externally_managed:
+          type: boolean
+          example: false
+          description: 'When this value is set to true the shared parts are not allowed
+
+            to be edited via the web interface, only via API.
+
+            '
+        mapping_list_ranges:
+          type: array
+          items:
+            $ref: '#/components/schemas/MappingListRange'
+    ReconciliationTextUpdateResponse:
+      allOf:
+      - $ref: '#/components/schemas/ReconciliationTextTemplateBase'
+      - type: object
+      properties:
+        id:
+          type: integer
+          example: 1977
+        marketplace_template_id:
+          type: integer
+          example: 25
+    ExportFileTemplateNewWithLocale:
+      type: object
+      required:
+      - name_nl
+      - file_name
+      properties:
+        name:
+          type: string
+          example: Export File Name
+        name_nl:
+          type: string
+          example: Export file name (nl)
+        name_en:
+          type: string
+          example: Export file name (en)
+        name_fr:
+          type: string
+          example: Export file name (fr)
+        name_de:
+          type: string
+          example: Export file name (de)
+        name_da:
+          type: string
+          example: Export file name (da)
+        name_se:
+          type: string
+          example: Export file name (se)
+        file_name:
+          type: string
+          example: export_file.sxbrl
+        enconding:
+          type: string
+          example: UTF-8
+        externally_managed:
+          type: boolean
+          example: false
+          description: 'When this value is set to true the shared parts are not allowed
+
+            to be edited via the web interface, only via API.
+
+            '
+        text:
+          type: string
+          example: '{% comment %}liquid code in main part{% endcomment %}'
+        text_parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextPart'
+    AccountTemplateUpdateResponse:
+      allOf:
+      - $ref: '#/components/schemas/AccountTemplateBase'
+      - type: object
+      properties:
+        id:
+          type: integer
+          example: 1977
+    ExportFileTemplate:
+      properties:
+        id:
+          type: integer
+          example: 4
+        marketplace_template_id:
+          type: integer
+          example: 25
+      allOf:
+      - $ref: '#/components/schemas/ExportFileTemplateNew'
+      - type: object
+    AccountTemplateCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/AccountTemplateBase'
+      - type: object
+    ExportFileTemplateInfo:
+      properties:
+        id:
+          type: integer
+          example: 4
+        marketplace_template_id:
+          type: integer
+          example: 25
+        name:
+          type: string
+          example: Export file name
+        name_nl:
+          type: string
+          example: Export file name (nl)
+        name_en:
+          type: string
+          example: Export file name (en)
+        name_fr:
+          type: string
+          example: Export file name (fr)
+        name_de:
+          type: string
+          example: Export file name (de)
+        name_da:
+          type: string
+          example: Export file name (da)
+        name_se:
+          type: string
+          example: Export file name (se)
+    ReconciliationTextCreateResponse:
+      allOf:
+      - $ref: '#/components/schemas/ReconciliationTextTemplateBase'
+      - type: object
+      properties:
+        id:
+          type: integer
+          example: 1977
+        marketplace_template_id:
+          type: integer
+          example: 25
+    MappingListRange:
+      type: object
+      required:
+      - account_mapping_list_id
+      - account_range
+      properties:
+        account_mapping_list_id:
+          type: integer
+        account_range:
+          type: string
+    ReconciliationTextCreateRequest:
+      allOf:
+      - $ref: '#/components/schemas/ReconciliationTextTemplateBase'
+      - type: object
+    AccountTemplateCreateResponse:
+      allOf:
+      - $ref: '#/components/schemas/AccountTemplateBase'
+      - type: object
+      properties:
+        id:
+          type: integer
+          example: 1977
+    ExportFileTemplateNew:
+      type: object
+      required:
+      - name
+      - file_name
+      properties:
+        name:
+          type: string
+          example: Export File Name
+        name_nl:
+          type: string
+          example: Export file name (nl)
+        name_en:
+          type: string
+          example: Export file name (en)
+        name_fr:
+          type: string
+          example: Export file name (fr)
+        name_de:
+          type: string
+          example: Export file name (de)
+        name_da:
+          type: string
+          example: Export file name (da)
+        name_se:
+          type: string
+          example: Export file name (se)
+        file_name:
+          type: string
+          example: export_file.sxbrl
+        enconding:
+          type: string
+          example: UTF-8
+        externally_managed:
+          type: boolean
+          example: false
+          description: 'When this value is set to true the shared parts are not allowed
+
+            to be edited via the web interface, only via API.
+
+            '
+        text:
+          type: string
+          example: '{% comment %}liquid code in main part{% endcomment %}'
+        text_parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextPart'
+    ReconciliationTextUpdateRequest:
+      required:
+      - version_comment
+      allOf:
+      - $ref: '#/components/schemas/ReconciliationTextTemplateBase'
+      - type: object
+      properties:
+        version_comment:
+          type: string
+          example: Update published using the API
+          description: Comment on why this update is needed, used for version control.
+    ReconciliationTextTemplateBase:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Reconciliation Name
+        name_en:
+          type: string
+          example: Reconciliation Name
+        name_fr:
+          type: string
+          example: Reconciliation Name
+        name_nl:
+          type: string
+          example: Reconciliation Name
+        handle:
+          type: string
+          example: reconciliation_handle
+        text:
+          type: string
+          example: '{% comment %}liquid code in main part{% endcomment %}'
+        text_parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextPart'
+        auto_hide_formula:
+          type: string
+          example: '''{% comment %}liquid code in auto hide formula{% endcomment %}''
+
+            '
+        text_configuration:
+          type: string
+          example: '''{% comment %}liquid code in text configuration{% endcomment %}''
+
+            '
+        virtual_account_number:
+          type: string
+          example: '1500'
+        reconciliation_type:
+          type: string
+          example: only_reconciled_with_data
+        public:
+          type: boolean
+          example: false
+        allow_duplicate_reconciliations:
+          type: boolean
+          example: false
+        is_active:
+          type: boolean
+          example: true
+        use_full_width:
+          type: boolean
+        downloadable_as_docx:
+          type: boolean
+        externally_managed:
+          type: boolean
+          example: false
+          description: 'When this value is set to true the shared parts are not allowed
+
+            to be edited via the web interface, only via API.
+
+            '
+        tests:
+          type: string
+    AccountTemplateUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/AccountTemplateBase'
+      - type: object
+      required:
+      - version_comment
+      properties:
+        id:
+          type: integer
+          example: 6789
+        version_comment:
+          type: string
+          example: Update published using the API
+          description: Comment on why this update is needed, used for version control.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            administration:read: ''
+            administration:write: ''
+            client_meetings:read: ''
+            client_meetings:external_notes:write: ''
+            communication:read: ''
+            communication:write: ''
+            financials:read: ''
+            financials:write: ''
+            financials:transactions:read: ''
+            financials:transactions:write: ''
+            insights:read: ''
+            insights:write: ''
+            workflows:read: ''
+            workflows:write: ''
+            permanent_documents:read: ''
+            permanent_documents:write: ''
+            webhooks: ''
+            links: ''
+            user:email: ''
+            user:firm: ''
+            user:profile: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/addcompanytogroupbyid.md
+  - https://developer.silverfin.com/reference/addcompanytouserbyid.md
+  - https://developer.silverfin.com/reference/addfirmworkflowtocompany.md
+  - https://developer.silverfin.com/reference/addsharedparttoaccounttemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoexportfiletemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/addusertogroupbyid.md
+  - https://developer.silverfin.com/reference/archiveworkflow.md
+  - https://developer.silverfin.com/reference/attachpersonalincometaxdocument.md
+  - https://developer.silverfin.com/reference/authorizeuser.md
+  - https://developer.silverfin.com/reference/createaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/createaccounttemplate.md
+  - https://developer.silverfin.com/reference/createadjustment.md
+  - https://developer.silverfin.com/reference/createapplink.md
+  - https://developer.silverfin.com/reference/createclientmeetingattachment.md
+  - https://developer.silverfin.com/reference/createcomment.md
+  - https://developer.silverfin.com/reference/createcompany.md
+  - https://developer.silverfin.com/reference/createcompanycustomproperty.md
+  - https://developer.silverfin.com/reference/createcompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/createcompanyuserbyid.md
+  - https://developer.silverfin.com/reference/createexportfileinstance.md
+  - https://developer.silverfin.com/reference/createexportfiletemplate.md
+  - https://developer.silverfin.com/reference/createexportpdfinstance.md
+  - https://developer.silverfin.com/reference/creategroup.md
+  - https://developer.silverfin.com/reference/createliquidtestrun.md
+  - https://developer.silverfin.com/reference/createliveexportdocument.md
+  - https://developer.silverfin.com/reference/createliveexportdocumentinexportpdfinstance.md
+  - https://developer.silverfin.com/reference/createnewaccount.md
+  - https://developer.silverfin.com/reference/createperiod.md
+  - https://developer.silverfin.com/reference/createperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/createpermanentdocument.md
+  - https://developer.silverfin.com/reference/createpermanentfolder.md
+  - https://developer.silverfin.com/reference/createpermanenttext.md
+  - https://developer.silverfin.com/reference/createpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxtaxonweb.md
+  - https://developer.silverfin.com/reference/createreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/createreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/createremark.md
+  - https://developer.silverfin.com/reference/createsharedpart.md
+  - https://developer.silverfin.com/reference/createuser.md
+  - https://developer.silverfin.com/reference/createwebhook.md
+  - https://developer.silverfin.com/reference/deleteaccountcustomproperty.md
+  - https://developer.silverfin.com/reference/deleteaccounttemplate.md
+  - https://developer.silverfin.com/reference/deleteadjustment.md
+  - https://developer.silverfin.com/reference/deleteapplink.md
+  - https://developer.silverfin.com/reference/deletecompany.md
+  - https://developer.silverfin.com/reference/deletecompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromuserbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyuserbyid.md
+  - https://developer.silverfin.com/reference/deleteexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletegroup.md
+  - https://developer.silverfin.com/reference/deleteperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentfolder.md
+  - https://developer.silverfin.com/reference/deletepermanentmail.md
+  - https://developer.silverfin.com/reference/deletereconciliationtextcustomproperty.md
+  - https://developer.silverfin.com/reference/deletereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteremark.md
+  - https://developer.silverfin.com/reference/deletesharedpart.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromaccounttemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteuser.md
+  - https://developer.silverfin.com/reference/deleteuserfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletewebhook.md
+  - https://developer.silverfin.com/reference/get_api-v4-f-firm-id-companies-company-id-periods-period-id-reports-report-id-results.md
+  - https://developer.silverfin.com/reference/getaccountancysyncentities.md
+  - https://developer.silverfin.com/reference/getaccountcontent.md
+  - https://developer.silverfin.com/reference/getaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/getaccountmappingbyaccountmappinglistid.md
+  - https://developer.silverfin.com/reference/getaccountmappinglists.md
+  - https://developer.silverfin.com/reference/getaccountresults.md
+  - https://developer.silverfin.com/reference/getaccountsvaluesbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccounttemplatecontent.md
+  - https://developer.silverfin.com/reference/getaccounttemplateslist.md
+  - https://developer.silverfin.com/reference/getactivefirmworkflowslist.md
+  - https://developer.silverfin.com/reference/getactiveuserslist.md
+  - https://developer.silverfin.com/reference/getadjustmentslist.md
+  - https://developer.silverfin.com/reference/getallpeople.md
+  - https://developer.silverfin.com/reference/getanalyticaldimensionslist.md
+  - https://developer.silverfin.com/reference/getapplinkbyuser.md
+  - https://developer.silverfin.com/reference/getarchivedcompanylist.md
+  - https://developer.silverfin.com/reference/getbalanceslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslistbyaccountid.md
+  - https://developer.silverfin.com/reference/getbudgetentryaccountids.md
+  - https://developer.silverfin.com/reference/getbudgetentrycontent.md
+  - https://developer.silverfin.com/reference/getbudgetentryenddates.md
+  - https://developer.silverfin.com/reference/getclientmeeting.md
+  - https://developer.silverfin.com/reference/getclientmeetingslist.md
+  - https://developer.silverfin.com/reference/getclienttemplateslist.md
+  - https://developer.silverfin.com/reference/getcommentslistfromremark.md
+  - https://developer.silverfin.com/reference/getcompanies.md
+  - https://developer.silverfin.com/reference/getcompaniesfromgrouplist.md
+  - https://developer.silverfin.com/reference/getcompanyaccounts.md
+  - https://developer.silverfin.com/reference/getcompanycustomproperties.md
+  - https://developer.silverfin.com/reference/getcompanydetails.md
+  - https://developer.silverfin.com/reference/getcompanyfollowers.md
+  - https://developer.silverfin.com/reference/getcompanyuserlist.md
+  - https://developer.silverfin.com/reference/getcurrentclientmeeting.md
+  - https://developer.silverfin.com/reference/getcurrentuserdetails.md
+  - https://developer.silverfin.com/reference/getcurrentuseremail.md
+  - https://developer.silverfin.com/reference/getcurrentuserfirm.md
+  - https://developer.silverfin.com/reference/getexportfileinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportfileinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportfileslist.md
+  - https://developer.silverfin.com/reference/getexportfiletemplatecontent.md
+  - https://developer.silverfin.com/reference/getexportfiletemplateslist.md
+  - https://developer.silverfin.com/reference/getexportpdfinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportpdfinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportpdfslist.md
+  - https://developer.silverfin.com/reference/getexportpdftemplateslist.md
+  - https://developer.silverfin.com/reference/getgroupslist.md
+  - https://developer.silverfin.com/reference/getinactiveuserslist.md
+  - https://developer.silverfin.com/reference/getinsightssegmentresults.md
+  - https://developer.silverfin.com/reference/getliveexportdocument.md
+  - https://developer.silverfin.com/reference/getliveexportdocumentslist.md
+  - https://developer.silverfin.com/reference/getopentransactions.md
+  - https://developer.silverfin.com/reference/getperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/getperioddetails.md
+  - https://developer.silverfin.com/reference/getperiods.md
+  - https://developer.silverfin.com/reference/getperiodspecificdocumentslist.md
+  - https://developer.silverfin.com/reference/getperiodworkflowslist.md
+  - https://developer.silverfin.com/reference/getpermanentdocumentcontent.md
+  - https://developer.silverfin.com/reference/getpermanentfoldercontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/getpermanenttextresults.md
+  - https://developer.silverfin.com/reference/getpermanenttextsignmarkers.md
+  - https://developer.silverfin.com/reference/getpermanenttextslist.md
+  - https://developer.silverfin.com/reference/getpermanenttexttemplatelist.md
+  - https://developer.silverfin.com/reference/getpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/getreconciliationtextresults.md
+  - https://developer.silverfin.com/reference/getreconciliationtexts.md
+  - https://developer.silverfin.com/reference/getreconciliationtextsignmarkers.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatecontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplateliquidtestrun.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatelist.md
+  - https://developer.silverfin.com/reference/getremarkslist.md
+  - https://developer.silverfin.com/reference/getreportslist.md
+  - https://developer.silverfin.com/reference/getsharedpartcontent.md
+  - https://developer.silverfin.com/reference/getsharedpartslist.md
+  - https://developer.silverfin.com/reference/getusercompanieslist.md
+  - https://developer.silverfin.com/reference/getusersfromgrouplist.md
+  - https://developer.silverfin.com/reference/getwebhookslist.md
+  - https://developer.silverfin.com/reference/getworkflowreconciliationtextslist.md
+  - https://developer.silverfin.com/reference/getworkflowstatus.md
+  - https://developer.silverfin.com/reference/lintliquidcode.md
+  - https://developer.silverfin.com/reference/moveexportpdfinstancetodocuments.md
+  - https://developer.silverfin.com/reference/movepermanentmail.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token.md
+  - https://developer.silverfin.com/reference/replaceperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/runinsightssegment.md
+  - https://developer.silverfin.com/reference/updateaccountcontent.md
+  - https://developer.silverfin.com/reference/updateaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/updateaccounttemplate.md
+  - https://developer.silverfin.com/reference/updateadjustment.md
+  - https://developer.silverfin.com/reference/updateallpeople.md
+  - https://developer.silverfin.com/reference/updatearchivedcompany.md
+  - https://developer.silverfin.com/reference/updatebatchaccountcontent.md
+  - https://developer.silverfin.com/reference/updatecompanydetails.md
+  - https://developer.silverfin.com/reference/updateexportfiletemplate.md
+  - https://developer.silverfin.com/reference/updateinactiveuser.md
+  - https://developer.silverfin.com/reference/updateinactiveworkflow.md
+  - https://developer.silverfin.com/reference/updateliveexportdocument.md
+  - https://developer.silverfin.com/reference/updateperiodspublicflag.md
+  - https://developer.silverfin.com/reference/updatepermanentdocument.md
+  - https://developer.silverfin.com/reference/updatepermanentfolder.md
+  - https://developer.silverfin.com/reference/updatepermanenttext.md
+  - https://developer.silverfin.com/reference/updatepersonalincometaxmetadata.md
+  - https://developer.silverfin.com/reference/updatereconciliationtextstarringstatus.md
+  - https://developer.silverfin.com/reference/updatereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/updateremarkflag.md
+  - https://developer.silverfin.com/reference/updatesharedpart.md
+  - https://developer.silverfin.com/reference/updateuser.md
+  merge:
+    pages: 180
+    deduped: 213
+    conflicts_kept_first: 0

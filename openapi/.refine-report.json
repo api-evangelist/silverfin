@@ -1,0 +1,54 @@
+{
+  "provider": "silverfin",
+  "sources": [
+    "silverfin-syncapi-openapi.yml",
+    "silverfin-api-openapi.yml"
+  ],
+  "outputs": [
+    "silverfin-sync-authentication-api-openapi.yml",
+    "silverfin-sync-company-specific-api-openapi.yml",
+    "silverfin-sync-firm-related-api-openapi.yml",
+    "silverfin-sync-webhooks-api-openapi.yml",
+    "silverfin-account-mapping-lists-api-openapi.yml",
+    "silverfin-accountancy-synchronisation-entities-api-openapi.yml",
+    "silverfin-accounts-api-openapi.yml",
+    "silverfin-app-api-openapi.yml",
+    "silverfin-budgets-api-openapi.yml",
+    "silverfin-client-meetings-api-openapi.yml",
+    "silverfin-companies-api-openapi.yml",
+    "silverfin-company-templates-api-openapi.yml",
+    "silverfin-exports-api-openapi.yml",
+    "silverfin-financials-api-openapi.yml",
+    "silverfin-groups-api-openapi.yml",
+    "silverfin-insights-api-openapi.yml",
+    "silverfin-live-export-documents-api-openapi.yml",
+    "silverfin-periods-api-openapi.yml",
+    "silverfin-permanent-api-openapi.yml",
+    "silverfin-personal-income-tax-api-openapi.yml",
+    "silverfin-remarks-api-openapi.yml",
+    "silverfin-talking-points-api-openapi.yml",
+    "silverfin-templates-api-openapi.yml",
+    "silverfin-user-api-openapi.yml",
+    "silverfin-users-api-openapi.yml",
+    "silverfin-webhooks-api-openapi.yml",
+    "silverfin-workflows-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation",
+    "archived openapi/silverfin-syncapi-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [
+    "silverfin-api-openapi.yml: previously refined output kept for 178 operation(s) no archived document covers (e.g. /api/v4/f/{firm_id}/account_mapping_lists get, /api/v4/f/{firm_id}/account_mapping_lists/{account_mapping_list_id} get, /api/v4/f/{firm_id}/account_templates get); its other 2 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
+  "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "silverfin-syncapi-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "silverfin-api-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "silverfin-api-openapi.yml: declared missing tag: Personal Income Tax",
+    "silverfin-api-openapi.yml: declared missing tag: Talking Points",
+    "superseded outputs removed: silverfin-api-openapi.yml",
+    "apis.yml register: written (+27 apis, 28 total)"
+  ],
+  "skipped": []
+}

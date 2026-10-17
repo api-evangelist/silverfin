@@ -1,0 +1,1523 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Companies API
+  description: This is the currently supported stable version of the Silverfin API.
+  version: 1.0.0
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Companies
+paths:
+  /api/v4/f/{firm_id}/companies:
+    get:
+      tags:
+      - Companies
+      summary: List all companies
+      description: 'List all companies.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getCompanies
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: file_code
+        in: query
+        schema:
+          type: string
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: company_id
+                    name:
+                      type: string
+                    created_at:
+                      type: string
+                    organisation_form:
+                      type: string
+                    country:
+                      type: string
+                    city:
+                      type: string
+                    street:
+                      type: string
+                    file_code:
+                      type: string
+                    company_type:
+                      type: string
+                    periods_per_year:
+                      type: integer
+                    sync_reference:
+                      type: string
+                    accountancy_synchronisation_reference:
+                      type: string
+                    accountancy_synchronisation_entity_id:
+                      type: integer
+                    accountancy_synchronisation_entity_type:
+                      type: string
+                    account_mapping_list_id:
+                      type: integer
+                    administration_synchronisation_reference:
+                      type: string
+                    administration_synchronisation_entity_id:
+                      type: integer
+                    company_template_id:
+                      type: integer
+                    folder_name:
+                      type: string
+                    vat:
+                      type: string
+                    visible_for_contributors:
+                      type: boolean
+                    currency:
+                      type: string
+                    group_ids:
+                      type: array
+                      items:
+                        type: integer
+                    year_end:
+                      type: string
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    national_insurance_number:
+                      type: string
+    post:
+      tags:
+      - Companies
+      summary: Add a company
+      description: 'Add a company.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: createCompany
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                company_type:
+                  type: string
+                  description: 'Can either be: regular, analytical, consolidation, sole_trader'
+                first_name:
+                  type: string
+                  description: required ONLY for personal files
+                last_name:
+                  type: string
+                  description: required ONLY for personal files
+                national_insurance_number:
+                  type: string
+                name:
+                  type: string
+                  description: The company's name.
+                periods_per_year:
+                  type: integer
+                  description: Can either be 1, 4, 12 (monthly, quarterly, yearly)
+                accountancy_synchronisation_entity_id:
+                  type: integer
+                accountancy_synchronisation_reference:
+                  type: string
+                account_mapping_list_id:
+                  type: integer
+                administration_synchronisation_entity_id:
+                  type: integer
+                administration_synchronisation_reference:
+                  type: string
+                year_end:
+                  type: string
+                  format: date
+                organisation_form:
+                  type: string
+                file_code:
+                  type: string
+                company_template_id:
+                  type: integer
+                  description: "If the ID is given, the company will use the company template identified by that ID. <br /> Otherwise:\n  <ul>\n    <li>For regular companies, it will use the firm's default company template.</li>\n    <li>For sole trader companies, it will use the firm's default sole trader template.</li>\n    <li>For personal files (only considers active company templates - \"can be manually added\"), it will find a company template according to the following rules, in order:\n      <ul>\n        <li>First personal company template having the Silverfin Personal Income Tax workflow as default</li>\n        <li>First personal company template having the Silverfin Personal Income Tax workflow</li>\n        <li>First personal company template</li>\n      </ul>\n    </li>\n  </ul>"
+                visible_for_contributors:
+                  type: boolean
+                vat_identifier:
+                  type: string
+                  deprecated: true
+                  description: Please use `registration_number` or `vat_number` instead
+                registration_number:
+                  type: string
+                vat_number:
+                  type: string
+                street:
+                  type: string
+                city:
+                  type: string
+                country:
+                  type: string
+                currency:
+                  type: string
+                custom[][namespace]:
+                  type: string
+                custom[][key]:
+                  type: string
+                custom[][value]:
+                  type: string
+              required:
+              - year_end
+              - name
+              - periods_per_year
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: company_id
+                  name:
+                    type: string
+                  created_at:
+                    type: string
+                  organisation_form:
+                    type: string
+                  country:
+                    type: string
+                  city:
+                    type: string
+                  street:
+                    type: string
+                  file_code:
+                    type: string
+                  company_type:
+                    type: string
+                  periods_per_year:
+                    type: integer
+                  sync_reference:
+                    type: string
+                  accountancy_synchronisation_reference:
+                    type: string
+                  accountancy_synchronisation_entity_id:
+                    type: integer
+                  accountancy_synchronisation_entity_type:
+                    type: string
+                  account_mapping_list_id:
+                    type: integer
+                  administration_synchronisation_reference:
+                    type: string
+                  administration_synchronisation_entity_id:
+                    type: integer
+                  company_template_id:
+                    type: integer
+                  folder_name:
+                    type: string
+                  vat:
+                    type: string
+                  visible_for_contributors:
+                    type: boolean
+                  currency:
+                    type: string
+                  group_ids:
+                    type: array
+                    items:
+                      type: integer
+                  year_end:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  national_insurance_number:
+                    type: string
+  /api/v4/f/{firm_id}/companies/archived:
+    get:
+      tags:
+      - Companies
+      summary: List all archived companies
+      description: 'List all archived companies.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getArchivedCompanyList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: archived company_id
+                    name:
+                      type: string
+  /api/v4/f/{firm_id}/companies/archived/{archived_company_id}/unarchive:
+    post:
+      tags:
+      - Companies
+      summary: Unarchive a company
+      description: 'Unarchive a company.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: updateArchivedCompany
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: archived_company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: company_id
+                  name:
+                    type: string
+                  created_at:
+                    type: string
+                  organisation_form:
+                    type: string
+                  country:
+                    type: string
+                  city:
+                    type: string
+                  street:
+                    type: string
+                  file_code:
+                    type: string
+                  company_type:
+                    type: string
+                  periods_per_year:
+                    type: integer
+                  sync_reference:
+                    type: string
+                  accountancy_synchronisation_reference:
+                    type: string
+                  accountancy_synchronisation_entity_id:
+                    type: integer
+                  accountancy_synchronisation_entity_type:
+                    type: string
+                  account_mapping_list_id:
+                    type: integer
+                  administration_synchronisation_reference:
+                    type: string
+                  administration_synchronisation_entity_id:
+                    type: integer
+                  company_template_id:
+                    type: integer
+                  folder_name:
+                    type: string
+                  vat:
+                    type: string
+                  visible_for_contributors:
+                    type: boolean
+                  currency:
+                    type: string
+                  group_ids:
+                    type: array
+                    items:
+                      type: integer
+                  year_end:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  national_insurance_number:
+                    type: string
+  /api/v4/f/{firm_id}/companies/{company_id}:
+    delete:
+      tags:
+      - Companies
+      summary: Archive a company
+      description: 'Archive a company.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: deleteCompany
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+    get:
+      tags:
+      - Companies
+      summary: Get details on a specific company
+      description: 'Get details on a specific company.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getCompanyDetails
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: string
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: company_id
+                  name:
+                    type: string
+                  created_at:
+                    type: string
+                  organisation_form:
+                    type: string
+                  country:
+                    type: string
+                  city:
+                    type: string
+                  street:
+                    type: string
+                  file_code:
+                    type: string
+                  company_type:
+                    type: string
+                  periods_per_year:
+                    type: integer
+                  sync_reference:
+                    type: string
+                  accountancy_synchronisation_reference:
+                    type: string
+                  accountancy_synchronisation_entity_id:
+                    type: integer
+                  accountancy_synchronisation_entity_type:
+                    type: string
+                  account_mapping_list_id:
+                    type: integer
+                  administration_synchronisation_reference:
+                    type: string
+                  administration_synchronisation_entity_id:
+                    type: integer
+                  company_template_id:
+                    type: integer
+                  folder_name:
+                    type: string
+                  vat:
+                    type: string
+                  visible_for_contributors:
+                    type: boolean
+                  currency:
+                    type: string
+                  group_ids:
+                    type: array
+                    items:
+                      type: integer
+                  year_end:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  national_insurance_number:
+                    type: string
+    post:
+      tags:
+      - Companies
+      summary: Update a company
+      description: 'Update a company.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: updateCompanyDetails
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                  description: required ONLY for personal files
+                last_name:
+                  type: string
+                  description: required ONLY for personal files
+                national_insurance_number:
+                  type: string
+                name:
+                  type: string
+                  description: NOT required for personal files
+                periods_per_year:
+                  type: integer
+                  description: NOT required for personal files, can either be 1,4,12 (monthly, quarterly, yearly)
+                account_mapping_list_id:
+                  type: integer
+                administration_synchronisation_entity_id:
+                  type: integer
+                administration_synchronisation_reference:
+                  type: string
+                year_end:
+                  type: string
+                  format: date
+                organisation_form:
+                  type: string
+                file_code:
+                  type: string
+                visible_for_contributors:
+                  type: boolean
+                vat_identifier:
+                  type: string
+                  deprecated: true
+                  description: Please use `registration_number` or `vat_number` instead
+                registration_number:
+                  type: string
+                vat_number:
+                  type: string
+                street:
+                  type: string
+                city:
+                  type: string
+                country:
+                  type: string
+                currency:
+                  type: string
+                custom[namespace]:
+                  type: string
+                custom[key]:
+                  type: string
+                custom[value]:
+                  type: string
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: company_id
+                  name:
+                    type: string
+                  created_at:
+                    type: string
+                  organisation_form:
+                    type: string
+                  country:
+                    type: string
+                  city:
+                    type: string
+                  street:
+                    type: string
+                  file_code:
+                    type: string
+                  company_type:
+                    type: string
+                  periods_per_year:
+                    type: integer
+                  sync_reference:
+                    type: string
+                  accountancy_synchronisation_reference:
+                    type: string
+                  accountancy_synchronisation_entity_id:
+                    type: integer
+                  accountancy_synchronisation_entity_type:
+                    type: string
+                  account_mapping_list_id:
+                    type: integer
+                  administration_synchronisation_reference:
+                    type: string
+                  administration_synchronisation_entity_id:
+                    type: integer
+                  company_template_id:
+                    type: integer
+                  folder_name:
+                    type: string
+                  vat:
+                    type: string
+                  visible_for_contributors:
+                    type: boolean
+                  currency:
+                    type: string
+                  group_ids:
+                    type: array
+                    items:
+                      type: integer
+                  year_end:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  national_insurance_number:
+                    type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/all_people:
+    get:
+      tags:
+      - Companies
+      summary: Get the people of a company
+      description: 'Get the people of a company.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getAllPeople
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 10
+          maximum: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    shareholder:
+                      type: boolean
+                    director:
+                      type: boolean
+    post:
+      tags:
+      - Companies
+      summary: Update the people of a company
+      description: 'Update the people of a company.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: updateAllPeople
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                people[][name]:
+                  type: string
+                people[][email]:
+                  type: string
+                people[][phone]:
+                  type: string
+                people[][amount_of_votes]:
+                  type: integer
+                people[][amount_of_shares]:
+                  type: integer
+                people[][address_1]:
+                  type: string
+                people[][address_2]:
+                  type: string
+                people[][external_id]:
+                  type: string
+                people[][role]:
+                  type: string
+                people[][statutory]:
+                  type: boolean
+                people[][shareholder]:
+                  type: boolean
+                people[][director]:
+                  type: boolean
+                people[][director_start_date]:
+                  type: string
+                  format: date
+                people[][director_end_date]:
+                  type: string
+                  format: date
+                people[][custom][key]:
+                  type: string
+                people[][custom][value]:
+                  type: string
+              required:
+              - people[][external_id]
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    shareholder:
+                      type: boolean
+                    director:
+                      type: boolean
+  /api/v4/f/{firm_id}/companies/{company_id}/custom:
+    get:
+      tags:
+      - Companies
+      summary: Get custom company parameters
+      description: 'Get custom company parameters.
+
+
+        Required scope(s): `administration:read``'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getCompanyCustomProperties
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    namespace:
+                      type: string
+                    key:
+                      type: string
+                    value:
+                      type: string
+                    owner:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        type:
+                          type: string
+                    documents:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          file_name:
+                            type: string
+                          content:
+                            type: string
+                          download_url:
+                            type: string
+                          periods:
+                            type: array
+                            items:
+                              type: string
+                          created_by:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              name:
+                                type: string
+                              username:
+                                type: string
+                              created_at:
+                                type: string
+                              email:
+                                type: string
+                    updated_by_id:
+                      type: integer
+    post:
+      tags:
+      - Companies
+      summary: Post a custom property to a company
+      description: 'Post a custom property to a company.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: createCompanyCustomProperty
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                namespace:
+                  type: string
+                key:
+                  type: string
+                value:
+                  type: string
+                  description: 'The value can be one of the following types: boolean, double, integer, object, string'
+              required:
+              - namespace
+              - key
+              - value
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Content-Type
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+  /api/v4/f/{firm_id}/companies/{company_id}/followers:
+    get:
+      tags:
+      - Companies
+      summary: List all followers of a company
+      description: 'List all followers of a company.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getCompanyFollowers
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: user_id
+                    name:
+                      type: string
+                    username:
+                      type: string
+                    created_at:
+                      type: string
+                    email:
+                      type: string
+    post:
+      tags:
+      - Companies
+      summary: Add a follower to a company by id
+      description: 'Add a follower to a company by id.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: createCompanyFollowerById
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+              required:
+              - user_id
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+  /api/v4/f/{firm_id}/companies/{company_id}/followers/{user_id}:
+    delete:
+      tags:
+      - Companies
+      summary: Remove a follower from a company by id
+      description: 'Remove a follower from a company by id.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: deleteCompanyFollowerById
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: user_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+  /api/v4/f/{firm_id}/companies/{company_id}/users:
+    get:
+      tags:
+      - Companies
+      summary: List all users that have access to a company
+      description: 'List all users that have access to a company.
+
+
+        Required scope(s): `administration:read`'
+      security:
+      - OAuth2:
+        - administration:read
+      operationId: getCompanyUserList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 10
+          maximum: 200
+      - name: active
+        in: query
+        schema:
+          type: boolean
+          description: Returns all users when unspecified, active users when true and inactive users when false.
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: user_id
+                    name:
+                      type: string
+                    username:
+                      type: string
+                    created_at:
+                      type: string
+                    external:
+                      type: boolean
+                    email:
+                      type: string
+                    staff_access:
+                      type: boolean
+                    email_notifications_frequency:
+                      type: string
+                    locale:
+                      type: string
+    post:
+      tags:
+      - Companies
+      summary: Add a user to a company by id
+      description: 'Add a user to a company by id.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: createCompanyUserById
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                role:
+                  type: string
+                  description: Can either be firm, customer or external
+                can_manage_users:
+                  type: boolean
+              required:
+              - user_id
+              - role
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+  /api/v4/f/{firm_id}/companies/{company_id}/users/{user_id}:
+    delete:
+      tags:
+      - Companies
+      summary: Remove a user from a company by id
+      description: 'Remove a user from a company by id.
+
+
+        Required scope(s): `administration:write`'
+      security:
+      - OAuth2:
+        - administration:write
+      operationId: deleteCompanyUserById
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: user_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            administration:read: ''
+            administration:write: ''
+            client_meetings:read: ''
+            client_meetings:external_notes:write: ''
+            communication:read: ''
+            communication:write: ''
+            financials:read: ''
+            financials:write: ''
+            financials:transactions:read: ''
+            financials:transactions:write: ''
+            insights:read: ''
+            insights:write: ''
+            workflows:read: ''
+            workflows:write: ''
+            permanent_documents:read: ''
+            permanent_documents:write: ''
+            webhooks: ''
+            links: ''
+            user:email: ''
+            user:firm: ''
+            user:profile: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/addcompanytogroupbyid.md
+  - https://developer.silverfin.com/reference/addcompanytouserbyid.md
+  - https://developer.silverfin.com/reference/addfirmworkflowtocompany.md
+  - https://developer.silverfin.com/reference/addsharedparttoaccounttemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoexportfiletemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/addusertogroupbyid.md
+  - https://developer.silverfin.com/reference/archiveworkflow.md
+  - https://developer.silverfin.com/reference/attachpersonalincometaxdocument.md
+  - https://developer.silverfin.com/reference/authorizeuser.md
+  - https://developer.silverfin.com/reference/createaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/createaccounttemplate.md
+  - https://developer.silverfin.com/reference/createadjustment.md
+  - https://developer.silverfin.com/reference/createapplink.md
+  - https://developer.silverfin.com/reference/createclientmeetingattachment.md
+  - https://developer.silverfin.com/reference/createcomment.md
+  - https://developer.silverfin.com/reference/createcompany.md
+  - https://developer.silverfin.com/reference/createcompanycustomproperty.md
+  - https://developer.silverfin.com/reference/createcompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/createcompanyuserbyid.md
+  - https://developer.silverfin.com/reference/createexportfileinstance.md
+  - https://developer.silverfin.com/reference/createexportfiletemplate.md
+  - https://developer.silverfin.com/reference/createexportpdfinstance.md
+  - https://developer.silverfin.com/reference/creategroup.md
+  - https://developer.silverfin.com/reference/createliquidtestrun.md
+  - https://developer.silverfin.com/reference/createliveexportdocument.md
+  - https://developer.silverfin.com/reference/createliveexportdocumentinexportpdfinstance.md
+  - https://developer.silverfin.com/reference/createnewaccount.md
+  - https://developer.silverfin.com/reference/createperiod.md
+  - https://developer.silverfin.com/reference/createperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/createpermanentdocument.md
+  - https://developer.silverfin.com/reference/createpermanentfolder.md
+  - https://developer.silverfin.com/reference/createpermanenttext.md
+  - https://developer.silverfin.com/reference/createpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxtaxonweb.md
+  - https://developer.silverfin.com/reference/createreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/createreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/createremark.md
+  - https://developer.silverfin.com/reference/createsharedpart.md
+  - https://developer.silverfin.com/reference/createuser.md
+  - https://developer.silverfin.com/reference/createwebhook.md
+  - https://developer.silverfin.com/reference/deleteaccountcustomproperty.md
+  - https://developer.silverfin.com/reference/deleteaccounttemplate.md
+  - https://developer.silverfin.com/reference/deleteadjustment.md
+  - https://developer.silverfin.com/reference/deleteapplink.md
+  - https://developer.silverfin.com/reference/deletecompany.md
+  - https://developer.silverfin.com/reference/deletecompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromuserbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyuserbyid.md
+  - https://developer.silverfin.com/reference/deleteexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletegroup.md
+  - https://developer.silverfin.com/reference/deleteperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentfolder.md
+  - https://developer.silverfin.com/reference/deletepermanentmail.md
+  - https://developer.silverfin.com/reference/deletereconciliationtextcustomproperty.md
+  - https://developer.silverfin.com/reference/deletereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteremark.md
+  - https://developer.silverfin.com/reference/deletesharedpart.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromaccounttemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteuser.md
+  - https://developer.silverfin.com/reference/deleteuserfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletewebhook.md
+  - https://developer.silverfin.com/reference/get_api-v4-f-firm-id-companies-company-id-periods-period-id-reports-report-id-results.md
+  - https://developer.silverfin.com/reference/getaccountancysyncentities.md
+  - https://developer.silverfin.com/reference/getaccountcontent.md
+  - https://developer.silverfin.com/reference/getaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/getaccountmappingbyaccountmappinglistid.md
+  - https://developer.silverfin.com/reference/getaccountmappinglists.md
+  - https://developer.silverfin.com/reference/getaccountresults.md
+  - https://developer.silverfin.com/reference/getaccountsvaluesbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccounttemplatecontent.md
+  - https://developer.silverfin.com/reference/getaccounttemplateslist.md
+  - https://developer.silverfin.com/reference/getactivefirmworkflowslist.md
+  - https://developer.silverfin.com/reference/getactiveuserslist.md
+  - https://developer.silverfin.com/reference/getadjustmentslist.md
+  - https://developer.silverfin.com/reference/getallpeople.md
+  - https://developer.silverfin.com/reference/getanalyticaldimensionslist.md
+  - https://developer.silverfin.com/reference/getapplinkbyuser.md
+  - https://developer.silverfin.com/reference/getarchivedcompanylist.md
+  - https://developer.silverfin.com/reference/getbalanceslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslistbyaccountid.md
+  - https://developer.silverfin.com/reference/getbudgetentryaccountids.md
+  - https://developer.silverfin.com/reference/getbudgetentrycontent.md
+  - https://developer.silverfin.com/reference/getbudgetentryenddates.md
+  - https://developer.silverfin.com/reference/getclientmeeting.md
+  - https://developer.silverfin.com/reference/getclientmeetingslist.md
+  - https://developer.silverfin.com/reference/getclienttemplateslist.md
+  - https://developer.silverfin.com/reference/getcommentslistfromremark.md
+  - https://developer.silverfin.com/reference/getcompanies.md
+  - https://developer.silverfin.com/reference/getcompaniesfromgrouplist.md
+  - https://developer.silverfin.com/reference/getcompanyaccounts.md
+  - https://developer.silverfin.com/reference/getcompanycustomproperties.md
+  - https://developer.silverfin.com/reference/getcompanydetails.md
+  - https://developer.silverfin.com/reference/getcompanyfollowers.md
+  - https://developer.silverfin.com/reference/getcompanyuserlist.md
+  - https://developer.silverfin.com/reference/getcurrentclientmeeting.md
+  - https://developer.silverfin.com/reference/getcurrentuserdetails.md
+  - https://developer.silverfin.com/reference/getcurrentuseremail.md
+  - https://developer.silverfin.com/reference/getcurrentuserfirm.md
+  - https://developer.silverfin.com/reference/getexportfileinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportfileinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportfileslist.md
+  - https://developer.silverfin.com/reference/getexportfiletemplatecontent.md
+  - https://developer.silverfin.com/reference/getexportfiletemplateslist.md
+  - https://developer.silverfin.com/reference/getexportpdfinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportpdfinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportpdfslist.md
+  - https://developer.silverfin.com/reference/getexportpdftemplateslist.md
+  - https://developer.silverfin.com/reference/getgroupslist.md
+  - https://developer.silverfin.com/reference/getinactiveuserslist.md
+  - https://developer.silverfin.com/reference/getinsightssegmentresults.md
+  - https://developer.silverfin.com/reference/getliveexportdocument.md
+  - https://developer.silverfin.com/reference/getliveexportdocumentslist.md
+  - https://developer.silverfin.com/reference/getopentransactions.md
+  - https://developer.silverfin.com/reference/getperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/getperioddetails.md
+  - https://developer.silverfin.com/reference/getperiods.md
+  - https://developer.silverfin.com/reference/getperiodspecificdocumentslist.md
+  - https://developer.silverfin.com/reference/getperiodworkflowslist.md
+  - https://developer.silverfin.com/reference/getpermanentdocumentcontent.md
+  - https://developer.silverfin.com/reference/getpermanentfoldercontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/getpermanenttextresults.md
+  - https://developer.silverfin.com/reference/getpermanenttextsignmarkers.md
+  - https://developer.silverfin.com/reference/getpermanenttextslist.md
+  - https://developer.silverfin.com/reference/getpermanenttexttemplatelist.md
+  - https://developer.silverfin.com/reference/getpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/getreconciliationtextresults.md
+  - https://developer.silverfin.com/reference/getreconciliationtexts.md
+  - https://developer.silverfin.com/reference/getreconciliationtextsignmarkers.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatecontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplateliquidtestrun.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatelist.md
+  - https://developer.silverfin.com/reference/getremarkslist.md
+  - https://developer.silverfin.com/reference/getreportslist.md
+  - https://developer.silverfin.com/reference/getsharedpartcontent.md
+  - https://developer.silverfin.com/reference/getsharedpartslist.md
+  - https://developer.silverfin.com/reference/getusercompanieslist.md
+  - https://developer.silverfin.com/reference/getusersfromgrouplist.md
+  - https://developer.silverfin.com/reference/getwebhookslist.md
+  - https://developer.silverfin.com/reference/getworkflowreconciliationtextslist.md
+  - https://developer.silverfin.com/reference/getworkflowstatus.md
+  - https://developer.silverfin.com/reference/lintliquidcode.md
+  - https://developer.silverfin.com/reference/moveexportpdfinstancetodocuments.md
+  - https://developer.silverfin.com/reference/movepermanentmail.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token.md
+  - https://developer.silverfin.com/reference/replaceperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/runinsightssegment.md
+  - https://developer.silverfin.com/reference/updateaccountcontent.md
+  - https://developer.silverfin.com/reference/updateaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/updateaccounttemplate.md
+  - https://developer.silverfin.com/reference/updateadjustment.md
+  - https://developer.silverfin.com/reference/updateallpeople.md
+  - https://developer.silverfin.com/reference/updatearchivedcompany.md
+  - https://developer.silverfin.com/reference/updatebatchaccountcontent.md
+  - https://developer.silverfin.com/reference/updatecompanydetails.md
+  - https://developer.silverfin.com/reference/updateexportfiletemplate.md
+  - https://developer.silverfin.com/reference/updateinactiveuser.md
+  - https://developer.silverfin.com/reference/updateinactiveworkflow.md
+  - https://developer.silverfin.com/reference/updateliveexportdocument.md
+  - https://developer.silverfin.com/reference/updateperiodspublicflag.md
+  - https://developer.silverfin.com/reference/updatepermanentdocument.md
+  - https://developer.silverfin.com/reference/updatepermanentfolder.md
+  - https://developer.silverfin.com/reference/updatepermanenttext.md
+  - https://developer.silverfin.com/reference/updatepersonalincometaxmetadata.md
+  - https://developer.silverfin.com/reference/updatereconciliationtextstarringstatus.md
+  - https://developer.silverfin.com/reference/updatereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/updateremarkflag.md
+  - https://developer.silverfin.com/reference/updatesharedpart.md
+  - https://developer.silverfin.com/reference/updateuser.md
+  merge:
+    pages: 180
+    deduped: 213
+    conflicts_kept_first: 0

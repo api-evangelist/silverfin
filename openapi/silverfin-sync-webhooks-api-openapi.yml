@@ -1,0 +1,182 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Sync Sync Webhooks API
+  version: v1
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Sync Webhooks
+paths:
+  /api/v4/f/{firm_id}/syncs/webhooks:
+    get:
+      tags:
+      - Sync Webhooks
+      summary: List all sync webhooks
+      description: 'List all sync webhooks.
+
+
+        Required scope(s): `webhooks`'
+      security:
+      - OAuth2:
+        - webhooks
+      operationId: getSyncWebhooksList
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: webhook_id
+                    url:
+                      type: string
+                    events:
+                      type: array
+                      items:
+                        type: string
+                    user_id:
+                      type: integer
+                    expired_at:
+                      type: string
+    post:
+      tags:
+      - Sync Webhooks
+      summary: Register a webhook
+      description: 'Required scope(s): `webhooks`'
+      security:
+      - OAuth2:
+        - webhooks
+      operationId: createSyncWebhook
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: Valid https url
+                events:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/WebhookEvent'
+                  description: List of events that will trigger this webhook, you cannot update this list, so you should destroy the webhook and create a new one when you want to add or remove an event.
+              required:
+              - url
+              - events[]
+      parameters:
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: webhook_id
+                  url:
+                    type: string
+                  events:
+                    type: array
+                    items:
+                      type: string
+                  user_id:
+                    type: integer
+                  expired_at:
+                    type: string
+  /api/v4/f/{firm_id}/syncs/webhooks/{webhook_id}:
+    delete:
+      tags:
+      - Sync Webhooks
+      summary: Destroy a webhook
+      description: 'Destroy a webhook.
+
+
+        Required scope(s): `webhooks`'
+      security:
+      - OAuth2:
+        - webhooks
+      operationId: deleteSyncWebhook
+      parameters:
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: webhook_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+components:
+  schemas:
+    WebhookEvent:
+      type: string
+      enum:
+      - sync.requested
+      - sync.company_added
+      - sync.company_removed
+      description: The webhook event name.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            financials:transactions:sync: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/authorizeuser-1.md
+  - https://developer.silverfin.com/reference/createsyncwebhook-1.md
+  - https://developer.silverfin.com/reference/deletesyncwebhook-1.md
+  - https://developer.silverfin.com/reference/getsynccompanies.md
+  - https://developer.silverfin.com/reference/getsynccompanyinfo.md
+  - https://developer.silverfin.com/reference/getsyncsettings.md
+  - https://developer.silverfin.com/reference/getsyncwebhookslist-1.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token-1.md
+  - https://developer.silverfin.com/reference/resetsyncbookkeepingdata.md
+  - https://developer.silverfin.com/reference/setsynccompanysettings.md
+  - https://developer.silverfin.com/reference/setsyncreferences.md
+  - https://developer.silverfin.com/reference/submitsynctransactions.md
+  merge:
+    pages: 12
+    deduped: 27
+    conflicts_kept_first: 0

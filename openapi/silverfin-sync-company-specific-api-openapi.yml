@@ -1,0 +1,678 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Sync Sync Company-Specific API
+  version: v1
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Sync Company-Specific
+paths:
+  /api/v4/f/{firm_id}/syncs/companies/{company_id}/info:
+    get:
+      summary: Get Sync Information
+      description: 'Retrieves the current synchronization state for a specific company.
+
+        Required scope(s): `financials:transactions:sync`'
+      security:
+      - OAuth2:
+        - financials:transactions:sync
+      operationId: getSyncCompanyInfo
+      tags:
+      - Sync Company-Specific
+      parameters:
+      - $ref: '#/components/parameters/FirmId'
+      - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: Successfully retrieved sync information.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - sync_point
+                - sync_start_at
+                - sync_reference
+                properties:
+                  sync_point:
+                    $ref: '#/components/schemas/SyncPoint'
+                  sync_start_at:
+                    $ref: '#/components/schemas/SyncStartAt'
+                  sync_reference:
+                    $ref: '#/components/schemas/SyncReference'
+        '409':
+          description: Conflict occurred, preventing the request from being processed (e.g., invalid sync point, misconfigured company). The error message will provide more details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - error
+                properties:
+                  error:
+                    type: string
+  /api/v4/f/{firm_id}/syncs/companies/{company_id}/reset:
+    delete:
+      summary: Reset Bookkeeping Data
+      description: 'Allows you to reset bookkeeping data for a company up to a specified date. If no date is provided, all bookkeeping data will be reset. Silverfin expect an incremental approach. This means you must only perform one request at a time per company.
+
+        Required scope(s): `financials:transactions:sync`
+
+
+        after_date: It is recommended to always use this endpoint with the after_date parameter set to the date of the oldest change for regular sync attempts. The "oldest change" refers to the earliest date of any financial transaction or record that has changed. If a customer notices an inconsistency, you can perform a reset without date, allowing you to re-sync all data.'
+      security:
+      - OAuth2:
+        - financials:transactions:sync
+      operationId: resetSyncBookkeepingData
+      tags:
+      - Sync Company-Specific
+      parameters:
+      - $ref: '#/components/parameters/FirmId'
+      - $ref: '#/components/parameters/CompanyId'
+      - name: after_date
+        in: query
+        description: 'Recommended setting the date to the oldest change.
+
+          Example: "01/01/2023" would reset all data from 1 January 2023 onward.
+
+          '
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Bookkeeping data successfully reset.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - sync_point
+                properties:
+                  sync_point:
+                    $ref: '#/components/schemas/SyncPoint'
+        '409':
+          description: Conflict occurred, preventing the request from being processed (e.g., invalid sync point, misconfigured company). The error message will provide more details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - error
+                properties:
+                  error:
+                    type: string
+        '422':
+          description: The request payload is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - errors
+                properties:
+                  errors:
+                    type: object
+                example:
+                  errors:
+                    after_date:
+                    - must be a valid date string
+        '429':
+          description: Too many requests at the same time. You must perform only one request at a time per company.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - error
+                properties:
+                  error:
+                    type: string
+  /api/v4/f/{firm_id}/syncs/companies/{company_id}/settings:
+    post:
+      summary: Update Sync Settings for a Company
+      description: 'Allows you to modify sync settings for a company, such as financial years, computations to be performed by Silverfin, and the retained earnings account.
+
+
+        Each "year" can be configured to make Silverfin compute opening balances and retained earnings
+
+        automatically for you. You can read more about it on Opening Balances and Retained Earnings page.
+
+
+        Required scope(s): `financials:transactions:sync`'
+      security:
+      - OAuth2:
+        - financials:transactions:sync
+      operationId: setSyncCompanySettings
+      tags:
+      - Sync Company-Specific
+      parameters:
+      - $ref: '#/components/parameters/FirmId'
+      - $ref: '#/components/parameters/CompanyId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - years
+              properties:
+                years:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - start_date
+                    - end_date
+                    - compute_opening_balances
+                    - compute_retained_earnings
+                    properties:
+                      start_date:
+                        type: string
+                        format: date
+                      end_date:
+                        type: string
+                        format: date
+                      compute_opening_balances:
+                        type: boolean
+                        description: 'Recommended passing "true" to avoid potential data consistency issues.
+
+                          More information [Opening Balances and Retained Earnings](/reference/opening-balances-and-retained-earnings) page.
+
+                          '
+                      compute_retained_earnings:
+                        type: boolean
+                        description: 'Recommended passing "true" to avoid potential data consistency issues.
+
+                          More information [Opening Balances and Retained Earnings](/reference/opening-balances-and-retained-earnings) page.
+
+                          '
+                retained_earnings_account:
+                  $ref: '#/components/schemas/RetainedEarningsAccountPayload'
+      responses:
+        '201':
+          description: Sync settings updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+        '409':
+          description: Conflict occurred, preventing the request from being processed (e.g., invalid sync point, misconfigured company). The error message will provide more details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - error
+                properties:
+                  error:
+                    type: string
+        '422':
+          description: The request payload is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - errors
+                properties:
+                  errors:
+                    type: object
+                example:
+                  errors:
+                    retained_earnings_account:
+                      name:
+                      - must be filled
+                      number:
+                      - must be a string
+  /api/v4/f/{firm_id}/syncs/companies/{company_id}/transactions:
+    post:
+      summary: Submit Bookkeeping Transactions
+      description: 'Allows you to submit, modify, or delete bookkeeping transactions in Silverfin using an incremental approach. This means you must only perform one request at a time per company.
+
+        Based on the action type, you can add new transactions, update existing ones, or remove them.
+
+        There is a limit of 500 actions per request.
+
+        Required scope(s): `financials:transactions:sync`'
+      security:
+      - OAuth2:
+        - financials:transactions:sync
+      operationId: submitSyncTransactions
+      tags:
+      - Sync Company-Specific
+      parameters:
+      - $ref: '#/components/parameters/FirmId'
+      - $ref: '#/components/parameters/CompanyId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - sync_point
+              - actions
+              properties:
+                sync_point:
+                  $ref: '#/components/schemas/SyncPoint'
+                actions:
+                  type: array
+                  maxItems: 500
+                  items:
+                    $ref: '#/components/schemas/ActionPayload'
+                accounts:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AccountWithTypePayload'
+                extra_field_labels:
+                  $ref: '#/components/schemas/ExtraFieldLabelsPayload'
+      responses:
+        '201':
+          description: Transactions have been successfully processed and accepted.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - sync_point
+                properties:
+                  sync_point:
+                    $ref: '#/components/schemas/SyncPoint'
+        '409':
+          description: Conflict occurred, preventing the request from being processed (e.g., invalid sync point, misconfigured company). The error message will provide more details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - error
+                properties:
+                  error:
+                    type: string
+        '422':
+          description: The request payload is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - errors
+                properties:
+                  errors:
+                    type: object
+                example:
+                  errors:
+                    sync_point:
+                    - must be filled
+        '429':
+          description: Too many requests at the same time. You must perform only one request at a time per company.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - error
+                properties:
+                  error:
+                    type: string
+components:
+  schemas:
+    SyncStartAt:
+      type: string
+      format: date
+      description: The date at which the company is configured to start on Silverfin.
+    ActionPayload:
+      type: object
+      description: Represents an action that can either be an "upsert" or "delete."
+      oneOf:
+      - type: object
+        required:
+        - upsert
+        properties:
+          upsert:
+            $ref: '#/components/schemas/UpsertActionPayload'
+      - type: object
+        required:
+        - delete
+        properties:
+          delete:
+            $ref: '#/components/schemas/DeleteActionPayload'
+    DeleteActionPayload:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: '#/components/schemas/TransactionId'
+      description: Payload for deleting an existing transaction by ID.
+    RetainedEarningsAccountPayload:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AccountWithTypePayload'
+      - type: object
+        description: 'The retained earnings account is only required if retained earnings are being computed
+
+          for at least one of the specified years; otherwise, it is optional.
+
+          '
+    AccountWithTypePayload:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AccountWithoutTypePayload'
+      - type: object
+        required:
+        - type
+        properties:
+          type:
+            $ref: '#/components/schemas/AccountType'
+        description: Extends 'AccountWithoutTypePayload' to include account type information.
+    SyncReference:
+      type: string
+      example: company-123
+      description: The sync reference used by the company. This is the uniq identifier in the third party sync supplied throught the `POST /sync_references` endpoint.
+    TransactionId:
+      type: string
+      description: The unique ID referencing a single transaction (or booking).
+      example: '17653417362'
+    ExtraFieldLabelsPayload:
+      type: array
+      minItems: 0
+      maxItems: 10
+      items:
+        type: string
+      example:
+      - label1
+      - label2
+      description: Array of labels for extra fields, with a maximum of 10 items.
+    UpsertActionPayload:
+      type: object
+      description: Payload for an "upsert" action, meaning update the record if it exists, or insert it if it does not.
+      required:
+      - id
+      - account_number
+      - period_end_date
+      - value
+      properties:
+        id:
+          $ref: '#/components/schemas/TransactionId'
+        account_number:
+          type: string
+          description: The account number from the request's "accounts" section.
+          example: '1234567890'
+        period_end_date:
+          type: string
+          format: date
+          description: The end date for the period of the transaction.
+        value:
+          type: number
+          example: 123.45
+          description: The value of the transaction.
+        transaction_id:
+          type: string
+          description: The unique ID referencing multiple transactions (or bookings) as a group.
+        journal_id:
+          type: string
+          description: A unique identifier from the source system for the journal used to record this transaction. Transactions sharing the same journal_id will be grouped and accessible via a link in the Silverfin UI.
+          example: J-2026-001
+        journal_type:
+          type: string
+          description: The type of journal from the source system (e.g. "Sales", "Purchases", "Bank", "General").
+          example: Sales
+        booking_date:
+          type: string
+          format: date
+          description: The date when the transaction was booked.
+        description:
+          type: string
+          description: A detailed description of the transaction.
+        relation:
+          type: string
+          description: The relation of the transaction, required if 'open_transaction' is provided.
+        document_id:
+          type: string
+          description: The ID of the associated document.
+        analytical_dimensions:
+          type: array
+          minItems: 0
+          maxItems: 6
+          items:
+            type:
+            - string
+            - 'null'
+          example:
+          - one
+          - two
+          - three
+          description: Array of analytical dimension labels, with a maximum of 6 items.
+        extra_fields:
+          type: array
+          description: Additional fields related to the transaction. Must have the same size as 'extra_field_labels' if provided.
+          minItems: 0
+          maxItems: 10
+          items:
+            type:
+            - string
+            - 'null'
+          example:
+          - field1
+          - field2
+        open_transaction:
+          $ref: '#/components/schemas/OpenTransactionPayload'
+    OpenTransactionPayload:
+      type:
+      - object
+      - 'null'
+      required:
+      - value
+      - category
+      properties:
+        value:
+          type: number
+          example: 42.12
+          description: The monetary value of the transaction.
+        category:
+          type: string
+          enum:
+          - payable
+          - receivable
+          description: The category of the transaction, either 'payable' or 'receivable.'
+    AccountType:
+      type: string
+      enum:
+      - asset
+      - liability
+      - income
+      - expense
+      - equity
+      description: The classification of an account type.
+    SyncPoint:
+      type: string
+      example: f9a7c6df341325822e3ea264cfe39e5ef8c73aa4
+      description: A unique string representing a sync point used to track sync states.
+    AccountWithoutTypePayload:
+      type: object
+      required:
+      - number
+      - name
+      properties:
+        number:
+          type: string
+          description: The account number.
+          example: '1234567890'
+        name:
+          type: string
+          description: The account name.
+          example: John Doe
+        name_nl:
+          type: string
+          description: Account name (for NL localisation)
+        name_fr:
+          type: string
+          description: Account name (for FR localisation)
+        name_en:
+          type: string
+          description: Account name (for EN localisation)
+        name_de:
+          type: string
+          description: Account name (for DE localisation)
+        name_da:
+          type: string
+          description: Account name (for DA localisation)
+        name_es:
+          type: string
+          description: Account name (for ES localisation)
+        name_fi:
+          type: string
+          description: Account name (for FI localisation)
+        name_it:
+          type: string
+          description: Account name (for IT localisation)
+        name_nb:
+          type: string
+          description: Account name (for NB localisation)
+        name_pl:
+          type: string
+          description: Account name (for PL localisation)
+        name_se:
+          type: string
+          description: Account name (for SE localisation)
+        name_cs:
+          type: string
+          description: Account name (for CS localisation)
+        name_ar:
+          type: string
+          description: Account name (for AR localisation)
+        name_az:
+          type: string
+          description: Account name (for AZ localisation)
+        name_bs:
+          type: string
+          description: Account name (for BS localisation)
+        name_bg:
+          type: string
+          description: Account name (for BG localisation)
+        name_el:
+          type: string
+          description: Account name (for EL localisation)
+        name_et:
+          type: string
+          description: Account name (for ET localisation)
+        name_hr:
+          type: string
+          description: Account name (for HR localisation)
+        name_hu:
+          type: string
+          description: Account name (for HU localisation)
+        name_id:
+          type: string
+          description: Account name (for ID localisation)
+        name_is:
+          type: string
+          description: Account name (for IS localisation)
+        name_ja:
+          type: string
+          description: Account name (for JA localisation)
+        name_ka:
+          type: string
+          description: Account name (for KA localisation)
+        name_kk:
+          type: string
+          description: Account name (for KK localisation)
+        name_km:
+          type: string
+          description: Account name (for KM localisation)
+        name_ko:
+          type: string
+          description: Account name (for KO localisation)
+        name_lt:
+          type: string
+          description: Account name (for LT localisation)
+        name_lv:
+          type: string
+          description: Account name (for LV localisation)
+        name_pt:
+          type: string
+          description: Account name (for PT localisation)
+        name_ro:
+          type: string
+          description: Account name (for RO localisation)
+        name_ru:
+          type: string
+          description: Account name (for RU localisation)
+        name_sk:
+          type: string
+          description: Account name (for SK localisation)
+        name_sl:
+          type: string
+          description: Account name (for SL localisation)
+        name_sr:
+          type: string
+          description: Account name (for SR localisation)
+        name_th:
+          type: string
+          description: Account name (for TH localisation)
+        name_tr:
+          type: string
+          description: Account name (for TR localisation)
+        name_uk:
+          type: string
+          description: Account name (for UK localisation)
+        name_vi:
+          type: string
+          description: Account name (for VI localisation)
+        name_zh:
+          type: string
+          description: Account name (for ZH localisation)
+        name_ca:
+          type: string
+          description: Account name (for CA localisation)
+        mapped_number:
+          type: string
+          description: The mapped account number for reference.
+  parameters:
+    FirmId:
+      name: firm_id
+      in: path
+      required: true
+      schema:
+        type: number
+      description: The unique identifier of the firm.
+    CompanyId:
+      name: company_id
+      in: path
+      required: true
+      schema:
+        type: number
+      description: The unique identifier of the company.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            financials:transactions:sync: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/authorizeuser-1.md
+  - https://developer.silverfin.com/reference/createsyncwebhook-1.md
+  - https://developer.silverfin.com/reference/deletesyncwebhook-1.md
+  - https://developer.silverfin.com/reference/getsynccompanies.md
+  - https://developer.silverfin.com/reference/getsynccompanyinfo.md
+  - https://developer.silverfin.com/reference/getsyncsettings.md
+  - https://developer.silverfin.com/reference/getsyncwebhookslist-1.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token-1.md
+  - https://developer.silverfin.com/reference/resetsyncbookkeepingdata.md
+  - https://developer.silverfin.com/reference/setsynccompanysettings.md
+  - https://developer.silverfin.com/reference/setsyncreferences.md
+  - https://developer.silverfin.com/reference/submitsynctransactions.md
+  merge:
+    pages: 12
+    deduped: 27
+    conflicts_kept_first: 0

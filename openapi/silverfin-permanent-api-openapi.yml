@@ -1,0 +1,1062 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Permanent API
+  description: This is the currently supported stable version of the Silverfin API.
+  version: 1.0.0
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Permanent
+paths:
+  /api/v4/f/{firm_id}/companies/{company_id}/permanent_documents:
+    post:
+      tags:
+      - Permanent
+      summary: Create a permanent document
+      description: 'Required scope(s): `permanent_documents:write`'
+      security:
+      - OAuth2:
+        - permanent_documents:write
+      operationId: createPermanentDocument
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                parent_id:
+                  type: integer
+                  description: The root folder is represented by `permanent_folder_id=0`
+                  example: '0'
+                name:
+                  type: string
+                content:
+                  type: string
+                  format: binary
+                filename:
+                  type: string
+                  description: Async upload generating a presigned url
+                export_file_instance_id:
+                  type: integer
+                  description: 'This will link the export_file_instance parameters to this permanent_document
+
+                    '
+              required:
+              - parent_id
+              - name
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: permanent_document_id
+                  path:
+                    type: array
+                    items:
+                      type: string
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  content_updated_at:
+                    type: string
+                  document:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      file_name:
+                        type: string
+                      content:
+                        type: string
+                      download_url:
+                        type: string
+                      permanent_document_path:
+                        type: array
+                        items:
+                          type: string
+                      permanent_document_id:
+                        type: integer
+                      periods:
+                        type: array
+                        items:
+                          type: string
+                      created_by:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          username:
+                            type: string
+                          created_at:
+                            type: string
+                          external:
+                            type: boolean
+                          email:
+                            type: string
+                          staff_access:
+                            type: boolean
+                          email_notifications_frequency:
+                            type: string
+                          locale:
+                            type: string
+                  visibility:
+                    type: string
+                  created_by:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      created_at:
+                        type: string
+                      external:
+                        type: boolean
+                      email:
+                        type: string
+                      staff_access:
+                        type: boolean
+                      email_notifications_frequency:
+                        type: string
+                      locale:
+                        type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/permanent_documents/{permanent_document_id}:
+    delete:
+      tags:
+      - Permanent
+      summary: Destroy a permanent document
+      description: 'Destroy a permanent document.
+
+
+        Required scope(s): `permanent_documents:write`'
+      security:
+      - OAuth2:
+        - permanent_documents:write
+      operationId: deletePermanentDocument
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_document_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+    get:
+      tags:
+      - Permanent
+      summary: Get details for a single permanent document
+      description: 'Get details for a single permanent document (including expiring download
+
+        url when there is an attachment).
+
+
+        Required scope(s): `permanent_documents:read`'
+      security:
+      - OAuth2:
+        - permanent_documents:read
+      operationId: getPermanentDocumentContent
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_document_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: permanent_document_id
+                  path:
+                    type: array
+                    items:
+                      type: string
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  content_updated_at:
+                    type: string
+                  document:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      file_name:
+                        type: string
+                      content:
+                        type: string
+                      download_url:
+                        type: string
+                      permanent_document_path:
+                        type: array
+                        items:
+                          type: string
+                      permanent_document_id:
+                        type: integer
+                      periods:
+                        type: array
+                        items:
+                          type: string
+                      created_by:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          username:
+                            type: string
+                          created_at:
+                            type: string
+                          external:
+                            type: boolean
+                          email:
+                            type: string
+                          staff_access:
+                            type: boolean
+                          email_notifications_frequency:
+                            type: string
+                          locale:
+                            type: string
+                  visibility:
+                    type: string
+                  created_by:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      created_at:
+                        type: string
+                      external:
+                        type: boolean
+                      email:
+                        type: string
+                      staff_access:
+                        type: boolean
+                      email_notifications_frequency:
+                        type: string
+                      locale:
+                        type: string
+    post:
+      tags:
+      - Permanent
+      summary: Update a permanent document
+      description: 'Update a permanent document.
+
+
+        Required scope(s): `permanent_documents:write`'
+      security:
+      - OAuth2:
+        - permanent_documents:write
+      operationId: updatePermanentDocument
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                parent_id:
+                  type: string
+                  description: The root folder is represented by parent_id 0
+                name:
+                  type: string
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_document_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: permanent_document_id
+                  path:
+                    type: array
+                    items:
+                      type: string
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  content_updated_at:
+                    type: string
+                  document:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      file_name:
+                        type: string
+                      content:
+                        type: string
+                      download_url:
+                        type: string
+                      permanent_document_path:
+                        type: array
+                        items:
+                          type: string
+                      permanent_document_id:
+                        type: integer
+                      periods:
+                        type: array
+                        items:
+                          type: string
+                      created_by:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          username:
+                            type: string
+                          created_at:
+                            type: string
+                          external:
+                            type: boolean
+                          email:
+                            type: string
+                          staff_access:
+                            type: boolean
+                          email_notifications_frequency:
+                            type: string
+                          locale:
+                            type: string
+                  visibility:
+                    type: string
+                  created_by:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      username:
+                        type: string
+                      created_at:
+                        type: string
+                      external:
+                        type: boolean
+                      email:
+                        type: string
+                      staff_access:
+                        type: boolean
+                      email_notifications_frequency:
+                        type: string
+                      locale:
+                        type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/permanent_folders:
+    post:
+      tags:
+      - Permanent
+      summary: Create a permanent folder
+      description: 'Create a permanent folder.
+
+
+        Creating or moving a permanent folder with a duplicate name will no longer
+
+        create a new folder with numerical suffix, e.g. "Folder (1)", but instead
+
+        yield a 422 error code.
+
+
+        Required scope(s): `permanent_documents:write`'
+      security:
+      - OAuth2:
+        - permanent_documents:write
+      operationId: createPermanentFolder
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                parent_id:
+                  type: integer
+                  description: The root folder is represented by `permanent_folder_id=0``
+                name:
+                  type: string
+                visibility:
+                  type: string
+                  description: Value can be either public or private
+                  example: private
+              required:
+              - parent_id
+              - name
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: permanent_folder_id
+                  path:
+                    type: array
+                    items:
+                      type: string
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  content_updated_at:
+                    type: string
+                  visibility:
+                    type: string
+                  created_by:
+                    type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/permanent_folders/{permanent_folder_id}:
+    delete:
+      tags:
+      - Permanent
+      summary: Destroy a permanent folder
+      description: 'Destroy a permanent folder.
+
+
+        Required scope(s): `permanent_documents:write`'
+      security:
+      - OAuth2:
+        - permanent_documents:write
+      operationId: deletePermanentFolder
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_folder_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+    get:
+      tags:
+      - Permanent
+      summary: Get content of permanent folder
+      description: 'Get content of permanent folder.
+
+
+        Required scope(s): `permanent_documents:read`'
+      security:
+      - OAuth2:
+        - permanent_documents:read
+      operationId: getPermanentFolderContent
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_folder_id
+        in: path
+        schema:
+          type: integer
+          description: The root folder is represented by permanent_folder_id 0
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: permanent_folder_id
+                  path:
+                    type: object
+                  name:
+                    type: string
+                  content_updated_at:
+                    type: string
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        type:
+                          type: string
+                        content_updated_at:
+                          type: string
+                        document:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            file_name:
+                              type: string
+                            content:
+                              type: string
+                            download_url:
+                              type: string
+                            permanent_document_path:
+                              type: array
+                              items:
+                                type: string
+                            permanent_document_id:
+                              type: integer
+                            periods:
+                              type: array
+                              items:
+                                type: string
+                            created_by:
+                              type: string
+                        visibility:
+                          type: string
+                        created_by:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: user_id
+                            name:
+                              type: string
+                            username:
+                              type: string
+                            created_at:
+                              type: string
+                            email:
+                              type: string
+                  visibility:
+                    type: string
+                  created_by:
+                    type: string
+    post:
+      tags:
+      - Permanent
+      summary: Update a permanent folder
+      description: 'Update a permanent folder.
+
+
+        Creating or updating a permanent folder with a duplicate name will no
+
+        longer create a new folder with numerical suffix, e.g. "Folder (1)",
+
+        but instead yield a 422 error code.
+
+
+        Required scope(s): `permanent_documents:write`'
+      security:
+      - OAuth2:
+        - permanent_documents:write
+      operationId: updatePermanentFolder
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                visibility:
+                  type: string
+                  description: Value can either be public or private
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_folder_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: permanent_folder_id
+                  path:
+                    type: array
+                    items:
+                      type: string
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  content_updated_at:
+                    type: string
+                  visibility:
+                    type: string
+                  created_by:
+                    type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/permanent_mail/{permanent_mail_id}:
+    delete:
+      tags:
+      - Permanent
+      summary: Delete a permanent mail
+      description: 'Delete a permanent mail.
+
+
+        Required scope(s): `permanent_documents:write`'
+      security:
+      - OAuth2:
+        - permanent_documents:write
+      operationId: deletePermanentMail
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_mail_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+    post:
+      tags:
+      - Permanent
+      summary: Move permanent mail
+      description: 'Move permanent mail.
+
+
+        Required scope(s): `permanent_documents:write`'
+      security:
+      - OAuth2:
+        - permanent_documents:write
+      operationId: movePermanentMail
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                parent_id:
+                  type: string
+                  description: The root folder is represented by parent_id 0
+              required:
+              - parent_id
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_mail_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json: {}
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            administration:read: ''
+            administration:write: ''
+            client_meetings:read: ''
+            client_meetings:external_notes:write: ''
+            communication:read: ''
+            communication:write: ''
+            financials:read: ''
+            financials:write: ''
+            financials:transactions:read: ''
+            financials:transactions:write: ''
+            insights:read: ''
+            insights:write: ''
+            workflows:read: ''
+            workflows:write: ''
+            permanent_documents:read: ''
+            permanent_documents:write: ''
+            webhooks: ''
+            links: ''
+            user:email: ''
+            user:firm: ''
+            user:profile: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/addcompanytogroupbyid.md
+  - https://developer.silverfin.com/reference/addcompanytouserbyid.md
+  - https://developer.silverfin.com/reference/addfirmworkflowtocompany.md
+  - https://developer.silverfin.com/reference/addsharedparttoaccounttemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoexportfiletemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/addusertogroupbyid.md
+  - https://developer.silverfin.com/reference/archiveworkflow.md
+  - https://developer.silverfin.com/reference/attachpersonalincometaxdocument.md
+  - https://developer.silverfin.com/reference/authorizeuser.md
+  - https://developer.silverfin.com/reference/createaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/createaccounttemplate.md
+  - https://developer.silverfin.com/reference/createadjustment.md
+  - https://developer.silverfin.com/reference/createapplink.md
+  - https://developer.silverfin.com/reference/createclientmeetingattachment.md
+  - https://developer.silverfin.com/reference/createcomment.md
+  - https://developer.silverfin.com/reference/createcompany.md
+  - https://developer.silverfin.com/reference/createcompanycustomproperty.md
+  - https://developer.silverfin.com/reference/createcompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/createcompanyuserbyid.md
+  - https://developer.silverfin.com/reference/createexportfileinstance.md
+  - https://developer.silverfin.com/reference/createexportfiletemplate.md
+  - https://developer.silverfin.com/reference/createexportpdfinstance.md
+  - https://developer.silverfin.com/reference/creategroup.md
+  - https://developer.silverfin.com/reference/createliquidtestrun.md
+  - https://developer.silverfin.com/reference/createliveexportdocument.md
+  - https://developer.silverfin.com/reference/createliveexportdocumentinexportpdfinstance.md
+  - https://developer.silverfin.com/reference/createnewaccount.md
+  - https://developer.silverfin.com/reference/createperiod.md
+  - https://developer.silverfin.com/reference/createperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/createpermanentdocument.md
+  - https://developer.silverfin.com/reference/createpermanentfolder.md
+  - https://developer.silverfin.com/reference/createpermanenttext.md
+  - https://developer.silverfin.com/reference/createpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxtaxonweb.md
+  - https://developer.silverfin.com/reference/createreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/createreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/createremark.md
+  - https://developer.silverfin.com/reference/createsharedpart.md
+  - https://developer.silverfin.com/reference/createuser.md
+  - https://developer.silverfin.com/reference/createwebhook.md
+  - https://developer.silverfin.com/reference/deleteaccountcustomproperty.md
+  - https://developer.silverfin.com/reference/deleteaccounttemplate.md
+  - https://developer.silverfin.com/reference/deleteadjustment.md
+  - https://developer.silverfin.com/reference/deleteapplink.md
+  - https://developer.silverfin.com/reference/deletecompany.md
+  - https://developer.silverfin.com/reference/deletecompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromuserbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyuserbyid.md
+  - https://developer.silverfin.com/reference/deleteexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletegroup.md
+  - https://developer.silverfin.com/reference/deleteperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentfolder.md
+  - https://developer.silverfin.com/reference/deletepermanentmail.md
+  - https://developer.silverfin.com/reference/deletereconciliationtextcustomproperty.md
+  - https://developer.silverfin.com/reference/deletereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteremark.md
+  - https://developer.silverfin.com/reference/deletesharedpart.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromaccounttemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteuser.md
+  - https://developer.silverfin.com/reference/deleteuserfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletewebhook.md
+  - https://developer.silverfin.com/reference/get_api-v4-f-firm-id-companies-company-id-periods-period-id-reports-report-id-results.md
+  - https://developer.silverfin.com/reference/getaccountancysyncentities.md
+  - https://developer.silverfin.com/reference/getaccountcontent.md
+  - https://developer.silverfin.com/reference/getaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/getaccountmappingbyaccountmappinglistid.md
+  - https://developer.silverfin.com/reference/getaccountmappinglists.md
+  - https://developer.silverfin.com/reference/getaccountresults.md
+  - https://developer.silverfin.com/reference/getaccountsvaluesbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccounttemplatecontent.md
+  - https://developer.silverfin.com/reference/getaccounttemplateslist.md
+  - https://developer.silverfin.com/reference/getactivefirmworkflowslist.md
+  - https://developer.silverfin.com/reference/getactiveuserslist.md
+  - https://developer.silverfin.com/reference/getadjustmentslist.md
+  - https://developer.silverfin.com/reference/getallpeople.md
+  - https://developer.silverfin.com/reference/getanalyticaldimensionslist.md
+  - https://developer.silverfin.com/reference/getapplinkbyuser.md
+  - https://developer.silverfin.com/reference/getarchivedcompanylist.md
+  - https://developer.silverfin.com/reference/getbalanceslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslistbyaccountid.md
+  - https://developer.silverfin.com/reference/getbudgetentryaccountids.md
+  - https://developer.silverfin.com/reference/getbudgetentrycontent.md
+  - https://developer.silverfin.com/reference/getbudgetentryenddates.md
+  - https://developer.silverfin.com/reference/getclientmeeting.md
+  - https://developer.silverfin.com/reference/getclientmeetingslist.md
+  - https://developer.silverfin.com/reference/getclienttemplateslist.md
+  - https://developer.silverfin.com/reference/getcommentslistfromremark.md
+  - https://developer.silverfin.com/reference/getcompanies.md
+  - https://developer.silverfin.com/reference/getcompaniesfromgrouplist.md
+  - https://developer.silverfin.com/reference/getcompanyaccounts.md
+  - https://developer.silverfin.com/reference/getcompanycustomproperties.md
+  - https://developer.silverfin.com/reference/getcompanydetails.md
+  - https://developer.silverfin.com/reference/getcompanyfollowers.md
+  - https://developer.silverfin.com/reference/getcompanyuserlist.md
+  - https://developer.silverfin.com/reference/getcurrentclientmeeting.md
+  - https://developer.silverfin.com/reference/getcurrentuserdetails.md
+  - https://developer.silverfin.com/reference/getcurrentuseremail.md
+  - https://developer.silverfin.com/reference/getcurrentuserfirm.md
+  - https://developer.silverfin.com/reference/getexportfileinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportfileinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportfileslist.md
+  - https://developer.silverfin.com/reference/getexportfiletemplatecontent.md
+  - https://developer.silverfin.com/reference/getexportfiletemplateslist.md
+  - https://developer.silverfin.com/reference/getexportpdfinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportpdfinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportpdfslist.md
+  - https://developer.silverfin.com/reference/getexportpdftemplateslist.md
+  - https://developer.silverfin.com/reference/getgroupslist.md
+  - https://developer.silverfin.com/reference/getinactiveuserslist.md
+  - https://developer.silverfin.com/reference/getinsightssegmentresults.md
+  - https://developer.silverfin.com/reference/getliveexportdocument.md
+  - https://developer.silverfin.com/reference/getliveexportdocumentslist.md
+  - https://developer.silverfin.com/reference/getopentransactions.md
+  - https://developer.silverfin.com/reference/getperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/getperioddetails.md
+  - https://developer.silverfin.com/reference/getperiods.md
+  - https://developer.silverfin.com/reference/getperiodspecificdocumentslist.md
+  - https://developer.silverfin.com/reference/getperiodworkflowslist.md
+  - https://developer.silverfin.com/reference/getpermanentdocumentcontent.md
+  - https://developer.silverfin.com/reference/getpermanentfoldercontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/getpermanenttextresults.md
+  - https://developer.silverfin.com/reference/getpermanenttextsignmarkers.md
+  - https://developer.silverfin.com/reference/getpermanenttextslist.md
+  - https://developer.silverfin.com/reference/getpermanenttexttemplatelist.md
+  - https://developer.silverfin.com/reference/getpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/getreconciliationtextresults.md
+  - https://developer.silverfin.com/reference/getreconciliationtexts.md
+  - https://developer.silverfin.com/reference/getreconciliationtextsignmarkers.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatecontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplateliquidtestrun.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatelist.md
+  - https://developer.silverfin.com/reference/getremarkslist.md
+  - https://developer.silverfin.com/reference/getreportslist.md
+  - https://developer.silverfin.com/reference/getsharedpartcontent.md
+  - https://developer.silverfin.com/reference/getsharedpartslist.md
+  - https://developer.silverfin.com/reference/getusercompanieslist.md
+  - https://developer.silverfin.com/reference/getusersfromgrouplist.md
+  - https://developer.silverfin.com/reference/getwebhookslist.md
+  - https://developer.silverfin.com/reference/getworkflowreconciliationtextslist.md
+  - https://developer.silverfin.com/reference/getworkflowstatus.md
+  - https://developer.silverfin.com/reference/lintliquidcode.md
+  - https://developer.silverfin.com/reference/moveexportpdfinstancetodocuments.md
+  - https://developer.silverfin.com/reference/movepermanentmail.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token.md
+  - https://developer.silverfin.com/reference/replaceperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/runinsightssegment.md
+  - https://developer.silverfin.com/reference/updateaccountcontent.md
+  - https://developer.silverfin.com/reference/updateaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/updateaccounttemplate.md
+  - https://developer.silverfin.com/reference/updateadjustment.md
+  - https://developer.silverfin.com/reference/updateallpeople.md
+  - https://developer.silverfin.com/reference/updatearchivedcompany.md
+  - https://developer.silverfin.com/reference/updatebatchaccountcontent.md
+  - https://developer.silverfin.com/reference/updatecompanydetails.md
+  - https://developer.silverfin.com/reference/updateexportfiletemplate.md
+  - https://developer.silverfin.com/reference/updateinactiveuser.md
+  - https://developer.silverfin.com/reference/updateinactiveworkflow.md
+  - https://developer.silverfin.com/reference/updateliveexportdocument.md
+  - https://developer.silverfin.com/reference/updateperiodspublicflag.md
+  - https://developer.silverfin.com/reference/updatepermanentdocument.md
+  - https://developer.silverfin.com/reference/updatepermanentfolder.md
+  - https://developer.silverfin.com/reference/updatepermanenttext.md
+  - https://developer.silverfin.com/reference/updatepersonalincometaxmetadata.md
+  - https://developer.silverfin.com/reference/updatereconciliationtextstarringstatus.md
+  - https://developer.silverfin.com/reference/updatereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/updateremarkflag.md
+  - https://developer.silverfin.com/reference/updatesharedpart.md
+  - https://developer.silverfin.com/reference/updateuser.md
+  merge:
+    pages: 180
+    deduped: 213
+    conflicts_kept_first: 0

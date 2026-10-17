@@ -1,0 +1,150 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Sync Sync Authentication API
+  version: v1
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Sync Authentication
+paths:
+  /f/{firm_id}/oauth/token:
+    post:
+      tags:
+      - Sync Authentication
+      summary: Access Token & Refresh Token
+      description: 'Perform a POST request to /oauth/token with parameters client_id, client_secret, code, redirect_uri and grant_type=authorization_code. After following these steps, you will have an access token and a refresh token. The access token is valid for 2 hours, while the refresh token currently remains valid for 60 days.
+
+
+        With the refresh token, you can request a new access token / refresh token pair: Perform a POST request to /oauth/token with parameters: client_id, client_secret, refresh_token, redirect_uri and grant_type=refresh_token. Each refresh token can be used only once. As soon as the new access token is used to access the API for the first time, the previous refresh token will be revoked.'
+      parameters:
+      - name: client_id
+        in: query
+        schema:
+          type: string
+        example: '{{client_id}}'
+        description: required for both access token and refresh request
+        required: true
+      - name: client_secret
+        in: query
+        schema:
+          type: string
+        example: '{{secret}}'
+        description: required for both access token and refresh request
+        required: true
+      - name: grant_type
+        in: query
+        schema:
+          type: string
+          enum:
+          - authorization_code
+          - refresh_token
+        description: 'set ''authorization_code'' for initial request or ''refresh_token'' for refresh request
+
+          '
+        required: true
+      - name: code
+        in: query
+        schema:
+          type: string
+        description: provide authorization_code for initial access token request
+      - name: redirect_uri
+        in: query
+        schema:
+          type: string
+        example: '{{callback_url}}'
+        description: required for both access token and refresh request
+        required: true
+      - name: refresh_token
+        in: query
+        schema:
+          type: string
+        example: '{{refresh_token}}'
+        description: provide refresh_token for refresh request
+      - name: firm_id
+        in: path
+        schema:
+          type: string
+        required: true
+        example: '{{firm_id}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+      operationId: postFByFirmIdOauthToken
+      x-operation-id-source: derived
+  /oauth/authorize:
+    get:
+      tags:
+      - Sync Authentication
+      summary: Authorize
+      description: 'Generates an OAuth authorization URL that redirects users to authenticate
+
+        and authorize your application. Use this URL to initiate the OAuth flow
+
+        by redirecting users to the authorization page. The URL must be opened
+
+        in a new tab or window.'
+      security:
+      - OAuth2:
+        - user:profile
+      operationId: authorizeUser
+      parameters:
+      - name: client_id
+        in: query
+        schema:
+          type: string
+        example: '{{client_id}}'
+      - name: redirect_uri
+        in: query
+        schema:
+          type: string
+        example: '{{callback_url}}'
+      - name: response_type
+        in: query
+        schema:
+          type: string
+        example: code
+      - name: scope
+        in: query
+        schema:
+          type: string
+        example: user:profile user:email webhooks administration:read administration:write permanent_documents:read permanent_documents:write communication:read communication:write financials:read financials:write financials:transactions:read financials:transactions:write links workflows:read
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            financials:transactions:sync: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/authorizeuser-1.md
+  - https://developer.silverfin.com/reference/createsyncwebhook-1.md
+  - https://developer.silverfin.com/reference/deletesyncwebhook-1.md
+  - https://developer.silverfin.com/reference/getsynccompanies.md
+  - https://developer.silverfin.com/reference/getsynccompanyinfo.md
+  - https://developer.silverfin.com/reference/getsyncsettings.md
+  - https://developer.silverfin.com/reference/getsyncwebhookslist-1.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token-1.md
+  - https://developer.silverfin.com/reference/resetsyncbookkeepingdata.md
+  - https://developer.silverfin.com/reference/setsynccompanysettings.md
+  - https://developer.silverfin.com/reference/setsyncreferences.md
+  - https://developer.silverfin.com/reference/submitsynctransactions.md
+  merge:
+    pages: 12
+    deduped: 27
+    conflicts_kept_first: 0

@@ -1,0 +1,226 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Sync Sync Firm-Related API
+  version: v1
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Sync Firm-Related
+paths:
+  /api/v4/f/{firm_id}/syncs/companies:
+    get:
+      summary: Get Syncable Companies List
+      description: 'This provide the list of silverfin companies currently configured to rely on this API sync. This list is paginated.
+
+        Required scope(s): `financials:transactions:sync`'
+      security:
+      - OAuth2:
+        - financials:transactions:sync
+      operationId: getSyncCompanies
+      tags:
+      - Sync Firm-Related
+      parameters:
+      - $ref: '#/components/parameters/FirmId'
+      - name: per_page
+        in: query
+        description: The number of companies returned per page during the pagination
+        schema:
+          type: integer
+          default: 50
+      - name: page
+        in: query
+        description: The page number used for paginating companies
+        schema:
+          type: integer
+          default: 1
+      responses:
+        '200':
+          description: The list of companies configured with this Sync.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - id
+                  - name
+                  - sync_reference
+                  - sync_point
+                  - sync_start_at
+                  properties:
+                    id:
+                      type: integer
+                      description: The uniq identifier of the company in Silverfin, this is later interpolated in the URL.
+                    name:
+                      type: string
+                      description: The name of the company as it can be seen in Silverfin.
+                    sync_reference:
+                      $ref: '#/components/schemas/SyncReference'
+                    sync_point:
+                      $ref: '#/components/schemas/SyncPoint'
+                    sync_start_at:
+                      $ref: '#/components/schemas/SyncStartAt'
+  /api/v4/f/{firm_id}/syncs/settings:
+    get:
+      summary: Get Overview and Transaction Limits
+      description: 'Returns various settings related to the Silverfin platform, such as the maximum number of supported analytical dimensions per transaction, supported locales for account names and the maximum amount of actions that can be submitted per request.
+
+        Required scope(s): `financials:transactions:sync`'
+      security:
+      - OAuth2:
+        - financials:transactions:sync
+      operationId: getSyncSettings
+      tags:
+      - Sync Firm-Related
+      parameters:
+      - $ref: '#/components/parameters/FirmId'
+      responses:
+        '200':
+          description: Successfully retrieved platform settings.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - analytical_dimensions
+                - extra_fields
+                - locales
+                properties:
+                  analytical_dimensions:
+                    type: number
+                    description: The maximum number of analytical dimensions allowed per transaction.
+                  extra_fields:
+                    type: number
+                    description: The maximum number of extra fields allowed per transaction.
+                  locales:
+                    type: array
+                    description: List of supported locales for account names.
+                    items:
+                      type: string
+                    example:
+                    - nl
+                    - fr
+                    - en
+                    - de
+                  actions_per_request:
+                    type: number
+                    description: The maximum number of actions that can be pushed in a single request.
+  /api/v4/f/{firm_id}/syncs/sync_references:
+    post:
+      summary: Update Sync References
+      description: 'Updates the sync references for the current application. This allows users to configure a company for synchronization with a third-party service by selecting the appropriate references.
+
+        Required scope(s): `financials:transactions:sync`'
+      security:
+      - OAuth2:
+        - financials:transactions:sync
+      operationId: setSyncReferences
+      tags:
+      - Sync Firm-Related
+      parameters:
+      - $ref: '#/components/parameters/FirmId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - company_references
+              properties:
+                company_references:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - id
+                    - name
+                    properties:
+                      id:
+                        type: string
+                        example: company-123
+                        description: The unique ID of the company.
+                      name:
+                        type: string
+                        example: Company Name
+                        description: The name of the company.
+      responses:
+        '201':
+          description: Sync references updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+        '422':
+          description: The request payload is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - errors
+                properties:
+                  errors:
+                    type: object
+                example:
+                  errors:
+                    company_references:
+                      '0':
+                        id:
+                        - must be a string
+                        name:
+                        - must be a string
+components:
+  parameters:
+    FirmId:
+      name: firm_id
+      in: path
+      required: true
+      schema:
+        type: number
+      description: The unique identifier of the firm.
+  schemas:
+    SyncStartAt:
+      type: string
+      format: date
+      description: The date at which the company is configured to start on Silverfin.
+    SyncReference:
+      type: string
+      example: company-123
+      description: The sync reference used by the company. This is the uniq identifier in the third party sync supplied throught the `POST /sync_references` endpoint.
+    SyncPoint:
+      type: string
+      example: f9a7c6df341325822e3ea264cfe39e5ef8c73aa4
+      description: A unique string representing a sync point used to track sync states.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            financials:transactions:sync: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/authorizeuser-1.md
+  - https://developer.silverfin.com/reference/createsyncwebhook-1.md
+  - https://developer.silverfin.com/reference/deletesyncwebhook-1.md
+  - https://developer.silverfin.com/reference/getsynccompanies.md
+  - https://developer.silverfin.com/reference/getsynccompanyinfo.md
+  - https://developer.silverfin.com/reference/getsyncsettings.md
+  - https://developer.silverfin.com/reference/getsyncwebhookslist-1.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token-1.md
+  - https://developer.silverfin.com/reference/resetsyncbookkeepingdata.md
+  - https://developer.silverfin.com/reference/setsynccompanysettings.md
+  - https://developer.silverfin.com/reference/setsyncreferences.md
+  - https://developer.silverfin.com/reference/submitsynctransactions.md
+  merge:
+    pages: 12
+    deduped: 27
+    conflicts_kept_first: 0

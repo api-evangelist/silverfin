@@ -1,0 +1,645 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Insights API
+  description: This is the currently supported stable version of the Silverfin API.
+  version: 1.0.0
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Insights
+paths:
+  /api/v4/f/{firm_id}/segments/{id}/results:
+    get:
+      tags:
+      - Insights
+      summary: Fetch the results of the latest run of an Insights segment
+      description: 'Returns the results of the authenticated user''s latest run of the segment for
+
+        the companies that user can access in Silverfin.'
+      security:
+      - OAuth2:
+        - insights:read
+      operationId: getInsightsSegmentResults
+      parameters:
+      - $ref: '#/components/parameters/InsightsFirmId'
+      - $ref: '#/components/parameters/InsightsSegmentId'
+      - name: page
+        in: query
+        description: Page of results to fetch
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: per_page
+        in: query
+        description: Number of results to return per page
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 200
+      responses:
+        '200':
+          description: The results of the latest finished run
+          headers:
+            Total:
+              description: Total number of matching companies accessible to the user
+              schema:
+                type: integer
+            Per-Page:
+              description: Effective number of results requested per page
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsSegmentResults'
+        '202':
+          description: The latest run is still in progress; its status and progress are returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsSegmentRunPendingWithMessage'
+        '403':
+          description: The token is an application token (a user token is required), or the firm does not have Insights Premium
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsError'
+        '404':
+          description: The segment does not exist or is not accessible, or no calculated results are available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsError'
+  /api/v4/f/{firm_id}/segments/{id}/runs:
+    post:
+      tags:
+      - Insights
+      summary: Run an Insights segment
+      description: 'Runs the segment for the authenticated user and returns immediately with a run
+
+        reference and its status; it does not wait for the segment run to finish. The
+
+        run only covers the companies the token''s user can access in Silverfin, and
+
+        never changes the segment''s definition.
+
+
+        If a run of this segment is already in progress, no new run is started. The
+
+        response describes that pending run with the pending payload documented on
+
+        `GET /segments/{id}/results`, without its `message`. Poll that endpoint
+
+        until it finishes.
+
+
+        If the user''s latest run of the segment finished less than
+
+        12 hours ago, no new run is started either. The 200 response
+
+        describes that finished run (`status` is `finished`) and carries a `message`
+
+        and `next_run_allowed_at`, the earliest time (ISO 8601) a request can start a
+
+        new run. A request at that time can still get a 409 at the firm''s limit.
+
+        Fetch the results from `GET /segments/{id}/results`. Runs started in the
+
+        Silverfin UI count as well. A change to the segment''s filters or period
+
+        removes the earlier runs, so the next request starts a new run at once.
+
+
+        Otherwise a new execution is created (a 202): there is no run yet, or the
+
+        latest run was cancelled or finished 12 hours ago or more. The
+
+        results of that earlier run are discarded.
+
+
+        A firm can have a limited number of runs in progress at the same time;
+
+        further requests are rejected with a 409 until a run
+
+        finishes. Runs started from the Silverfin UI count towards that limit.
+
+        Only the firm''s own segments can be run through the API; recommended
+
+        segments cannot.
+
+
+        This endpoint exists in API v4 only; on the deprecated v3 API it returns a 404.
+
+
+        This endpoint requires a user OAuth token and Insights Premium.
+
+
+        Required scope: `insights:write`'
+      security:
+      - OAuth2:
+        - insights:write
+      operationId: runInsightsSegment
+      parameters:
+      - $ref: '#/components/parameters/InsightsFirmId'
+      - $ref: '#/components/parameters/InsightsSegmentId'
+      responses:
+        '200':
+          description: A run is in progress, or the latest finished run is less than 12 hours old; no new run is started and that run is described
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/InsightsSegmentRunPending'
+                - $ref: '#/components/schemas/InsightsSegmentRunRecentlyFinished'
+        '202':
+          description: A new segment run was started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsSegmentRunPending'
+        '403':
+          description: The token is an application token (a user token is required), or the firm does not have Insights Premium
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsError'
+        '404':
+          description: The segment does not exist, is not accessible, or is not one of the firm's own segments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsError'
+        '409':
+          description: The firm already has the maximum number of segment runs in progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightsError'
+components:
+  schemas:
+    InsightsSegmentMatch:
+      type: object
+      required:
+      - company_id
+      - company_name
+      - period_id
+      - period_end_date
+      - values
+      properties:
+        company_id:
+          type: integer
+        company_name:
+          type: string
+        period_id:
+          type: integer
+        period_end_date:
+          type: string
+          format: date
+        values:
+          type: object
+          description: Values keyed by the corresponding column uuid
+          additionalProperties:
+            $ref: '#/components/schemas/InsightsFilterValue'
+    InsightsFilterValue:
+      type:
+      - object
+      - 'null'
+      required:
+      - formatted_value
+      - sort_value
+      properties:
+        formatted_value:
+          description: Translated display output. Depending on filter type, this is a string, object, number, boolean, or null.
+        sort_value:
+          description: Stable sortable representation. Depending on filter type, this is a string, number, boolean, or null.
+        filter_error:
+          type: string
+          description: Present only when this filter could not be calculated
+    InsightsSegmentColumn:
+      type: object
+      required:
+      - uuid
+      - type
+      - name
+      - settings
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Correlates this column with values in this response only; it is not a stable identifier across runs.
+        type:
+          type:
+          - string
+          - 'null'
+          example: Todos
+        name:
+          type:
+          - string
+          - 'null'
+          example: To-dos
+        settings:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+    InsightsError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: string
+    InsightsPeriodSelection:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - financial_year
+          - accounting_period
+          - active_period
+          - completed_period
+        date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Present for financial_year and accounting_period selections
+        locking_type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - locked
+          - permanently_locked
+          description: Present for active_period and completed_period selections
+    InsightsSegmentRunBase:
+      type: object
+      required:
+      - status
+      - request_ref
+      - started_at
+      - finished_at
+      properties:
+        status:
+          type: string
+          enum:
+          - pending
+          - finished
+        request_ref:
+          type: string
+          format: uuid
+        started_at:
+          type: string
+          format: date-time
+          description: Run creation time, with millisecond precision
+        finished_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Calculation completion time, or null while pending
+    InsightsSegmentRunPendingWithMessage:
+      allOf:
+      - $ref: '#/components/schemas/InsightsSegmentRunPending'
+      - type: object
+        required:
+        - message
+        properties:
+          message:
+            type: string
+            example: The segment run is not ready yet. Poll this endpoint until it finishes.
+    InsightsSegmentRunPending:
+      allOf:
+      - $ref: '#/components/schemas/InsightsSegmentRunBase'
+      - type: object
+        required:
+        - progress
+        properties:
+          status:
+            type: string
+            enum:
+            - pending
+          progress:
+            type: object
+            required:
+            - processed_companies
+            properties:
+              processed_companies:
+                type: integer
+                minimum: 0
+                description: 'Companies processed so far. Informational only: a two-pass run can count a company more than once.'
+    InsightsPagination:
+      type: object
+      required:
+      - page
+      - per_page
+      - total_matches
+      - total_pages
+      properties:
+        page:
+          type: integer
+          minimum: 1
+        per_page:
+          type: integer
+          minimum: 1
+          maximum: 1000
+        total_matches:
+          type: integer
+          minimum: 0
+        total_pages:
+          type: integer
+          minimum: 1
+    InsightsSegmentResults:
+      allOf:
+      - $ref: '#/components/schemas/InsightsSegmentRunBase'
+      - type: object
+        required:
+        - period_selection
+        - columns
+        - matches
+        - pagination
+        - non_match_count
+        properties:
+          status:
+            type: string
+            enum:
+            - finished
+          finished_at:
+            type: string
+            format: date-time
+          period_selection:
+            $ref: '#/components/schemas/InsightsPeriodSelection'
+          columns:
+            type: array
+            items:
+              $ref: '#/components/schemas/InsightsSegmentColumn'
+          matches:
+            type: array
+            items:
+              $ref: '#/components/schemas/InsightsSegmentMatch'
+          pagination:
+            $ref: '#/components/schemas/InsightsPagination'
+          non_match_count:
+            type: integer
+            minimum: 0
+    InsightsSegmentRunRecentlyFinished:
+      allOf:
+      - $ref: '#/components/schemas/InsightsSegmentRunBase'
+      - type: object
+        required:
+        - message
+        - next_run_allowed_at
+        properties:
+          status:
+            type: string
+            enum:
+            - finished
+          finished_at:
+            type: string
+            format: date-time
+          next_run_allowed_at:
+            type: string
+            format: date-time
+            description: 'The earliest time a request can start a new run: 12 hours after finished_at'
+          message:
+            type: string
+            example: The latest results of this segment are less than 12 hours old, so no new run was started. Fetch them from GET segments/123/results. A new run can start at next_run_allowed_at.
+  parameters:
+    InsightsFirmId:
+      name: firm_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    InsightsSegmentId:
+      name: id
+      in: path
+      required: true
+      description: Segment id
+      schema:
+        type: integer
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            administration:read: ''
+            administration:write: ''
+            client_meetings:read: ''
+            client_meetings:external_notes:write: ''
+            communication:read: ''
+            communication:write: ''
+            financials:read: ''
+            financials:write: ''
+            financials:transactions:read: ''
+            financials:transactions:write: ''
+            insights:read: ''
+            insights:write: ''
+            workflows:read: ''
+            workflows:write: ''
+            permanent_documents:read: ''
+            permanent_documents:write: ''
+            webhooks: ''
+            links: ''
+            user:email: ''
+            user:firm: ''
+            user:profile: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/addcompanytogroupbyid.md
+  - https://developer.silverfin.com/reference/addcompanytouserbyid.md
+  - https://developer.silverfin.com/reference/addfirmworkflowtocompany.md
+  - https://developer.silverfin.com/reference/addsharedparttoaccounttemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoexportfiletemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/addusertogroupbyid.md
+  - https://developer.silverfin.com/reference/archiveworkflow.md
+  - https://developer.silverfin.com/reference/attachpersonalincometaxdocument.md
+  - https://developer.silverfin.com/reference/authorizeuser.md
+  - https://developer.silverfin.com/reference/createaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/createaccounttemplate.md
+  - https://developer.silverfin.com/reference/createadjustment.md
+  - https://developer.silverfin.com/reference/createapplink.md
+  - https://developer.silverfin.com/reference/createclientmeetingattachment.md
+  - https://developer.silverfin.com/reference/createcomment.md
+  - https://developer.silverfin.com/reference/createcompany.md
+  - https://developer.silverfin.com/reference/createcompanycustomproperty.md
+  - https://developer.silverfin.com/reference/createcompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/createcompanyuserbyid.md
+  - https://developer.silverfin.com/reference/createexportfileinstance.md
+  - https://developer.silverfin.com/reference/createexportfiletemplate.md
+  - https://developer.silverfin.com/reference/createexportpdfinstance.md
+  - https://developer.silverfin.com/reference/creategroup.md
+  - https://developer.silverfin.com/reference/createliquidtestrun.md
+  - https://developer.silverfin.com/reference/createliveexportdocument.md
+  - https://developer.silverfin.com/reference/createliveexportdocumentinexportpdfinstance.md
+  - https://developer.silverfin.com/reference/createnewaccount.md
+  - https://developer.silverfin.com/reference/createperiod.md
+  - https://developer.silverfin.com/reference/createperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/createpermanentdocument.md
+  - https://developer.silverfin.com/reference/createpermanentfolder.md
+  - https://developer.silverfin.com/reference/createpermanenttext.md
+  - https://developer.silverfin.com/reference/createpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxtaxonweb.md
+  - https://developer.silverfin.com/reference/createreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/createreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/createremark.md
+  - https://developer.silverfin.com/reference/createsharedpart.md
+  - https://developer.silverfin.com/reference/createuser.md
+  - https://developer.silverfin.com/reference/createwebhook.md
+  - https://developer.silverfin.com/reference/deleteaccountcustomproperty.md
+  - https://developer.silverfin.com/reference/deleteaccounttemplate.md
+  - https://developer.silverfin.com/reference/deleteadjustment.md
+  - https://developer.silverfin.com/reference/deleteapplink.md
+  - https://developer.silverfin.com/reference/deletecompany.md
+  - https://developer.silverfin.com/reference/deletecompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromuserbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyuserbyid.md
+  - https://developer.silverfin.com/reference/deleteexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletegroup.md
+  - https://developer.silverfin.com/reference/deleteperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentfolder.md
+  - https://developer.silverfin.com/reference/deletepermanentmail.md
+  - https://developer.silverfin.com/reference/deletereconciliationtextcustomproperty.md
+  - https://developer.silverfin.com/reference/deletereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteremark.md
+  - https://developer.silverfin.com/reference/deletesharedpart.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromaccounttemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteuser.md
+  - https://developer.silverfin.com/reference/deleteuserfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletewebhook.md
+  - https://developer.silverfin.com/reference/get_api-v4-f-firm-id-companies-company-id-periods-period-id-reports-report-id-results.md
+  - https://developer.silverfin.com/reference/getaccountancysyncentities.md
+  - https://developer.silverfin.com/reference/getaccountcontent.md
+  - https://developer.silverfin.com/reference/getaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/getaccountmappingbyaccountmappinglistid.md
+  - https://developer.silverfin.com/reference/getaccountmappinglists.md
+  - https://developer.silverfin.com/reference/getaccountresults.md
+  - https://developer.silverfin.com/reference/getaccountsvaluesbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccounttemplatecontent.md
+  - https://developer.silverfin.com/reference/getaccounttemplateslist.md
+  - https://developer.silverfin.com/reference/getactivefirmworkflowslist.md
+  - https://developer.silverfin.com/reference/getactiveuserslist.md
+  - https://developer.silverfin.com/reference/getadjustmentslist.md
+  - https://developer.silverfin.com/reference/getallpeople.md
+  - https://developer.silverfin.com/reference/getanalyticaldimensionslist.md
+  - https://developer.silverfin.com/reference/getapplinkbyuser.md
+  - https://developer.silverfin.com/reference/getarchivedcompanylist.md
+  - https://developer.silverfin.com/reference/getbalanceslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslistbyaccountid.md
+  - https://developer.silverfin.com/reference/getbudgetentryaccountids.md
+  - https://developer.silverfin.com/reference/getbudgetentrycontent.md
+  - https://developer.silverfin.com/reference/getbudgetentryenddates.md
+  - https://developer.silverfin.com/reference/getclientmeeting.md
+  - https://developer.silverfin.com/reference/getclientmeetingslist.md
+  - https://developer.silverfin.com/reference/getclienttemplateslist.md
+  - https://developer.silverfin.com/reference/getcommentslistfromremark.md
+  - https://developer.silverfin.com/reference/getcompanies.md
+  - https://developer.silverfin.com/reference/getcompaniesfromgrouplist.md
+  - https://developer.silverfin.com/reference/getcompanyaccounts.md
+  - https://developer.silverfin.com/reference/getcompanycustomproperties.md
+  - https://developer.silverfin.com/reference/getcompanydetails.md
+  - https://developer.silverfin.com/reference/getcompanyfollowers.md
+  - https://developer.silverfin.com/reference/getcompanyuserlist.md
+  - https://developer.silverfin.com/reference/getcurrentclientmeeting.md
+  - https://developer.silverfin.com/reference/getcurrentuserdetails.md
+  - https://developer.silverfin.com/reference/getcurrentuseremail.md
+  - https://developer.silverfin.com/reference/getcurrentuserfirm.md
+  - https://developer.silverfin.com/reference/getexportfileinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportfileinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportfileslist.md
+  - https://developer.silverfin.com/reference/getexportfiletemplatecontent.md
+  - https://developer.silverfin.com/reference/getexportfiletemplateslist.md
+  - https://developer.silverfin.com/reference/getexportpdfinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportpdfinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportpdfslist.md
+  - https://developer.silverfin.com/reference/getexportpdftemplateslist.md
+  - https://developer.silverfin.com/reference/getgroupslist.md
+  - https://developer.silverfin.com/reference/getinactiveuserslist.md
+  - https://developer.silverfin.com/reference/getinsightssegmentresults.md
+  - https://developer.silverfin.com/reference/getliveexportdocument.md
+  - https://developer.silverfin.com/reference/getliveexportdocumentslist.md
+  - https://developer.silverfin.com/reference/getopentransactions.md
+  - https://developer.silverfin.com/reference/getperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/getperioddetails.md
+  - https://developer.silverfin.com/reference/getperiods.md
+  - https://developer.silverfin.com/reference/getperiodspecificdocumentslist.md
+  - https://developer.silverfin.com/reference/getperiodworkflowslist.md
+  - https://developer.silverfin.com/reference/getpermanentdocumentcontent.md
+  - https://developer.silverfin.com/reference/getpermanentfoldercontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/getpermanenttextresults.md
+  - https://developer.silverfin.com/reference/getpermanenttextsignmarkers.md
+  - https://developer.silverfin.com/reference/getpermanenttextslist.md
+  - https://developer.silverfin.com/reference/getpermanenttexttemplatelist.md
+  - https://developer.silverfin.com/reference/getpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/getreconciliationtextresults.md
+  - https://developer.silverfin.com/reference/getreconciliationtexts.md
+  - https://developer.silverfin.com/reference/getreconciliationtextsignmarkers.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatecontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplateliquidtestrun.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatelist.md
+  - https://developer.silverfin.com/reference/getremarkslist.md
+  - https://developer.silverfin.com/reference/getreportslist.md
+  - https://developer.silverfin.com/reference/getsharedpartcontent.md
+  - https://developer.silverfin.com/reference/getsharedpartslist.md
+  - https://developer.silverfin.com/reference/getusercompanieslist.md
+  - https://developer.silverfin.com/reference/getusersfromgrouplist.md
+  - https://developer.silverfin.com/reference/getwebhookslist.md
+  - https://developer.silverfin.com/reference/getworkflowreconciliationtextslist.md
+  - https://developer.silverfin.com/reference/getworkflowstatus.md
+  - https://developer.silverfin.com/reference/lintliquidcode.md
+  - https://developer.silverfin.com/reference/moveexportpdfinstancetodocuments.md
+  - https://developer.silverfin.com/reference/movepermanentmail.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token.md
+  - https://developer.silverfin.com/reference/replaceperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/runinsightssegment.md
+  - https://developer.silverfin.com/reference/updateaccountcontent.md
+  - https://developer.silverfin.com/reference/updateaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/updateaccounttemplate.md
+  - https://developer.silverfin.com/reference/updateadjustment.md
+  - https://developer.silverfin.com/reference/updateallpeople.md
+  - https://developer.silverfin.com/reference/updatearchivedcompany.md
+  - https://developer.silverfin.com/reference/updatebatchaccountcontent.md
+  - https://developer.silverfin.com/reference/updatecompanydetails.md
+  - https://developer.silverfin.com/reference/updateexportfiletemplate.md
+  - https://developer.silverfin.com/reference/updateinactiveuser.md
+  - https://developer.silverfin.com/reference/updateinactiveworkflow.md
+  - https://developer.silverfin.com/reference/updateliveexportdocument.md
+  - https://developer.silverfin.com/reference/updateperiodspublicflag.md
+  - https://developer.silverfin.com/reference/updatepermanentdocument.md
+  - https://developer.silverfin.com/reference/updatepermanentfolder.md
+  - https://developer.silverfin.com/reference/updatepermanenttext.md
+  - https://developer.silverfin.com/reference/updatepersonalincometaxmetadata.md
+  - https://developer.silverfin.com/reference/updatereconciliationtextstarringstatus.md
+  - https://developer.silverfin.com/reference/updatereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/updateremarkflag.md
+  - https://developer.silverfin.com/reference/updatesharedpart.md
+  - https://developer.silverfin.com/reference/updateuser.md
+  merge:
+    pages: 180
+    deduped: 213
+    conflicts_kept_first: 0

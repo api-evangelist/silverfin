@@ -1,0 +1,702 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Client Meetings API
+  description: This is the currently supported stable version of the Silverfin API.
+  version: 1.0.0
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Client Meetings
+paths:
+  /api/v4/f/{firm_id}/companies/{company_id}/client_meetings:
+    get:
+      tags:
+      - Client Meetings
+      summary: List completed client meetings
+      description: 'List the completed client meetings for the specified company, ordered by
+
+        most recently completed first.
+
+
+        Required scope: `client_meetings:read`'
+      security:
+      - OAuth2:
+        - client_meetings:read
+      operationId: getClientMeetingsList
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 10
+          maximum: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 123
+                    title:
+                      type: string
+                      example: Q3 review meeting
+                    summary:
+                      type: string
+                    completed_at:
+                      type: string
+                      format: date-time
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+                    discussed_messages_count:
+                      type: integer
+                      example: 3
+                      description: Notes plus todos discussed during the meeting
+                    action_points_count:
+                      type: integer
+                      example: 1
+                      description: Todos from the meeting that were not discussed
+  /api/v4/f/{firm_id}/companies/{company_id}/client_meetings/attachments:
+    post:
+      tags:
+      - Client Meetings
+      summary: Upload attachment
+      description: 'Upload an attachment to the current client meeting for the specified
+
+        company. A meeting can have up to 5 attachments. Upload one file per
+
+        request — call this endpoint repeatedly to attach multiple files.
+
+
+        Supported file types: .aac .flac .mp3 .mpa .mpeg .mpga .mp4 .opus .pcm
+
+        .wav .webm .png .jpg .jpeg .webp .txt .pdf
+
+
+        Required scope: `client_meetings:external_notes:write`'
+      security:
+      - OAuth2:
+        - client_meetings:external_notes:write
+      operationId: createClientMeetingAttachment
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                bot_name:
+                  type: string
+                  description: 'Custom name to display as the uploader, if left empty, we use
+
+                    the authenticated user''s name
+
+                    '
+                content:
+                  type: string
+                  format: binary
+              required:
+              - content
+      parameters:
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: File is successfully uploaded
+        '422':
+          description: 'Possible reasons:<br>
+
+            - The company has no current meeting
+
+            - Maximum number of attachments already uploaded
+
+            - Unsupported file type
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - error
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: The company has no current meeting
+  /api/v4/f/{firm_id}/companies/{company_id}/client_meetings/current:
+    get:
+      tags:
+      - Client Meetings
+      summary: Get the current client meeting
+      description: 'Get the current (in progress) client meeting for the specified company,
+
+        including its items (talking points, action points and titles in meeting
+
+        order), attachments and links.
+
+
+        Required scope: `client_meetings:read`'
+      security:
+      - OAuth2:
+        - client_meetings:read
+      operationId: getCurrentClientMeeting
+      parameters:
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+                  title:
+                    type: string
+                    example: Q3 review meeting
+                  summary:
+                    type: string
+                  completed_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: null when the meeting is still in progress
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  items:
+                    type: array
+                    description: Talking points, action points and titles in meeting order
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: remark
+                          description: Either 'remark' (a talking point or action point) or 'title'
+                        id:
+                          type: integer
+                          example: 123
+                        text:
+                          type: string
+                          example: Financial position
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: Only returned for remarks
+                        author_name:
+                          type: string
+                          example: Jason
+                          description: Only returned for remarks
+                        todo:
+                          type: boolean
+                          description: Only returned for remarks
+                        done_at:
+                          type:
+                          - string
+                          - 'null'
+                          format: date-time
+                          description: Only returned for todos
+                        done_by_name:
+                          type:
+                          - string
+                          - 'null'
+                          example: Jason
+                          description: Only returned for todos
+                        tags:
+                          type: array
+                          description: Tag names. Only returned for remarks
+                          items:
+                            type: string
+                            example: Talking point
+                        attachments:
+                          type: array
+                          description: Only returned for remarks
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 123
+                              file_name:
+                                type: string
+                                example: meeting_notes.pdf
+                              size:
+                                type: integer
+                                description: Size in bytes
+                                example: 52428
+                              uploaded_by:
+                                type: string
+                                example: Jason
+                              download_url:
+                                type: string
+                  attachments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 123
+                        file_name:
+                          type: string
+                          example: meeting_notes.pdf
+                        size:
+                          type: integer
+                          description: Size in bytes
+                          example: 52428
+                        uploaded_by:
+                          type: string
+                          example: Jason
+                        download_url:
+                          type: string
+                  links:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: Quarterly figures
+                        url:
+                          type: string
+                          example: https://example.com/quarterly-figures
+        '404':
+          description: The company has no current meeting
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - error
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: The company has no current meeting
+  /api/v4/f/{firm_id}/companies/{company_id}/client_meetings/{client_meeting_id}:
+    get:
+      tags:
+      - Client Meetings
+      summary: Get a client meeting
+      description: 'Get a single client meeting for the specified company, including its
+
+        items (talking points, action points and titles in meeting order),
+
+        attachments and links.
+
+
+        Required scope: `client_meetings:read`'
+      security:
+      - OAuth2:
+        - client_meetings:read
+      operationId: getClientMeeting
+      parameters:
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: client_meeting_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+                  title:
+                    type: string
+                    example: Q3 review meeting
+                  summary:
+                    type: string
+                  completed_at:
+                    type:
+                    - string
+                    - 'null'
+                    format: date-time
+                    description: null when the meeting is still in progress
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  items:
+                    type: array
+                    description: Talking points, action points and titles in meeting order
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: remark
+                          description: Either 'remark' (a talking point or action point) or 'title'
+                        id:
+                          type: integer
+                          example: 123
+                        text:
+                          type: string
+                          example: Financial position
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: Only returned for remarks
+                        author_name:
+                          type: string
+                          example: Jason
+                          description: Only returned for remarks
+                        todo:
+                          type: boolean
+                          description: Only returned for remarks
+                        done_at:
+                          type:
+                          - string
+                          - 'null'
+                          format: date-time
+                          description: Only returned for todos
+                        done_by_name:
+                          type:
+                          - string
+                          - 'null'
+                          example: Jason
+                          description: Only returned for todos
+                        tags:
+                          type: array
+                          description: Tag names. Only returned for remarks
+                          items:
+                            type: string
+                            example: Talking point
+                        attachments:
+                          type: array
+                          description: Only returned for remarks
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 123
+                              file_name:
+                                type: string
+                                example: meeting_notes.pdf
+                              size:
+                                type: integer
+                                description: Size in bytes
+                                example: 52428
+                              uploaded_by:
+                                type: string
+                                example: Jason
+                              download_url:
+                                type: string
+                  attachments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 123
+                        file_name:
+                          type: string
+                          example: meeting_notes.pdf
+                        size:
+                          type: integer
+                          description: Size in bytes
+                          example: 52428
+                        uploaded_by:
+                          type: string
+                          example: Jason
+                        download_url:
+                          type: string
+                  links:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: Quarterly figures
+                        url:
+                          type: string
+                          example: https://example.com/quarterly-figures
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            administration:read: ''
+            administration:write: ''
+            client_meetings:read: ''
+            client_meetings:external_notes:write: ''
+            communication:read: ''
+            communication:write: ''
+            financials:read: ''
+            financials:write: ''
+            financials:transactions:read: ''
+            financials:transactions:write: ''
+            insights:read: ''
+            insights:write: ''
+            workflows:read: ''
+            workflows:write: ''
+            permanent_documents:read: ''
+            permanent_documents:write: ''
+            webhooks: ''
+            links: ''
+            user:email: ''
+            user:firm: ''
+            user:profile: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/addcompanytogroupbyid.md
+  - https://developer.silverfin.com/reference/addcompanytouserbyid.md
+  - https://developer.silverfin.com/reference/addfirmworkflowtocompany.md
+  - https://developer.silverfin.com/reference/addsharedparttoaccounttemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoexportfiletemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/addusertogroupbyid.md
+  - https://developer.silverfin.com/reference/archiveworkflow.md
+  - https://developer.silverfin.com/reference/attachpersonalincometaxdocument.md
+  - https://developer.silverfin.com/reference/authorizeuser.md
+  - https://developer.silverfin.com/reference/createaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/createaccounttemplate.md
+  - https://developer.silverfin.com/reference/createadjustment.md
+  - https://developer.silverfin.com/reference/createapplink.md
+  - https://developer.silverfin.com/reference/createclientmeetingattachment.md
+  - https://developer.silverfin.com/reference/createcomment.md
+  - https://developer.silverfin.com/reference/createcompany.md
+  - https://developer.silverfin.com/reference/createcompanycustomproperty.md
+  - https://developer.silverfin.com/reference/createcompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/createcompanyuserbyid.md
+  - https://developer.silverfin.com/reference/createexportfileinstance.md
+  - https://developer.silverfin.com/reference/createexportfiletemplate.md
+  - https://developer.silverfin.com/reference/createexportpdfinstance.md
+  - https://developer.silverfin.com/reference/creategroup.md
+  - https://developer.silverfin.com/reference/createliquidtestrun.md
+  - https://developer.silverfin.com/reference/createliveexportdocument.md
+  - https://developer.silverfin.com/reference/createliveexportdocumentinexportpdfinstance.md
+  - https://developer.silverfin.com/reference/createnewaccount.md
+  - https://developer.silverfin.com/reference/createperiod.md
+  - https://developer.silverfin.com/reference/createperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/createpermanentdocument.md
+  - https://developer.silverfin.com/reference/createpermanentfolder.md
+  - https://developer.silverfin.com/reference/createpermanenttext.md
+  - https://developer.silverfin.com/reference/createpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxtaxonweb.md
+  - https://developer.silverfin.com/reference/createreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/createreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/createremark.md
+  - https://developer.silverfin.com/reference/createsharedpart.md
+  - https://developer.silverfin.com/reference/createuser.md
+  - https://developer.silverfin.com/reference/createwebhook.md
+  - https://developer.silverfin.com/reference/deleteaccountcustomproperty.md
+  - https://developer.silverfin.com/reference/deleteaccounttemplate.md
+  - https://developer.silverfin.com/reference/deleteadjustment.md
+  - https://developer.silverfin.com/reference/deleteapplink.md
+  - https://developer.silverfin.com/reference/deletecompany.md
+  - https://developer.silverfin.com/reference/deletecompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromuserbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyuserbyid.md
+  - https://developer.silverfin.com/reference/deleteexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletegroup.md
+  - https://developer.silverfin.com/reference/deleteperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentfolder.md
+  - https://developer.silverfin.com/reference/deletepermanentmail.md
+  - https://developer.silverfin.com/reference/deletereconciliationtextcustomproperty.md
+  - https://developer.silverfin.com/reference/deletereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteremark.md
+  - https://developer.silverfin.com/reference/deletesharedpart.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromaccounttemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteuser.md
+  - https://developer.silverfin.com/reference/deleteuserfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletewebhook.md
+  - https://developer.silverfin.com/reference/get_api-v4-f-firm-id-companies-company-id-periods-period-id-reports-report-id-results.md
+  - https://developer.silverfin.com/reference/getaccountancysyncentities.md
+  - https://developer.silverfin.com/reference/getaccountcontent.md
+  - https://developer.silverfin.com/reference/getaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/getaccountmappingbyaccountmappinglistid.md
+  - https://developer.silverfin.com/reference/getaccountmappinglists.md
+  - https://developer.silverfin.com/reference/getaccountresults.md
+  - https://developer.silverfin.com/reference/getaccountsvaluesbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccounttemplatecontent.md
+  - https://developer.silverfin.com/reference/getaccounttemplateslist.md
+  - https://developer.silverfin.com/reference/getactivefirmworkflowslist.md
+  - https://developer.silverfin.com/reference/getactiveuserslist.md
+  - https://developer.silverfin.com/reference/getadjustmentslist.md
+  - https://developer.silverfin.com/reference/getallpeople.md
+  - https://developer.silverfin.com/reference/getanalyticaldimensionslist.md
+  - https://developer.silverfin.com/reference/getapplinkbyuser.md
+  - https://developer.silverfin.com/reference/getarchivedcompanylist.md
+  - https://developer.silverfin.com/reference/getbalanceslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslistbyaccountid.md
+  - https://developer.silverfin.com/reference/getbudgetentryaccountids.md
+  - https://developer.silverfin.com/reference/getbudgetentrycontent.md
+  - https://developer.silverfin.com/reference/getbudgetentryenddates.md
+  - https://developer.silverfin.com/reference/getclientmeeting.md
+  - https://developer.silverfin.com/reference/getclientmeetingslist.md
+  - https://developer.silverfin.com/reference/getclienttemplateslist.md
+  - https://developer.silverfin.com/reference/getcommentslistfromremark.md
+  - https://developer.silverfin.com/reference/getcompanies.md
+  - https://developer.silverfin.com/reference/getcompaniesfromgrouplist.md
+  - https://developer.silverfin.com/reference/getcompanyaccounts.md
+  - https://developer.silverfin.com/reference/getcompanycustomproperties.md
+  - https://developer.silverfin.com/reference/getcompanydetails.md
+  - https://developer.silverfin.com/reference/getcompanyfollowers.md
+  - https://developer.silverfin.com/reference/getcompanyuserlist.md
+  - https://developer.silverfin.com/reference/getcurrentclientmeeting.md
+  - https://developer.silverfin.com/reference/getcurrentuserdetails.md
+  - https://developer.silverfin.com/reference/getcurrentuseremail.md
+  - https://developer.silverfin.com/reference/getcurrentuserfirm.md
+  - https://developer.silverfin.com/reference/getexportfileinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportfileinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportfileslist.md
+  - https://developer.silverfin.com/reference/getexportfiletemplatecontent.md
+  - https://developer.silverfin.com/reference/getexportfiletemplateslist.md
+  - https://developer.silverfin.com/reference/getexportpdfinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportpdfinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportpdfslist.md
+  - https://developer.silverfin.com/reference/getexportpdftemplateslist.md
+  - https://developer.silverfin.com/reference/getgroupslist.md
+  - https://developer.silverfin.com/reference/getinactiveuserslist.md
+  - https://developer.silverfin.com/reference/getinsightssegmentresults.md
+  - https://developer.silverfin.com/reference/getliveexportdocument.md
+  - https://developer.silverfin.com/reference/getliveexportdocumentslist.md
+  - https://developer.silverfin.com/reference/getopentransactions.md
+  - https://developer.silverfin.com/reference/getperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/getperioddetails.md
+  - https://developer.silverfin.com/reference/getperiods.md
+  - https://developer.silverfin.com/reference/getperiodspecificdocumentslist.md
+  - https://developer.silverfin.com/reference/getperiodworkflowslist.md
+  - https://developer.silverfin.com/reference/getpermanentdocumentcontent.md
+  - https://developer.silverfin.com/reference/getpermanentfoldercontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/getpermanenttextresults.md
+  - https://developer.silverfin.com/reference/getpermanenttextsignmarkers.md
+  - https://developer.silverfin.com/reference/getpermanenttextslist.md
+  - https://developer.silverfin.com/reference/getpermanenttexttemplatelist.md
+  - https://developer.silverfin.com/reference/getpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/getreconciliationtextresults.md
+  - https://developer.silverfin.com/reference/getreconciliationtexts.md
+  - https://developer.silverfin.com/reference/getreconciliationtextsignmarkers.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatecontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplateliquidtestrun.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatelist.md
+  - https://developer.silverfin.com/reference/getremarkslist.md
+  - https://developer.silverfin.com/reference/getreportslist.md
+  - https://developer.silverfin.com/reference/getsharedpartcontent.md
+  - https://developer.silverfin.com/reference/getsharedpartslist.md
+  - https://developer.silverfin.com/reference/getusercompanieslist.md
+  - https://developer.silverfin.com/reference/getusersfromgrouplist.md
+  - https://developer.silverfin.com/reference/getwebhookslist.md
+  - https://developer.silverfin.com/reference/getworkflowreconciliationtextslist.md
+  - https://developer.silverfin.com/reference/getworkflowstatus.md
+  - https://developer.silverfin.com/reference/lintliquidcode.md
+  - https://developer.silverfin.com/reference/moveexportpdfinstancetodocuments.md
+  - https://developer.silverfin.com/reference/movepermanentmail.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token.md
+  - https://developer.silverfin.com/reference/replaceperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/runinsightssegment.md
+  - https://developer.silverfin.com/reference/updateaccountcontent.md
+  - https://developer.silverfin.com/reference/updateaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/updateaccounttemplate.md
+  - https://developer.silverfin.com/reference/updateadjustment.md
+  - https://developer.silverfin.com/reference/updateallpeople.md
+  - https://developer.silverfin.com/reference/updatearchivedcompany.md
+  - https://developer.silverfin.com/reference/updatebatchaccountcontent.md
+  - https://developer.silverfin.com/reference/updatecompanydetails.md
+  - https://developer.silverfin.com/reference/updateexportfiletemplate.md
+  - https://developer.silverfin.com/reference/updateinactiveuser.md
+  - https://developer.silverfin.com/reference/updateinactiveworkflow.md
+  - https://developer.silverfin.com/reference/updateliveexportdocument.md
+  - https://developer.silverfin.com/reference/updateperiodspublicflag.md
+  - https://developer.silverfin.com/reference/updatepermanentdocument.md
+  - https://developer.silverfin.com/reference/updatepermanentfolder.md
+  - https://developer.silverfin.com/reference/updatepermanenttext.md
+  - https://developer.silverfin.com/reference/updatepersonalincometaxmetadata.md
+  - https://developer.silverfin.com/reference/updatereconciliationtextstarringstatus.md
+  - https://developer.silverfin.com/reference/updatereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/updateremarkflag.md
+  - https://developer.silverfin.com/reference/updatesharedpart.md
+  - https://developer.silverfin.com/reference/updateuser.md
+  merge:
+    pages: 180
+    deduped: 213
+    conflicts_kept_first: 0

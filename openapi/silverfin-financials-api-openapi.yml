@@ -1,0 +1,2841 @@
+openapi: 3.2.0
+info:
+  title: Silverfin Financials API
+  description: This is the currently supported stable version of the Silverfin API.
+  version: 1.0.0
+servers:
+- url: https://live.getsilverfin.com
+tags:
+- name: Financials
+paths:
+  /api/v4/f/{firm_id}/companies/{company_id}/analytical_dimensions:
+    get:
+      tags:
+      - Financials
+      summary: List all analytical dimensions
+      description: 'List all analytical dimensions.
+
+
+        require scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getAnalyticalDimensionsList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v4/f/{firm_id}/companies/{company_id}/open_transactions:
+    get:
+      tags:
+      - Financials
+      summary: Get all open transactions
+      description: 'This fetches all currently open transactions (payables & receivables) for
+
+        a specific company.
+
+
+        Required scope(s): `financials:transactions:read`'
+      security:
+      - OAuth2:
+        - financials:transactions:read
+      operationId: getOpenTransactions
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts:
+    get:
+      tags:
+      - Financials
+      summary: List values of all accounts for this period
+      description: 'List values of all accounts for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getAccountsValuesByPeriodId
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    account:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: account_id
+                        name:
+                          type: string
+                        number:
+                          type: string
+                        number_without_suffix:
+                          type: string
+                        account_type:
+                          type: string
+                    account_reconciliation_template:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: account_reconciliation_template_id
+                    value:
+                      type: string
+                    starred:
+                      type: boolean
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts/{account_id}:
+    get:
+      tags:
+      - Financials
+      summary: Get information about the account values for this period
+      description: 'Get information about the account values for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getAccountContentByPeriodId
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: account_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: account_id
+                      name:
+                        type: string
+                      number:
+                        type: string
+                      number_without_suffix:
+                        type: string
+                      account_type:
+                        type: string
+                  account_reconciliation_template:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: account_reconciliation_template_id
+                  value:
+                    type: string
+                  starred:
+                    type: boolean
+    post:
+      tags:
+      - Financials
+      summary: Adapt information for the account for this period
+      description: 'Currently the settings you can adapt on period are the
+
+        account_reconciliation_template or the starred status.
+
+        **account_reconciliation_template**
+
+        When account_reconciliation_template is set, the
+
+        account_reconciliation_template for this account for this period will be
+
+        updated, as well as the account_reconciliation_template of the account
+
+        itself (on a general level) and all account_reconciliation_templates for
+
+        all periods for this account where no data is filled in.
+
+        The template for periods where data is filled in will not be adapted.
+
+
+        **starred**
+
+        When starred is set to true, the account will be starred in this period
+
+        and all future periods.
+
+        When starred is set to false, the account will be unstarred in this
+
+        period.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: updateAccountContentByPeriodId
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                account_reconciliation_template[id]:
+                  type: string
+                starred:
+                  type: string
+                  description: boolean
+              required:
+              - account_reconciliation_template[id]
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: account_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: account_id
+                      name:
+                        type: string
+                      number:
+                        type: string
+                      account_type:
+                        type: string
+                  account_reconciliation_template:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: account_reconciliation_template_id
+                  value:
+                    type: string
+                  starred:
+                    type: boolean
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts/{account_id}/custom:
+    get:
+      tags:
+      - Financials
+      summary: Get all custom parameters of an account for this period
+      description: 'Get all custom parameters of an account for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getAccountCustomProperties
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: account_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    namespace:
+                      type: string
+                    key:
+                      type: string
+                    value:
+                      type: string
+                    owner:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        type:
+                          type: string
+                    documents:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          file_name:
+                            type: string
+                          content:
+                            type: string
+                          download_url:
+                            type: string
+                          periods:
+                            type: array
+                            items:
+                              type: string
+                          created_by:
+                            type: string
+                    updated_by_id:
+                      type: integer
+    post:
+      tags:
+      - Financials
+      summary: Post a custom property to an account
+      description: 'Submit one or more custom properties by posting an array in properties
+
+        containing objects with namespace, key and value.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: createAccountCustomProperties
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                properties[][namespace]:
+                  type: string
+                properties[][key]:
+                  type: string
+                properties[][value]:
+                  type: string
+                  description: 'The value can be one of the following types: boolean, double, integer, object, string'
+                properties[]documents[][content]:
+                  type: string
+                  format: binary
+              required:
+              - properties[][namespace]
+              - properties[][key]
+              - properties[][value]
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: account_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+    delete:
+      tags:
+      - Financials
+      summary: Delete a custom property from an account
+      description: 'Removes a custom property from an account.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: deleteAccountCustomProperty
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: namespace
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: key
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: account_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/accounts/{account_id}/results:
+    get:
+      tags:
+      - Financials
+      summary: Get all results of an account for this period
+      description: 'Get all results of an account for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getAccountResults
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: account_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                description: 'An object with dynamic string keys where values can be booleans or strings
+
+                  '
+                additionalProperties:
+                  oneOf:
+                  - type: boolean
+                  - type: string
+                example:
+                  adjustment_button_shown: false
+                  counter_account_linked: false
+                  at_least_one_counter_account_selected: false
+                  unreconciled_amount: '-2500.0'
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/financials/adjustments:
+    get:
+      tags:
+      - Financials
+      summary: List all adjustments
+      description: 'List all adjustments.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getAdjustmentsList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: adjustment_id
+                    posted_at:
+                      type: string
+                    ulid:
+                      type: integer
+                    category:
+                      type: string
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    original_adjustment:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        period:
+                          type: string
+                        ulid:
+                          type: string
+                    transactions:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          description:
+                            type: string
+                          value:
+                            type: string
+                          account:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: account_id
+                              name:
+                                type: string
+                              number:
+                                type: string
+                              original_name:
+                                type: string
+                              original_number:
+                                type: string
+                              number_without_suffix:
+                                type: string
+                              account_type:
+                                type: string
+    post:
+      tags:
+      - Financials
+      summary: Create a new adjustment
+      description: 'Create a new adjustment.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: createAdjustment
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                transactions[][account][number]:
+                  type: string
+                transactions[][account][name]:
+                  type: string
+                transactions[][value]:
+                  type: string
+                transactions[][description]:
+                  type: string
+                transactions[][analytical_dimension_0]:
+                  type: string
+                transactions[][analytical_dimension_1]:
+                  type: string
+                transactions[][analytical_dimension_2]:
+                  type: string
+                transactions[][analytical_dimension_3]:
+                  type: string
+              required:
+              - transactions[][account][number]
+              - transactions[][value]
+              - transactions[][description]
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: adjustment_id
+                    posted_at:
+                      type: string
+                    ulid:
+                      type: integer
+                    category:
+                      type: string
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    original_adjustment:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        period:
+                          type: string
+                        ulid:
+                          type: string
+                    transactions:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          description:
+                            type: string
+                          value:
+                            type: string
+                          account:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: account_id
+                              name:
+                                type: string
+                              number:
+                                type: string
+                              original_name:
+                                type: string
+                              original_number:
+                                type: string
+                              number_without_suffix:
+                                type: string
+                              account_type:
+                                type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/financials/adjustments/{adjustment_id}:
+    delete:
+      tags:
+      - Financials
+      summary: Destroy an adjustment
+      description: 'Destroy an adjustment.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: deleteAdjustment
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: adjustment_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+    post:
+      tags:
+      - Financials
+      summary: Update an adjustment
+      description: 'Update an adjustment.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: updateAdjustment
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                transactions[][account][number]:
+                  type: string
+                transactions[][account][name]:
+                  type: string
+                transactions[][value]:
+                  type: integer
+                  format: double
+                transactions[][description]:
+                  type: string
+                transactions[][analytical_dimension_0]:
+                  type: string
+                transactions[][analytical_dimension_1]:
+                  type: string
+                transactions[][analytical_dimension_2]:
+                  type: string
+                transactions[][analytical_dimension_3]:
+                  type: string
+              required:
+              - transactions[][account][number]
+              - transactions[][value]
+              - transactions[][description]
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: adjustment_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: adjustment_id
+                    posted_at:
+                      type: string
+                    ulid:
+                      type: integer
+                    category:
+                      type: string
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    original_adjustment:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        period:
+                          type: string
+                        ulid:
+                          type: string
+                    transactions:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          description:
+                            type: string
+                          value:
+                            type: string
+                          account:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                description: account_id
+                              name:
+                                type: string
+                              number:
+                                type: string
+                              original_name:
+                                type: string
+                              original_number:
+                                type: string
+                              number_without_suffix:
+                                type: string
+                              account_type:
+                                type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/financials/balances:
+    get:
+      tags:
+      - Financials
+      summary: List all balances
+      description: 'List all balances.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getBalancesList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: account_id
+                    name:
+                      type: string
+                    number:
+                      type: string
+                    number_without_suffix:
+                      type: string
+                    original_name:
+                      type: string
+                    original_number:
+                      type: string
+                    account_type:
+                      type: string
+                    value:
+                      type: string
+                    adjustments_internal_value:
+                      type: string
+                    adjustments_external_value:
+                      type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/period_specific_documents:
+    get:
+      tags:
+      - Financials
+      summary: List all documents uploaded to templates
+      description: 'This will only show documents on reconciliations or accounts,
+
+        if the document is on the period or company it will not appear here
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getPeriodSpecificDocumentsList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: search_name
+        in: query
+        schema:
+          type: string
+        description: When set only documents with this name are returned.
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: period_specific_document_id
+                    file_name:
+                      type: string
+                    download_url:
+                      type: string
+                    created_by:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: user_id
+                        name:
+                          type: string
+                        username:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        email:
+                          type: string
+                    reconciliation_attachments:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: reconciliation_id
+                        name:
+                          type: string
+                        handle:
+                          type: string
+                    account_attachments:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: account_id
+                        name:
+                          type: string
+                        number:
+                          type: string
+                        original_name:
+                          type: string
+                        original_number:
+                          type: string
+                        account_type:
+                          type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/period_specific_documents/{id}:
+    delete:
+      tags:
+      - Financials
+      summary: Delete a period specific document
+      description: 'The document will be removed in all accounts and reconciliations where it
+
+        is currently attached.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: deletePeriodSpecificDocument
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: integer
+          description: period_specific_document_id
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/period_specific_documents/{id}/replace:
+    post:
+      tags:
+      - Financials
+      summary: Replace a period specific document
+      description: 'The document will be replaced in all accounts and reconciliations it is
+
+        currently attached.
+
+
+        The old document will not be accessible after this.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: replacePeriodSpecificDocument
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  format: binary
+                  description: A new document to replace the old one with
+                copy_from_permanent_document_id:
+                  type: integer
+                  description: The id of the permanent document to copy from
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: id
+        in: path
+        schema:
+          type: integer
+        description: period_specific_document_id
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: period_specific_document_id
+                    file_name:
+                      type: string
+                    download_url:
+                      type: string
+                    created_by:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: user_id
+                        name:
+                          type: string
+                        username:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        email:
+                          type: string
+                    reconciliation_attachments:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: reconciliation_id
+                        name:
+                          type: string
+                        handle:
+                          type: string
+                    account_attachments:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: account_id
+                        name:
+                          type: string
+                        number:
+                          type: string
+                        original_name:
+                          type: string
+                        original_number:
+                          type: string
+                        account_type:
+                          type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts:
+    get:
+      tags:
+      - Financials
+      summary: List all permanent texts
+      description: 'List all permanent texts.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getPermanentTextsList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: permanent_folder_id
+        in: query
+        schema:
+          type: integer
+          description: When left empty all texts are returned. The root folder is identified by `id=0`.
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: permanent_text_id
+                    name:
+                      type: string
+                    mother_version:
+                      type: string
+                    locked:
+                      type: boolean
+                    created_at:
+                      type: string
+    post:
+      tags:
+      - Financials
+      summary: Create a permanent text
+      description: 'To create a permanent text you need to supply firm permanent text id as
+
+        from_template_id.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: createPermanentText
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                from_template_id:
+                  type: integer
+              required:
+              - from_template_id
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: permanent_text_id
+                  name:
+                    type: string
+                  mother_version:
+                    type: string
+                  locked:
+                    type: boolean
+                  created_at:
+                    type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts/{permanent_text_id}:
+    get:
+      tags:
+      - Financials
+      summary: Get detail of a permanent text for this period
+      description: 'Get detail of a permanent text for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getPermanentTextContent
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_text_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: permanent_text_id
+                  name:
+                    type: string
+                  mother_version:
+                    type: string
+                  locked:
+                    type: boolean
+                  created_at:
+                    type: string
+    post:
+      tags:
+      - Financials
+      summary: Update Permanent Text
+      description: 'Update Permanent Text.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: updatePermanentText
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_text_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: permanent_text_id
+                  name:
+                    type: string
+                  mother_version:
+                    type: string
+                  locked:
+                    type: boolean
+                  created_at:
+                    type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts/{permanent_text_id}/custom:
+    get:
+      tags:
+      - Financials
+      summary: Get all custom parameters of a permanent text
+      description: 'Get all custom parameters of a permanent text.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getPermanentTextCustomProperties
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_text_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    namespace:
+                      type: string
+                    key:
+                      type: string
+                    value:
+                      type: string
+                    owner:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        type:
+                          type: string
+                        documents:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              file_name:
+                                type: string
+                              content:
+                                type: string
+                              download_url:
+                                type: string
+                              created_by:
+                                type: string
+                        updated_by_id:
+                          type: integer
+    post:
+      tags:
+      - Financials
+      summary: Post a custom property to a permanent text
+      description: 'Submit one or more custom properties by posting an array in properties
+
+        containing objects with namespace, key and value.
+
+        You can destroy an item by setting the value to nil when there are no
+
+        documents attached.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: createPermanentTextCustomProperties
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                properties[][namespace]:
+                  type: string
+                properties[][key]:
+                  type: string
+                properties[][value]:
+                  type: string
+                  description: 'The value can be one of the following types: boolean, double, integer, object, string'
+                properties[][documents][][content]:
+                  type: string
+                  format: binary
+              required:
+              - properties[][namespace]
+              - properties[][key]
+              - properties[][value]
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_text_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts/{permanent_text_id}/results:
+    get:
+      tags:
+      - Financials
+      summary: Get all results of a permanent text for this period
+      description: 'Get all results of a permanent text for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getPermanentTextResults
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_text_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result_name:
+                    type: string
+                    example: 'signing_doc_name: Algemene vergadering'
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/permanent_texts/{permanent_text_id}/sign_markers:
+    get:
+      tags:
+      - Financials
+      summary: Get all sign markers in a permanent text for this period
+      description: 'Get all sign markers in a permanent text for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getPermanentTextSignMarkers
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: permanent_text_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: sign_marker_id
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    phone:
+                      type: string
+                    role:
+                      type: string
+                    on_behalf_of:
+                      type: string
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    action:
+                      type: string
+                    deadline_date:
+                      type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations:
+    get:
+      tags:
+      - Financials
+      summary: List all reconciliations
+      description: 'Please note: only the starred field in each reconciliation of the
+
+        response is period-specific and may vary across periods.
+
+
+        requied scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getReconciliationTexts
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: reconciliation_text_id
+                    name:
+                      type: string
+                    handle:
+                      type: string
+                    starred:
+                      type: boolean
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}:
+    get:
+      tags:
+      - Financials
+      summary: Get detail of a reconciliation text for this period
+      description: 'Get detail of a reconciliation text for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getReconciliationTextContent
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+        description: set to application/pdf for pdf document response, or application/vnd.openxmlformats-officedocument.spreadsheetml.sheet for xlsx response
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: reconciliation_text_id
+                  name:
+                    type: string
+                  handle:
+                    type: string
+    post:
+      tags:
+      - Financials
+      summary: Update the starring status of a reconciliation for this period
+      description: 'When starred is set to true, the reconciliation will be starred in this
+
+        period and all future periods.
+
+        When starred is set to false, the reconciliation will be unstarred in
+
+        this period.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: updateReconciliationTextStarringStatus
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                starred:
+                  type: boolean
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: reconciliation_text_id
+                  name:
+                    type: string
+                  handle:
+                    type: string
+                  starred:
+                    type: boolean
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}/custom:
+    delete:
+      tags:
+      - Financials
+      summary: Delete a custom property from a reconciliation
+      description: 'Delete a custom property from a reconciliation.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: deleteReconciliationTextCustomProperty
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: namespace
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: key
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '204':
+          description: Successful empty body response
+    get:
+      tags:
+      - Financials
+      summary: Get all custom parameters of a reconciliation for this period
+      description: 'Get all custom parameters of a reconciliation for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getReconciliationTextCustomProperties
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    namespace:
+                      type: string
+                    key:
+                      type: string
+                    value:
+                      type: string
+                    owner:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        type:
+                          type: string
+                    documents:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          file_name:
+                            type: string
+                          content:
+                            type: string
+                          download_url:
+                            type: string
+                          created_by:
+                            type: string
+                    updated_by_id:
+                      type: integer
+    post:
+      tags:
+      - Financials
+      summary: Post a custom property to a reconciliation
+      description: 'You can either submit one custom property by posting a namespace, key and
+
+        value, or you can submit a bunch by submitting an array in properties
+
+        containing objects with namespace, key and value.
+
+        You can destroy an item by setting the value to nil when there are no
+
+        documents attached.
+
+
+        Required scope(s): `financials:write`'
+      security:
+      - OAuth2:
+        - financials:write
+      operationId: createReconciliationTextCustomProperties
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                namespace:
+                  type: string
+                key:
+                  type: string
+                value:
+                  type: string
+                  description: 'The value can be one of the following types: boolean, double, integer, object, string'
+                properties[][namespace]:
+                  type: string
+                properties[][key]:
+                  type: string
+                properties[][value]:
+                  type: string
+                  description: 'The value can be one of the following types: boolean, double, integer, object, string'
+                properties[]documents[][content]:
+                  type: string
+                  format: binary
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '201':
+          description: Successful response
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}/results:
+    get:
+      tags:
+      - Financials
+      summary: Get all results of a reconciliation for this period
+      description: 'Get all results of a reconciliation for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getReconciliationTextResults
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result_name:
+                    type: string
+                    example: 'vol_1022_man: 5000.0'
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reconciliations/{reconciliation_id}/sign_markers:
+    get:
+      tags:
+      - Financials
+      summary: Get all sign markers in a reconciliation text for this period
+      description: 'Get all sign markers in a reconciliation text for this period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getReconciliationTextSignMarkers
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: reconciliation_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: sign_marker_id
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    phone:
+                      type: string
+                    role:
+                      type: string
+                    on_behalf_of:
+                      type: string
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    action:
+                      type: string
+                    deadline_date:
+                      type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reports:
+    get:
+      tags:
+      - Financials
+      summary: List all reports for a specific period
+      description: 'List all reports for a specific period.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      operationId: getReportsList
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          default: 200
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: report_id
+                    name:
+                      type: string
+                    handle:
+                      type: string
+                    created_at:
+                      type: string
+                    private:
+                      type: boolean
+                    template_id:
+                      type: integer
+                    graphs:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+  /api/v4/f/{firm_id}/companies/{company_id}/periods/{period_id}/reports/{report_id}/results:
+    get:
+      tags:
+      - Financials
+      summary: List all results in a specific report
+      description: 'List all results in a specific report.
+
+
+        Required scope(s): `financials:read`'
+      security:
+      - OAuth2:
+        - financials:read
+      parameters:
+      - name: Accept
+        in: header
+        schema:
+          type: string
+        example: application/json
+      - name: Accept-Language
+        in: header
+        schema:
+          type: string
+        example: en
+      - name: firm_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: company_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: period_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      - name: report_id
+        in: path
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+      operationId: getApiV4FByFirmIdCompaniesByCompanyIdPeriodsByPeriodIdReportsByReportIdResults
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://live.getsilverfin.com/oauth/authorize
+          tokenUrl: https://live.getsilverfin.com/oauth/token
+          scopes:
+            administration:read: ''
+            administration:write: ''
+            client_meetings:read: ''
+            client_meetings:external_notes:write: ''
+            communication:read: ''
+            communication:write: ''
+            financials:read: ''
+            financials:write: ''
+            financials:transactions:read: ''
+            financials:transactions:write: ''
+            insights:read: ''
+            insights:write: ''
+            workflows:read: ''
+            workflows:write: ''
+            permanent_documents:read: ''
+            permanent_documents:write: ''
+            webhooks: ''
+            links: ''
+            user:email: ''
+            user:firm: ''
+            user:profile: ''
+x-provenance:
+  method: searched
+  source: https://developer.silverfin.com/reference
+  harvested: '2026-10-14'
+  tool: harvest-readme-openapi.py
+  note: Assembled verbatim from the OpenAPI definition ReadMe embeds in each operation page of the provider's developer portal; paths and components merged by API title, nothing authored.
+  assembled_from:
+  - https://developer.silverfin.com/reference/addcompanytogroupbyid.md
+  - https://developer.silverfin.com/reference/addcompanytouserbyid.md
+  - https://developer.silverfin.com/reference/addfirmworkflowtocompany.md
+  - https://developer.silverfin.com/reference/addsharedparttoaccounttemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoexportfiletemplate.md
+  - https://developer.silverfin.com/reference/addsharedparttoreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/addusertogroupbyid.md
+  - https://developer.silverfin.com/reference/archiveworkflow.md
+  - https://developer.silverfin.com/reference/attachpersonalincometaxdocument.md
+  - https://developer.silverfin.com/reference/authorizeuser.md
+  - https://developer.silverfin.com/reference/createaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/createaccounttemplate.md
+  - https://developer.silverfin.com/reference/createadjustment.md
+  - https://developer.silverfin.com/reference/createapplink.md
+  - https://developer.silverfin.com/reference/createclientmeetingattachment.md
+  - https://developer.silverfin.com/reference/createcomment.md
+  - https://developer.silverfin.com/reference/createcompany.md
+  - https://developer.silverfin.com/reference/createcompanycustomproperty.md
+  - https://developer.silverfin.com/reference/createcompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/createcompanyuserbyid.md
+  - https://developer.silverfin.com/reference/createexportfileinstance.md
+  - https://developer.silverfin.com/reference/createexportfiletemplate.md
+  - https://developer.silverfin.com/reference/createexportpdfinstance.md
+  - https://developer.silverfin.com/reference/creategroup.md
+  - https://developer.silverfin.com/reference/createliquidtestrun.md
+  - https://developer.silverfin.com/reference/createliveexportdocument.md
+  - https://developer.silverfin.com/reference/createliveexportdocumentinexportpdfinstance.md
+  - https://developer.silverfin.com/reference/createnewaccount.md
+  - https://developer.silverfin.com/reference/createperiod.md
+  - https://developer.silverfin.com/reference/createperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/createpermanentdocument.md
+  - https://developer.silverfin.com/reference/createpermanentfolder.md
+  - https://developer.silverfin.com/reference/createpermanenttext.md
+  - https://developer.silverfin.com/reference/createpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/createpersonalincometaxtaxonweb.md
+  - https://developer.silverfin.com/reference/createreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/createreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/createremark.md
+  - https://developer.silverfin.com/reference/createsharedpart.md
+  - https://developer.silverfin.com/reference/createuser.md
+  - https://developer.silverfin.com/reference/createwebhook.md
+  - https://developer.silverfin.com/reference/deleteaccountcustomproperty.md
+  - https://developer.silverfin.com/reference/deleteaccounttemplate.md
+  - https://developer.silverfin.com/reference/deleteadjustment.md
+  - https://developer.silverfin.com/reference/deleteapplink.md
+  - https://developer.silverfin.com/reference/deletecompany.md
+  - https://developer.silverfin.com/reference/deletecompanyfollowerbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyfromuserbyid.md
+  - https://developer.silverfin.com/reference/deletecompanyuserbyid.md
+  - https://developer.silverfin.com/reference/deleteexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletegroup.md
+  - https://developer.silverfin.com/reference/deleteperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentdocument.md
+  - https://developer.silverfin.com/reference/deletepermanentfolder.md
+  - https://developer.silverfin.com/reference/deletepermanentmail.md
+  - https://developer.silverfin.com/reference/deletereconciliationtextcustomproperty.md
+  - https://developer.silverfin.com/reference/deletereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteremark.md
+  - https://developer.silverfin.com/reference/deletesharedpart.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromaccounttemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromexportfiletemplate.md
+  - https://developer.silverfin.com/reference/deletesharedpartfromreconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/deleteuser.md
+  - https://developer.silverfin.com/reference/deleteuserfromgroupbyid.md
+  - https://developer.silverfin.com/reference/deletewebhook.md
+  - https://developer.silverfin.com/reference/get_api-v4-f-firm-id-companies-company-id-periods-period-id-reports-report-id-results.md
+  - https://developer.silverfin.com/reference/getaccountancysyncentities.md
+  - https://developer.silverfin.com/reference/getaccountcontent.md
+  - https://developer.silverfin.com/reference/getaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccountcustomproperties.md
+  - https://developer.silverfin.com/reference/getaccountmappingbyaccountmappinglistid.md
+  - https://developer.silverfin.com/reference/getaccountmappinglists.md
+  - https://developer.silverfin.com/reference/getaccountresults.md
+  - https://developer.silverfin.com/reference/getaccountsvaluesbyperiodid.md
+  - https://developer.silverfin.com/reference/getaccounttemplatecontent.md
+  - https://developer.silverfin.com/reference/getaccounttemplateslist.md
+  - https://developer.silverfin.com/reference/getactivefirmworkflowslist.md
+  - https://developer.silverfin.com/reference/getactiveuserslist.md
+  - https://developer.silverfin.com/reference/getadjustmentslist.md
+  - https://developer.silverfin.com/reference/getallpeople.md
+  - https://developer.silverfin.com/reference/getanalyticaldimensionslist.md
+  - https://developer.silverfin.com/reference/getapplinkbyuser.md
+  - https://developer.silverfin.com/reference/getarchivedcompanylist.md
+  - https://developer.silverfin.com/reference/getbalanceslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslist.md
+  - https://developer.silverfin.com/reference/getbudgetentrieslistbyaccountid.md
+  - https://developer.silverfin.com/reference/getbudgetentryaccountids.md
+  - https://developer.silverfin.com/reference/getbudgetentrycontent.md
+  - https://developer.silverfin.com/reference/getbudgetentryenddates.md
+  - https://developer.silverfin.com/reference/getclientmeeting.md
+  - https://developer.silverfin.com/reference/getclientmeetingslist.md
+  - https://developer.silverfin.com/reference/getclienttemplateslist.md
+  - https://developer.silverfin.com/reference/getcommentslistfromremark.md
+  - https://developer.silverfin.com/reference/getcompanies.md
+  - https://developer.silverfin.com/reference/getcompaniesfromgrouplist.md
+  - https://developer.silverfin.com/reference/getcompanyaccounts.md
+  - https://developer.silverfin.com/reference/getcompanycustomproperties.md
+  - https://developer.silverfin.com/reference/getcompanydetails.md
+  - https://developer.silverfin.com/reference/getcompanyfollowers.md
+  - https://developer.silverfin.com/reference/getcompanyuserlist.md
+  - https://developer.silverfin.com/reference/getcurrentclientmeeting.md
+  - https://developer.silverfin.com/reference/getcurrentuserdetails.md
+  - https://developer.silverfin.com/reference/getcurrentuseremail.md
+  - https://developer.silverfin.com/reference/getcurrentuserfirm.md
+  - https://developer.silverfin.com/reference/getexportfileinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportfileinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportfileslist.md
+  - https://developer.silverfin.com/reference/getexportfiletemplatecontent.md
+  - https://developer.silverfin.com/reference/getexportfiletemplateslist.md
+  - https://developer.silverfin.com/reference/getexportpdfinstancecontent.md
+  - https://developer.silverfin.com/reference/getexportpdfinstanceslist.md
+  - https://developer.silverfin.com/reference/getexportpdfslist.md
+  - https://developer.silverfin.com/reference/getexportpdftemplateslist.md
+  - https://developer.silverfin.com/reference/getgroupslist.md
+  - https://developer.silverfin.com/reference/getinactiveuserslist.md
+  - https://developer.silverfin.com/reference/getinsightssegmentresults.md
+  - https://developer.silverfin.com/reference/getliveexportdocument.md
+  - https://developer.silverfin.com/reference/getliveexportdocumentslist.md
+  - https://developer.silverfin.com/reference/getopentransactions.md
+  - https://developer.silverfin.com/reference/getperiodcustomproperties.md
+  - https://developer.silverfin.com/reference/getperioddetails.md
+  - https://developer.silverfin.com/reference/getperiods.md
+  - https://developer.silverfin.com/reference/getperiodspecificdocumentslist.md
+  - https://developer.silverfin.com/reference/getperiodworkflowslist.md
+  - https://developer.silverfin.com/reference/getpermanentdocumentcontent.md
+  - https://developer.silverfin.com/reference/getpermanentfoldercontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcontent.md
+  - https://developer.silverfin.com/reference/getpermanenttextcustomproperties.md
+  - https://developer.silverfin.com/reference/getpermanenttextresults.md
+  - https://developer.silverfin.com/reference/getpermanenttextsignmarkers.md
+  - https://developer.silverfin.com/reference/getpermanenttextslist.md
+  - https://developer.silverfin.com/reference/getpermanenttexttemplatelist.md
+  - https://developer.silverfin.com/reference/getpersonalincometaxquestionnaire.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtextcustomproperties.md
+  - https://developer.silverfin.com/reference/getreconciliationtextresults.md
+  - https://developer.silverfin.com/reference/getreconciliationtexts.md
+  - https://developer.silverfin.com/reference/getreconciliationtextsignmarkers.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatecontent.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplateliquidtestrun.md
+  - https://developer.silverfin.com/reference/getreconciliationtexttemplatelist.md
+  - https://developer.silverfin.com/reference/getremarkslist.md
+  - https://developer.silverfin.com/reference/getreportslist.md
+  - https://developer.silverfin.com/reference/getsharedpartcontent.md
+  - https://developer.silverfin.com/reference/getsharedpartslist.md
+  - https://developer.silverfin.com/reference/getusercompanieslist.md
+  - https://developer.silverfin.com/reference/getusersfromgrouplist.md
+  - https://developer.silverfin.com/reference/getwebhookslist.md
+  - https://developer.silverfin.com/reference/getworkflowreconciliationtextslist.md
+  - https://developer.silverfin.com/reference/getworkflowstatus.md
+  - https://developer.silverfin.com/reference/lintliquidcode.md
+  - https://developer.silverfin.com/reference/moveexportpdfinstancetodocuments.md
+  - https://developer.silverfin.com/reference/movepermanentmail.md
+  - https://developer.silverfin.com/reference/post_f-firm-id-oauth-token.md
+  - https://developer.silverfin.com/reference/replaceperiodspecificdocument.md
+  - https://developer.silverfin.com/reference/runinsightssegment.md
+  - https://developer.silverfin.com/reference/updateaccountcontent.md
+  - https://developer.silverfin.com/reference/updateaccountcontentbyperiodid.md
+  - https://developer.silverfin.com/reference/updateaccounttemplate.md
+  - https://developer.silverfin.com/reference/updateadjustment.md
+  - https://developer.silverfin.com/reference/updateallpeople.md
+  - https://developer.silverfin.com/reference/updatearchivedcompany.md
+  - https://developer.silverfin.com/reference/updatebatchaccountcontent.md
+  - https://developer.silverfin.com/reference/updatecompanydetails.md
+  - https://developer.silverfin.com/reference/updateexportfiletemplate.md
+  - https://developer.silverfin.com/reference/updateinactiveuser.md
+  - https://developer.silverfin.com/reference/updateinactiveworkflow.md
+  - https://developer.silverfin.com/reference/updateliveexportdocument.md
+  - https://developer.silverfin.com/reference/updateperiodspublicflag.md
+  - https://developer.silverfin.com/reference/updatepermanentdocument.md
+  - https://developer.silverfin.com/reference/updatepermanentfolder.md
+  - https://developer.silverfin.com/reference/updatepermanenttext.md
+  - https://developer.silverfin.com/reference/updatepersonalincometaxmetadata.md
+  - https://developer.silverfin.com/reference/updatereconciliationtextstarringstatus.md
+  - https://developer.silverfin.com/reference/updatereconciliationtexttemplate.md
+  - https://developer.silverfin.com/reference/updateremarkflag.md
+  - https://developer.silverfin.com/reference/updatesharedpart.md
+  - https://developer.silverfin.com/reference/updateuser.md
+  merge:
+    pages: 180
+    deduped: 213
+    conflicts_kept_first: 0
