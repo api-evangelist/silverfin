@@ -262,6 +262,8 @@ apis:
   humanURL: https://developer.silverfin.com/reference
   baseURL: https://live.getsilverfin.com/api/v4
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -466,6 +468,8 @@ apis:
   humanURL: https://developer.silverfin.com/reference
   baseURL: https://live.getsilverfin.com/api/v4
   tags:
+  - Export
+  tags_raw:
   - Exports
   properties:
   - type: OpenAPI
@@ -500,6 +504,8 @@ apis:
   humanURL: https://developer.silverfin.com/reference
   baseURL: https://live.getsilverfin.com/api/v4
   tags:
+  - Finance
+  tags_raw:
   - Financials
   properties:
   - type: OpenAPI
@@ -534,6 +540,8 @@ apis:
   humanURL: https://developer.silverfin.com/reference
   baseURL: https://live.getsilverfin.com/api/v4
   tags:
+  - Group
+  tags_raw:
   - Groups
   properties:
   - type: OpenAPI
@@ -1010,6 +1018,8 @@ apis:
   humanURL: https://developer.silverfin.com/reference
   baseURL: https://live.getsilverfin.com/api/v4
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -1044,6 +1054,8 @@ apis:
   humanURL: https://developer.silverfin.com/reference
   baseURL: https://live.getsilverfin.com/api/v4
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
