@@ -9,6 +9,12 @@ checked:
 - https://zapier.com/api/v4/apps/
 - https://zapier.com/apps/silverfin/integrations
 - eclipse/integrations/eclipse-integration-edges.yml
+- https://a16z.com/portfolio/
+- https://www.battery.com/company/
+- https://www.battery.com/wp-admin/admin-ajax.php
+- https://www.indexventures.com/companies/
+- https://www.sequoiacap.com/our-companies/
+- https://www.sequoiacap.com/sitemap.xml
 summary: null
 marketplace_apps:
 - marketplace: zapier
@@ -143,6 +149,33 @@ edges:
   category: IDE / developer extension marketplace listing
   badges:
   - Verified namespace
+- partner_name: Index Ventures
+  partner: index-ventures
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://www.indexventures.com/companies/silverfin/
+  category: vc portfolio participation
+  contract_reference:
+    register: Index Ventures companies (indexventures.com/companies/)
+    standard: null
+    spec_file: null
+    role: vc-portfolio-company
+    registered_name: Silverfin
+    register_id: https://www.indexventures.com/companies/silverfin/
+    register_country: europe
+    register_website: http://silverfin.com
+    matched_domain: silverfin.com
+    matched_by: domain
+    signal_note: 'participation only: the venture firm''s own published portfolio lists the company (investment);
+      an ownership and participation record, not conformance or certification'
+    detected_by: sweep-vc-portfolios.py
+    detected: '2026-10-21'
+    sector: business-applications
+  detected_by: sweep-vc-portfolios.py
+  first_seen: '2026-10-21'
 templates:
 - title: Create comments in Silverfin for new approval requests in Human in the Loop
   url: https://zapier.com/apps/human-in-the-loop/integrations/silverfin/255672705/create-comments-in-silverfin-for-new-approval-requests-in-human-in-the-loop
