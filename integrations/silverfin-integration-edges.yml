@@ -8,6 +8,7 @@ checked:
 - https://n8n.io/integrations/silverfin/
 - https://zapier.com/api/v4/apps/
 - https://zapier.com/apps/silverfin/integrations
+- eclipse/integrations/eclipse-integration-edges.yml
 summary: null
 marketplace_apps:
 - marketplace: zapier
@@ -123,6 +124,25 @@ edges:
     builder: unknown (not in the directory record)
   detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
+- partner_name: Eclipse Foundation (open-vsx)
+  partner: eclipse
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: open-vsx
+  evidence: https://open-vsx.org/namespace/Silverfin
+  mirror_of: eclipse/integrations/eclipse-integration-edges.yml
+  apps:
+  - Silverfin Development Toolkit
+  listing_count: 1
+  detected: '2026-10-20'
+  detected_by: mirror-platform-listings.py
+  category: IDE / developer extension marketplace listing
+  badges:
+  - Verified namespace
 templates:
 - title: Create comments in Silverfin for new approval requests in Human in the Loop
   url: https://zapier.com/apps/human-in-the-loop/integrations/silverfin/255672705/create-comments-in-silverfin-for-new-approval-requests-in-human-in-the-loop
