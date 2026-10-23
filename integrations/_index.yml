@@ -28,19 +28,6 @@
     builder: unknown (not in the directory record)
   status: not-a-workflow
   arazzo: null
-- slug: silverfin-eclipse-foundation-open-vsx
-  label: Eclipse Foundation (open-vsx)
-  partner: eclipse
-  partner_name: Eclipse Foundation (open-vsx)
-  category: IDE / developer extension marketplace listing
-  type: marketplace
-  marketplace: open-vsx
-  channel: partner-built
-  evidence: https://open-vsx.org/namespace/Silverfin
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: silverfin-index-ventures
   label: Index Ventures
   partner: index-ventures
@@ -67,5 +54,31 @@
     detected_by: sweep-vc-portfolios.py
     detected: '2026-10-21'
     sector: business-applications
+  status: not-a-workflow
+  arazzo: null
+- slug: silverfin-eclipse-foundation-open-vsx
+  label: Eclipse Foundation (open-vsx)
+  partner: eclipse
+  partner_name: Eclipse Foundation (open-vsx)
+  category: IDE / developer extension marketplace listing
+  type: marketplace
+  marketplace: open-vsx
+  channel: partner-built
+  evidence: https://open-vsx.org/namespace/Silverfin
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: silverfin-xero-own
+  label: Xero (own)
+  partner: xero
+  partner_name: Xero (own)
+  category: Tax and compliance
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://apps.xero.com/nz/app/silverfin
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null
